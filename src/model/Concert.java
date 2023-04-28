@@ -3,17 +3,14 @@ package model;
 import model.exceptions.SallePleineException;
 
 public class Concert {
-    private String nom;
-    private String nomSalle;
-    private int nbPlaces;
-    private int placesDispo;
+    public String nom;
+
+    private Room room;
     private double prixBillet;
 
     public Concert(String nom, String nomSalle, int nbPlaces, double prixBillet) {
         this.nom = nom;
-        this.nomSalle = nomSalle;
-        this.nbPlaces = nbPlaces;
-        this.placesDispo = nbPlaces;
+        this.room = new Room(nomSalle, nbPlaces, nbPlaces);
         this.prixBillet = prixBillet;
     }
 
@@ -22,19 +19,19 @@ public class Concert {
     }
 
     public String getNomSalle() {
-        return this.nomSalle;
+        return this.room.getName();
     }
 
     public int getNbPlaces() {
-        return nbPlaces;
+        return this.room.getNbPlaces();
     }
 
     public double getPrixBillet() {
         return prixBillet;
     }
 
-    public int getPlacesDipso() {
-        return this.placesDispo;
+    public int getPlacesDispo() {
+        return this.room.getPlacesDispo();
     }
 
     public void setPrixBillet(double prixBillet) {
@@ -42,20 +39,20 @@ public class Concert {
     }
 
     public void addReservation(Member m) throws SallePleineException {
-        if (this.placesDispo <= 0) {
+        if (this.getPlacesDispo() <= 0) {
             throw new SallePleineException();
         }
-        this.placesDispo -= 1;
+        this.room.decrementPlacesDispo();
         m.addTicket(new Ticket(this));
     }
 
     public void cancelReservation(Member m) {
-        this.placesDispo += 1;
+        this.room.incrementPlacesDispo();
         m.removeTicket(new Ticket(this));
     }
 
     public String toString() {
-        return "Concert " + this.nom + " : " + this.placesDispo + " / " + this.nbPlaces + " places disponibles.";
+        return "Concert " + this.nom + " : " + this.getPlacesDispo() + " / " + this.getNbPlaces() + " places disponibles.";
     }
 
 }

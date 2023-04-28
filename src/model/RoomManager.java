@@ -8,77 +8,77 @@ import java.util.HashMap;
  */
 public class RoomManager {
     public static final String RESERVERD_KEY = "reserved";
-    private HashMap<String, HashMap<String, Club>> rooms;
+    private HashMap<Room, HashMap<String, Club>> rooms;
 
     public RoomManager() {
-        this.rooms = new HashMap<String, HashMap<String, Club>>();
+        this.rooms = new HashMap<Room, HashMap<String, Club>>();
     }
 
-    public RoomManager(ArrayList<String> roomNames) {
-        this.rooms = new HashMap<String, HashMap<String, Club>>();
-        for (String roomName : roomNames) {
-            this.rooms.put(roomName, new HashMap<String, Club>());
+    public RoomManager(ArrayList<Room> rooms) {
+        this.rooms = new HashMap<Room, HashMap<String, Club>>();
+        for (Room room : rooms) {
+            this.rooms.put(room, new HashMap<String, Club>());
         }
     }
 
     /**
      * Add a room to the manager.
      * 
-     * @param roomName Name of the room.
+     * @param room Room to add.
      */
-    public void addRoom(String roomName) {
-        this.rooms.put(roomName, new HashMap<String, Club>());
+    public void addRoom(Room room) {
+        this.rooms.put(room, new HashMap<String, Club>());
     }
 
     /**
      * Remove a room from the room manager.
      * 
-     * @param roomName Name of the room.
+     * @param room Room to remove.
      * 
      * @exception RuntimeException if the room is reserved.
      */
-    public void removeRoom(String roomName) throws RuntimeException {
-        if( this.roomIsFree(roomName) ){
-            this.rooms.remove(roomName);
+    public void removeRoom(Room room) throws RuntimeException {
+        if( this.roomIsFree(room) ){
+            this.rooms.remove(room);
         }
 
-        throw new RuntimeException("Room " + roomName + " is reserved by " + this.rooms.get(roomName).get(RESERVERD_KEY).getName());
+        throw new RuntimeException("Room " + room.getName() + " is reserved by " + this.rooms.get(room).get(RESERVERD_KEY).getName());
     }
 
     /**
      * Check if a club an reserve a room.
-     * 
-     * @param roomName Name of the room.
-     * 
+     *
+     * @param room Room  of the room.
+     *
      * @return True if the room is reservable, false otherwise.
      */
-    private boolean roomIsFree(String roomName) {
-        return this.rooms.get(roomName).containsKey(RESERVERD_KEY);
+    private boolean roomIsFree(Room room) {
+        return this.rooms.get(room).containsKey(RESERVERD_KEY);
     }
 
     /**
      * Reserve a room for a club.
      * 
-     * @param roomName Name of the room.
+     * @param room     Room to reserve.
      * @param club     Club that wants to reserve the room.
      * 
      * @throws RuntimeException if the room is already reserved.
      */
-    public void reserveRoom(String roomName, Club club) throws RuntimeException {
-        if (this.roomIsFree(roomName)) {
-            this.rooms.get(roomName).put(RESERVERD_KEY, club);
+    public void reserveRoom(Room room, Club club) throws RuntimeException {
+        if (this.roomIsFree(room)) {
+            this.rooms.get(room).put(RESERVERD_KEY, club);
         }
         
-        throw new RuntimeException("Room " + roomName + " is already reserved by " + club.getName());
+        throw new RuntimeException("Room " + room.getName() + " is already reserved by " + club.getName());
     }
 
     /**
-     * Free a room.
+     * Frees a room.
      * 
-     * @param roomName Name of the room.
+     * @param room Room to free.
      */
-    public void freeRoom(String roomName) {
-        this.rooms.get(roomName).remove(RESERVERD_KEY);
+    public void freeRoom(Room room) {
+        this.rooms.get(room).remove(RESERVERD_KEY);
     }
 
 }
