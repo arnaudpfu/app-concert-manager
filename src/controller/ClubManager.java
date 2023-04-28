@@ -1,22 +1,22 @@
 package controller;
 import java.util.ArrayList;
 
-import model.Membre;
-import model.SallePleineException;
+import model.Member;
+import model.exceptions.SallePleineException;
 
 public class ClubManager implements ConcertListener {
-    public void onMembersInformed(ConcertEvent event, ArrayList<Membre> membres) {
-        for (Membre m : membres) {
+    public void onMembersInformed(ConcertEvent event, ArrayList<Member> membres) {
+        for (Member m : membres) {
             if (m.getPrixSeuil() >= event.getConcert().getPrixBillet()) {
                 System.out.println(
-                        m.getPrenom() + " est intéressé par " + event.getConcert().getNom() + ".");
+                        m.getName() + " est intéressé par " + event.getConcert().getNom() + ".");
             } else {
-                System.out.println(m.getPrenom() + " trouve ce concert trop cher !");
+                System.out.println(m.getName() + " trouve ce concert trop cher !");
             }
         }
     }
 
-    public void onReservation(ConcertEvent event, Membre membre) {
+    public void onReservation(ConcertEvent event, Member membre) {
         if (membre.getPrixSeuil() >= event.getConcert().getPrixBillet()) {
             try {
                 event.getConcert().addReservation(membre);
@@ -28,7 +28,7 @@ public class ClubManager implements ConcertListener {
         }
     }
 
-    public void onAnnulation(ConcertEvent event, Membre membre) {
+    public void onAnnulation(ConcertEvent event, Member membre) {
         event.getConcert().cancelReservation(membre);
     }
 }

@@ -1,4 +1,7 @@
 package model;
+
+import model.exceptions.SallePleineException;
+
 public class Concert {
     private String nom;
     private String nomSalle;
@@ -38,17 +41,17 @@ public class Concert {
         this.prixBillet = prixBillet;
     }
 
-    public void addReservation(Membre m) throws SallePleineException {
+    public void addReservation(Member m) throws SallePleineException {
         if (this.placesDispo <= 0) {
             throw new SallePleineException();
         }
         this.placesDispo -= 1;
-        m.addBillet(new Billet(this));
+        m.addTicket(new Ticket(this));
     }
 
-    public void cancelReservation(Membre m) {
+    public void cancelReservation(Member m) {
         this.placesDispo += 1;
-        m.removeBillet(new Billet(this));
+        m.removeTicket(new Ticket(this));
     }
 
     public String toString() {

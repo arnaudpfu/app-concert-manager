@@ -1,8 +1,8 @@
 package model;
-public class Billet {
+public class Ticket {
     private Concert concert;
 
-    public Billet(Concert concert) {
+    public Ticket(Concert concert) {
         this.concert = concert;
     }
 

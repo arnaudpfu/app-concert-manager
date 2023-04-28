@@ -1,28 +1,40 @@
 package model;
+
 import java.util.ArrayList;
 
 import controller.ClubManager;
 import controller.ConcertEvent;
-import controller.ConcertListener;
 
+/**
+ * A club enables to manage members and concerts.
+ * A club knows its manager, its members and its concerts.
+ * It can also organize concerts.
+ */
 public class Club {
+    private String name;
     private ClubManager manager;
-    private ArrayList<Membre> membres;
+    private ArrayList<Member> membres;
     private ArrayList<Concert> concerts;
 
-    public Club(ClubManager manager) {
+    public Club(String name,ClubManager manager) {
+        this.name = name;
         this.manager = manager;
-        this.membres = new ArrayList<Membre>();
+        this.membres = new ArrayList<Member>();
         this.concerts = new ArrayList<Concert>();
     }
 
-    public Club(ClubManager manager, ArrayList<Membre> membres) {
+    public Club(String name, ClubManager manager, ArrayList<Member> membres) {
+        this.name = name;
         this.manager = manager;
         this.membres = membres;
         this.concerts = new ArrayList<Concert>();
     }
 
-    public void addMembre(Membre m) {
+    public String getName() {
+        return name;
+    }
+
+    public void addMembre(Member m) {
         this.membres.add(m);
     }
 
@@ -46,7 +58,7 @@ public class Club {
      * @param c Concert
      * @param m Membre
      */
-    private void dispatchAnnulation(Concert c, Membre m) {
+    private void dispatchAnnulation(Concert c, Member m) {
         ConcertEvent event = new ConcertEvent(this, c);
         this.manager.onAnnulation(event, m);
     }
@@ -57,7 +69,7 @@ public class Club {
      * @param c
      * @param m
      */
-    private void dispatchReservation(Concert c, Membre m) {
+    private void dispatchReservation(Concert c, Member m) {
         ConcertEvent event = new ConcertEvent(this, c);
         this.manager.onReservation(event, m);
     }
@@ -68,13 +80,13 @@ public class Club {
         }
     }
 
-    public void cancelMemberReservation(Concert c, Membre m) {
+    public void cancelMemberReservation(Concert c, Member m) {
         if (concerts.contains(c) && membres.contains(m)) {
             dispatchAnnulation(c, m);
         }
     }
 
-    public void reserverBillet(Concert c, Membre m, String nomSalle) {
+    public void reserverBillet(Concert c, Member m, String nomSalle) {
         if (c.getNomSalle() != nomSalle) {
             System.out.println("Nom de salle différent");
             return;
