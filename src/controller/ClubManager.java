@@ -1,6 +1,10 @@
+package controller;
 import java.util.ArrayList;
 
-public class AssistantClub implements ConcertListener {
+import model.Membre;
+import model.SallePleineException;
+
+public class ClubManager implements ConcertListener {
     public void onMembersInformed(ConcertEvent event, ArrayList<Membre> membres) {
         for (Membre m : membres) {
             if (m.getPrixSeuil() >= event.getConcert().getPrixBillet()) {

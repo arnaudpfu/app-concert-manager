@@ -1,7 +1,13 @@
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
-class JeuDeTests {
+import controller.ClubManager;
+import model.Club;
+import model.Concert;
+import model.Membre;
+
+class App {
     public static void main(String[] args) {
         Membre m1 = new Membre("Jean", 10);
         Membre m2 = new Membre("Paul", 20);
@@ -10,10 +16,9 @@ class JeuDeTests {
         Concert c1 = new Concert("Metallica", "1", 100, 12);
         Concert c2 = new Concert("AC/DC", "2", 1, 2);
 
-        AssistantClub a1 = new AssistantClub();
+        ClubManager a1 = new ClubManager();
 
-        Club clubMusic = new Club(new ArrayList<ConcertListener>(Arrays.asList(a1)),
-                new ArrayList<Membre>(Arrays.asList(m1, m2)));
+        Club clubMusic = new Club(a1, new ArrayList<Membre>(Arrays.asList(m1, m2)));
 
         clubMusic.addConcert(c1);
         clubMusic.informMembers(c1);

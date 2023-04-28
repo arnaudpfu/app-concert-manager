@@ -1,25 +1,24 @@
+package model;
 import java.util.ArrayList;
 
+import controller.ClubManager;
+import controller.ConcertEvent;
+import controller.ConcertListener;
+
 public class Club {
-    private ArrayList<ConcertListener> re;
+    private ClubManager manager;
     private ArrayList<Membre> membres;
     private ArrayList<Concert> concerts;
 
-    public Club() {
-        this.re = new ArrayList<ConcertListener>();
+    public Club(ClubManager manager) {
+        this.manager = manager;
         this.membres = new ArrayList<Membre>();
         this.concerts = new ArrayList<Concert>();
     }
 
-    public Club(ArrayList<Membre> membres) {
+    public Club(ClubManager manager, ArrayList<Membre> membres) {
+        this.manager = manager;
         this.membres = membres;
-        this.re = new ArrayList<ConcertListener>();
-        this.concerts = new ArrayList<Concert>();
-    }
-
-    public Club(ArrayList<ConcertListener> assistants, ArrayList<Membre> membres) {
-        this.membres = membres;
-        this.re = assistants;
         this.concerts = new ArrayList<Concert>();
     }
 
@@ -31,43 +30,36 @@ public class Club {
         this.concerts.add(c);
     }
 
-    private void addConcertListener(ConcertListener ml) {
-        this.re.add(ml);
-    }
-
-    private void removeConcertListener(ConcertListener ml) {
-        this.re.remove(ml);
-    }
-
-    public void addAssistant(ConcertListener ml) {
-        this.re.add(ml);
-        this.addConcertListener(ml);
-    }
-
-    public void removeAssistant(ConcertListener ml) {
-        this.re.remove(ml);
-        this.removeConcertListener(ml);
-    }
-
+    /**
+     * Dispatches an event to warn members of a concert.
+     * 
+     * @param c Concert.
+     */
     private void dispatchInformation(Concert c) {
         ConcertEvent event = new ConcertEvent(this, c);
-        for (ConcertListener l : re) {
-            l.onMembersInformed(event, membres);
-        }
+        this.manager.onMembersInformed(event, membres);
     }
 
+    /**
+     * Dispatches an annulation event.
+     * 
+     * @param c Concert
+     * @param m Membre
+     */
     private void dispatchAnnulation(Concert c, Membre m) {
         ConcertEvent event = new ConcertEvent(this, c);
-        for (ConcertListener l : re) {
-            l.onAnnulation(event, m);
-        }
+        this.manager.onAnnulation(event, m);
     }
 
+    /**
+     * Dispatches a reservation event.
+     * 
+     * @param c
+     * @param m
+     */
     private void dispatchReservation(Concert c, Membre m) {
         ConcertEvent event = new ConcertEvent(this, c);
-        for (ConcertListener l : re) {
-            l.onReservation(event, m);
-        }
+        this.manager.onReservation(event, m);
     }
 
     public void informMembers(Concert c) {

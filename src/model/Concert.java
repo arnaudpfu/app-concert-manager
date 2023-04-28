@@ -1,3 +1,4 @@
+package model;
 public class Concert {
     private String nom;
     private String nomSalle;
