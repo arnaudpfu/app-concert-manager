@@ -2,13 +2,17 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import controller.ClubManager;
 import model.Club;
+import model.ClubManager;
 import model.Concert;
 import model.Member;
+import view.pages.HomePage;
+import view.pages.InterfaceApp;
 
 class App {
     public static void main(String[] args) {
+        ClubManager clubManager = new ClubManager();
+
         Member m1 = new Member("Jean", 10);
         Member m2 = new Member("Paul", 20);
         Member m3 = new Member("Jacques", 30);
@@ -16,9 +20,7 @@ class App {
         Concert c1 = new Concert("Metallica", "1", 100, 12);
         Concert c2 = new Concert("AC/DC", "2", 1, 2);
 
-        ClubManager a1 = new ClubManager();
-
-        Club clubMusic = new Club("Les métalleux",a1, new ArrayList<Member>(Arrays.asList(m1, m2)));
+        Club clubMusic = new Club("Les métalleux", clubManager, new ArrayList<Member>(Arrays.asList(m1, m2)));
 
         clubMusic.addConcert(c1);
         clubMusic.informMembers(c1);
@@ -34,5 +36,7 @@ class App {
         clubMusic.reserverBillet(c2, m1, "2");
         clubMusic.reserverBillet(c2, m2, "2");
 
+        InterfaceApp window = new HomePage(clubManager);
+        window.setVisible(true);
     }
 }

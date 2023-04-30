@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-import controller.ClubManager;
+import controller.AssistantClub;
 import controller.ConcertEvent;
 
 /**
@@ -11,22 +11,28 @@ import controller.ConcertEvent;
  * It can also organize concerts.
  */
 public class Club {
+    private ClubManager clubManager;
     private String name;
-    private ClubManager manager;
     private ArrayList<Member> membres;
+    /**
+     * Execute actions when a concert event is triggered.
+     */
+    private AssistantClub manager;
     private ArrayList<Concert> concerts;
 
-    public Club(String name,ClubManager manager) {
+    public Club(String name, ClubManager clubManager) {
         this.name = name;
-        this.manager = manager;
+        this.clubManager = clubManager;
         this.membres = new ArrayList<Member>();
+        this.manager = new AssistantClub();
         this.concerts = new ArrayList<Concert>();
     }
 
-    public Club(String name, ClubManager manager, ArrayList<Member> membres) {
+    public Club(String name, ClubManager clubManager, ArrayList<Member> membres) {
         this.name = name;
-        this.manager = manager;
+        this.clubManager = clubManager;
         this.membres = membres;
+        this.manager = new AssistantClub();
         this.concerts = new ArrayList<Concert>();
     }
 

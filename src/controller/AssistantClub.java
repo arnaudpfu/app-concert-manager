@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import model.Member;
 import model.exceptions.SallePleineException;
 
-public class ClubManager implements ConcertListener {
+public class AssistantClub implements ConcertListener {
     public void onMembersInformed(ConcertEvent event, ArrayList<Member> membres) {
         for (Member m : membres) {
             if (m.getPrixSeuil() >= event.getConcert().getPrixBillet()) {
