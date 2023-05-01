@@ -1,7 +1,6 @@
 package view.pages;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.File;
 
 import java.awt.Font;
@@ -11,12 +10,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import model.ClubManager;
-
-import javax.swing.BoxLayout;
 
 abstract public class InterfaceApp extends JFrame {
 
@@ -59,10 +54,10 @@ abstract public class InterfaceApp extends JFrame {
     }
 
     public void registerFonts() {
-        Font roboto = null;
         try {
-            InputStream is = InterfaceApp.class.getResourceAsStream("..//fonts//Roboto-Regular.ttf");
-            roboto = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(16f);
+            File fontFile = new File("src\\fonts\\Roboto-Regular.ttf");
+//            InputStream is = getClass().getClassLoader().getResourceAsStream("src\\fonts\\Roboto-Regular.ttf");
+            Font roboto = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(16f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(roboto);
         } catch (IOException | FontFormatException e) {
