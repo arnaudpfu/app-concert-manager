@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Knows wich room is reserved by wich club.
- */
+ * Knows which room is reserved by which club.
+*/
 public class RoomManager {
     public static final String RESERVERD_KEY = "reserved";
     private HashMap<Room, HashMap<String, Club>> rooms;
 
     public RoomManager() {
-        this.rooms = new HashMap<Room, HashMap<String, Club>>();
+        this.rooms = new HashMap<>();
     }
 
     public RoomManager(ArrayList<Room> rooms) {
-        this.rooms = new HashMap<Room, HashMap<String, Club>>();
+        this.rooms = new HashMap<>();
         for (Room room : rooms) {
-            this.rooms.put(room, new HashMap<String, Club>());
+            this.rooms.put(room, new HashMap<>());
         }
     }
 
@@ -27,7 +27,7 @@ public class RoomManager {
      * @param room Room to add.
      */
     public void addRoom(Room room) {
-        this.rooms.put(room, new HashMap<String, Club>());
+        this.rooms.put(room, new HashMap<>());
     }
 
     /**

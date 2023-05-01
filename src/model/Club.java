@@ -13,7 +13,7 @@ import controller.ConcertEvent;
 public class Club {
     private ClubManager clubManager;
     private String name;
-    private ArrayList<Member> membres;
+    private ArrayList<Member> members;
     /**
      * Execute actions when a concert event is triggered.
      */
@@ -23,17 +23,17 @@ public class Club {
     public Club(String name, ClubManager clubManager) {
         this.name = name;
         this.clubManager = clubManager;
-        this.membres = new ArrayList<Member>();
+        this.members = new ArrayList<>();
         this.manager = new AssistantClub();
-        this.concerts = new ArrayList<Concert>();
+        this.concerts = new ArrayList<>();
     }
 
-    public Club(String name, ClubManager clubManager, ArrayList<Member> membres) {
+    public Club(String name, ClubManager clubManager, ArrayList<Member> members) {
         this.name = name;
         this.clubManager = clubManager;
-        this.membres = membres;
+        this.members = members;
         this.manager = new AssistantClub();
-        this.concerts = new ArrayList<Concert>();
+        this.concerts = new ArrayList<>();
     }
 
     public String getName() {
@@ -41,7 +41,7 @@ public class Club {
     }
 
     public void addMembre(Member m) {
-        this.membres.add(m);
+        this.members.add(m);
     }
 
     public void addConcert(Concert c) {
@@ -51,33 +51,33 @@ public class Club {
     /**
      * Dispatches an event to warn members of a concert.
      * 
-     * @param c Concert.
+     * @param concert Concert to dispatch.
      */
-    private void dispatchInformation(Concert c) {
-        ConcertEvent event = new ConcertEvent(this, c);
-        this.manager.onMembersInformed(event, membres);
+    private void dispatchInformation(Concert concert) {
+        ConcertEvent event = new ConcertEvent(this, concert);
+        this.manager.onMembersInformed(event, members);
     }
 
     /**
      * Dispatches an annulation event.
-     * 
-     * @param c Concert
-     * @param m Membre
+     *
+     * @param member  The member that canceled its reservation
+     * @param concert The related concert
      */
-    private void dispatchAnnulation(Concert c, Member m) {
-        ConcertEvent event = new ConcertEvent(this, c);
-        this.manager.onAnnulation(event, m);
+    private void dispatchAnnulation(Member member, Concert concert) {
+        ConcertEvent event = new ConcertEvent(this, concert);
+        this.manager.onAnnulation(event, member);
     }
 
     /**
      * Dispatches a reservation event.
      * 
-     * @param c
-     * @param m
+     * @param concert The concert that was reserved
+     * @param member The member that made a reservation
      */
-    private void dispatchReservation(Concert c, Member m) {
-        ConcertEvent event = new ConcertEvent(this, c);
-        this.manager.onReservation(event, m);
+    private void dispatchReservation(Concert concert, Member member) {
+        ConcertEvent event = new ConcertEvent(this, concert);
+        this.manager.onReservation(event, member);
     }
 
     public void informMembers(Concert c) {
@@ -87,18 +87,18 @@ public class Club {
     }
 
     public void cancelMemberReservation(Concert c, Member m) {
-        if (concerts.contains(c) && membres.contains(m)) {
-            dispatchAnnulation(c, m);
+        if (concerts.contains(c) && members.contains(m)) {
+            dispatchAnnulation(m, c);
         }
     }
 
     public void reserverBillet(Concert c, Member m, String nomSalle) {
-        if (c.getNomSalle() != nomSalle) {
+        if (c.getRoomName() != nomSalle) {
             System.out.println("Nom de salle différent");
             return;
         }
 
-        if (!concerts.contains(c) || !membres.contains(m)) {
+        if (!concerts.contains(c) || !members.contains(m)) {
             System.out.println("Concert ou membre non enregistré");
             return;
         }

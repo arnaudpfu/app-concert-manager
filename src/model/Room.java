@@ -5,44 +5,32 @@ package model;
 */
 public class Room {
     private String name;
-    private int nbPlaces;
-    private int placesDispo;
+    private int nbMaxPlaces;
+    private int nbFreePlaces;
 
 
-    public Room(String name, int nbPlaces, int placesDispo) {
+    public Room(String name, int nbMaxPlaces, int nbFreePlaces) {
         this.name = name;
-        this.nbPlaces = nbPlaces;
-        this.placesDispo = placesDispo;
+        this.nbMaxPlaces = nbMaxPlaces;
+        this.nbFreePlaces = nbFreePlaces;
     }
 
-    public void decrementPlacesDispo() {
-         this.placesDispo -= 1;
+    public void decrementFreePlaces() {
+         this.nbFreePlaces -= 1;
     }
 
-    public void incrementPlacesDispo() {
-        this.placesDispo += 1;
+    public void incrementFreePlaces() {
+        this.nbFreePlaces += 1;
     }
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getNbMaxPlaces() {
+        return nbMaxPlaces;
     }
 
-    public int getNbPlaces() {
-        return nbPlaces;
-    }
-
-    public void setNbPlaces(int nbPlaces) {
-        this.nbPlaces = nbPlaces;
-    }
-
-    public int getPlacesDispo() {
-        return placesDispo;
-    }
-
-    public void setPlacesDispo(int placesDispo) {
-        this.placesDispo = placesDispo;
+    public int getNbFreePlaces() {
+        return nbFreePlaces;
     }
 }

@@ -11,6 +11,6 @@ public class Ticket {
     }
 
     public String toString() {
-        return "Billet pour le concert de " + this.concert.getNom();
+        return "Billet pour le concert de " + this.concert.getName();
     }
 }

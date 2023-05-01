@@ -1,58 +1,52 @@
 package model;
 
-import model.exceptions.SallePleineException;
+import model.exceptions.FullRoomException;
 
 public class Concert {
     public String nom;
 
     private Room room;
-    private double prixBillet;
+    private double ticketPrice;
 
-    public Concert(String nom, String nomSalle, int nbPlaces, double prixBillet) {
+    public Concert(String nom, String nomSalle, int nbPlaces, double ticketPrice) {
         this.nom = nom;
         this.room = new Room(nomSalle, nbPlaces, nbPlaces);
-        this.prixBillet = prixBillet;
+        this.ticketPrice = ticketPrice;
     }
 
-    public String getNom() {
-        return nom;
-    }
-
-    public String getNomSalle() {
-        return this.room.getName();
-    }
-
-    public int getNbPlaces() {
-        return this.room.getNbPlaces();
-    }
-
-    public double getPrixBillet() {
-        return prixBillet;
-    }
-
-    public int getPlacesDispo() {
-        return this.room.getPlacesDispo();
-    }
-
-    public void setPrixBillet(double prixBillet) {
-        this.prixBillet = prixBillet;
-    }
-
-    public void addReservation(Member m) throws SallePleineException {
-        if (this.getPlacesDispo() <= 0) {
-            throw new SallePleineException();
+    public void addReservation(Member m) throws FullRoomException {
+        if (this.getNbFreePlaces() <= 0) {
+            throw new FullRoomException();
         }
-        this.room.decrementPlacesDispo();
+        this.room.decrementFreePlaces();
         m.addTicket(new Ticket(this));
     }
 
     public void cancelReservation(Member m) {
-        this.room.incrementPlacesDispo();
+        this.room.incrementFreePlaces();
         m.removeTicket(new Ticket(this));
     }
 
+    public String getName() {
+        return nom;
+    }
+
+    public String getRoomName() {
+        return this.room.getName();
+    }
+
+    public int getNbMaxPlaces() { return this.room.getNbMaxPlaces(); }
+
+    public double getTicketPrice() {
+        return ticketPrice;
+    }
+
+    public int getNbFreePlaces() {
+        return this.room.getNbFreePlaces();
+    }
+
     public String toString() {
-        return "Concert " + this.nom + " : " + this.getPlacesDispo() + " / " + this.getNbPlaces() + " places disponibles.";
+        return "Concert " + this.nom + " : " + this.getNbFreePlaces() + " / " + this.getNbMaxPlaces() + " places disponibles.";
     }
 
 }

@@ -4,38 +4,34 @@ import java.util.ArrayList;
 
 public class Member {
     private String name;
-    private double prixSeuil;
-    private ArrayList<Ticket> billets;
+    private double priceThreshold;
+    private ArrayList<Ticket> tickets;
 
-    public Member(String name, double prixSeuil) {
+    public Member(String name, double priceThreshold) {
         this.name = name;
-        this.prixSeuil = prixSeuil;
-        this.billets = new ArrayList<Ticket>();
+        this.priceThreshold = priceThreshold;
+        this.tickets = new ArrayList<>();
     }
-
+    public boolean canReserve(Concert concert) {
+        return this.getPriceThreshold() >= concert.getTicketPrice();
+    }
     public String getName() {
         return name;
     }
 
-    public double getPrixSeuil() {
-        return prixSeuil;
-    }
+    public double getPriceThreshold() { return priceThreshold; }
 
     public void addTicket(Ticket b) {
-        this.billets.add(b);
+        this.tickets.add(b);
     }
 
     public void removeTicket(Ticket b) {
-        this.billets.remove(b);
-    }
-
-    public ArrayList<Ticket> getTickets() {
-        return billets;
+        this.tickets.remove(b);
     }
 
     public String ticketsToString() {
         String s = this.name + " a acheté les billets suivants : \n";
-        for (Ticket b : this.billets) {
+        for (Ticket b : this.tickets) {
             s += b.toString() + "\n";
         }
         return s;
