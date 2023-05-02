@@ -1,7 +1,6 @@
-package controller;
-import java.util.ArrayList;
+package model;
 
-import model.Member;
+import java.util.ArrayList;
 
 public interface ConcertListener {
     public void onMembersInformed(ConcertEvent concert, ArrayList<Member> membres);

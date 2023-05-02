@@ -2,8 +2,6 @@ package model;
 
 import java.util.ArrayList;
 
-import controller.AssistantClub;
-import controller.ConcertEvent;
 import model.exceptions.UnknownMemberException;
 
 /**

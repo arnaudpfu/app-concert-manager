@@ -1,7 +1,6 @@
-package controller;
+package model;
 import java.util.ArrayList;
 
-import model.Member;
 import model.exceptions.FullRoomException;
 
 public class AssistantClub implements ConcertListener {
