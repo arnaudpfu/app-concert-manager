@@ -21,7 +21,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
     private JPanel notificationsPanel = new JPanel();
     private JPanel newConcertsPanel = new JPanel();
     private Member currentMember;
-    private JButton backButton = new JButton("< Retour à l'accueil");;
+    private JButton backButton = new JButton("< Retour à l'accueil");
 
     public MemberPage(ClubManager clubManager, Member member) {
         super("Concert - Mon compte", clubManager);
@@ -30,18 +30,9 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         title.setText("Bienvenue, " + currentMember.getName() + " !");
         thresholdPriceLabel.setText("Prix seuil: " + currentMember.getPriceThreshold() + "€");
 
-        backButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // navigate back to home page
-                HomePage homePage = new HomePage(clubManager);
-                homePage.setVisible(true);
-                dispose();
-            }
-        });
+        backButton.addActionListener(this);
 
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-
-        backButton.addActionListener(this);
 
         mainPanel.add(backButton);
         mainPanel.add(title);

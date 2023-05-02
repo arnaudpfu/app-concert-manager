@@ -43,8 +43,6 @@ public class Concert {
     public int getNbFreePlaces() {
         return this.room.getNbFreePlaces();
     }
-
-    public boolean isFull() { return room.isFull(); }
     public String toString() {
         return "Concert " + this.nom + " : " + this.getNbFreePlaces() + " / " + this.getNbMaxPlaces() + " places disponibles.";
     }
