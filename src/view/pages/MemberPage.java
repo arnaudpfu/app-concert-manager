@@ -61,6 +61,10 @@ public class MemberPage extends InterfaceApp implements ActionListener {
 
     /** Updates the tickets panel **/
     public void updateTickets() {
+        if(currentMember.hasNoTickets()) {
+            ticketsPanel.add(new JLabel("Aucun ticket"));
+        }
+
         for (Ticket ticket : currentMember.getTickets()) {
             JPanel ticketPanel = new JPanel();
             ticketPanel.add(new JLabel(ticket.getConcert().getName()));
@@ -70,9 +74,21 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         }
     }
 
-        for (Ticket ticket: currentMember.getTickets()) {
-            System.out.print("billet\n");
-            ticketsPanel.add(new TicketLinePanel(ticket));
+    /** Updates the notifications panel **/
+    public void updateNotifications() {
+        notificationsPanel.add(new JLabel("Aucune notification"));
+    }
+
+    /** Updates the concerts panel **/
+    public void updateConcerts() {
+        for (Concert concert: clubManager.getConcerts()) {
+            if(!currentMember.hasReserved(concert)) {
+                JPanel concertPanel = new JPanel();
+                concertPanel.add(new JLabel(concert.getName()));
+                concertPanel.add(new JLabel(concert.getTicketPrice() + "€"));
+                concertPanel.add(new JButton("Réserver"));
+                newConcertsPanel.add(concertPanel);
+            }
         }
     }
     @Override
