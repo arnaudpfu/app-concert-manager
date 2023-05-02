@@ -94,7 +94,6 @@ public class MemberPage extends InterfaceApp implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         HomePage homePage = new HomePage(clubManager);
-        homePage.setVisible(true);
         dispose();
     }
 }

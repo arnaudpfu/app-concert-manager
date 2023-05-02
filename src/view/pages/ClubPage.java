@@ -29,7 +29,6 @@ public class ClubPage extends InterfaceApp {
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 HomePage homePage = new HomePage(clubManager);
-                homePage.setVisible(true);
                 dispose();
             }
         });

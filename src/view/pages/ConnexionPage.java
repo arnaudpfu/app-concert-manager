@@ -31,7 +31,6 @@ public class ConnexionPage extends InterfaceApp implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 // navigate back to home page
                 HomePage homePage = new HomePage(clubManager);
-                homePage.setVisible(true);
                 dispose();
             }
         });
