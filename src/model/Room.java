@@ -28,6 +28,7 @@ public class Room {
         this.nbFreePlaces += 1;
     }
 
+    public boolean isFull() { return nbFreePlaces <= 0; }
     public String getName() {
         return name;
     }

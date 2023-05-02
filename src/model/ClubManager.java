@@ -56,6 +56,13 @@ public class ClubManager {
         this.clubs.add(club);
     }
 
+    public ArrayList<Concert> getConcerts() {
+        ArrayList<Concert> concerts = new ArrayList<>();
+        for (Club club: getClubs()) {
+            concerts.addAll(club.getConcerts());
+        }
+        return concerts;
+    }
     public void addClub(Club club) {
         this.clubs.add(club);
     }
