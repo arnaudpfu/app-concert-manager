@@ -3,6 +3,7 @@ package view.pages;
 import javax.swing.*;
 
 import model.ClubManager;
+import model.Member;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,13 +14,16 @@ public class MemberPage extends InterfaceApp {
     private JLabel title;
     private JButton backButton;
 
-    public MemberPage(ClubManager clubManager) {
+    private Member currentMember;
+
+    public MemberPage(ClubManager clubManager, Member member) {
         super("Member Page", clubManager);
+        this.currentMember = member;
 
         // create the panel and add components
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        title = new JLabel("Welcome, Member!");
+        title = new JLabel("Bienvenue, " + currentMember.getName() + " !");
         title.setFont(new Font("Arial", Font.BOLD, 20));
         backButton = new JButton("< Back to Home");
         panel.add(title);

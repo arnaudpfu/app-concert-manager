@@ -8,7 +8,7 @@ public class Member {
     private ArrayList<Ticket> tickets;
 
     public Member(String name, double priceThreshold) {
-        this.name = name;
+        this.name = name.toLowerCase();
         this.priceThreshold = priceThreshold;
         this.tickets = new ArrayList<>();
     }

@@ -1,5 +1,8 @@
 package model;
 
+import model.exceptions.UnknownClubException;
+import model.exceptions.UnknownMemberException;
+
 import java.util.ArrayList;
 
 public class ClubManager {
@@ -16,11 +19,26 @@ public class ClubManager {
         this.clubs = clubs;
     }
 
-    public RoomManager getRoomManager() {
-        return this.roomManager;
+    public Club getClub(String clubName) throws UnknownClubException {
+        for (Club club : getClubs()) {
+            if (club.getName().toLowerCase().equals(clubName)) return club;
+        }
+        throw new UnknownClubException(clubName);
     }
 
-    public ArrayList<Club> getClubs() {
-        return this.clubs;
+    public Member getMember(String memberName) throws UnknownMemberException {
+        for (Club club: this.getClubs()) {
+            try {
+                return club.getMember(memberName);
+            } catch (UnknownMemberException e) {
+                continue;
+            }
+        }
+        throw new UnknownMemberException(memberName);
     }
+
+    public RoomManager getRoomManager() { return this.roomManager; }
+
+    public ArrayList<Club> getClubs() { return this.clubs; }
+    public void addClub(Club club) { this.clubs.add(club); }
 }

@@ -41,8 +41,7 @@ public class RoomManager {
             this.rooms.remove(room);
         }
 
-        throw new RuntimeException(
-                "Room " + room.getName() + " is reserved by " + this.rooms.get(room).getName());
+        throw new RuntimeException("Room " + room.getName() + " is reserved by " + this.rooms.get(room).getName());
     }
 
     /**
