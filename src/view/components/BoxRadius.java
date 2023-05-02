@@ -9,7 +9,6 @@ public class BoxRadius extends JPanel {
     public BoxRadius() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        this.add(Box.createRigidArea(new Dimension(650, 0)));
     }
 
     @Override
@@ -32,7 +31,7 @@ public class BoxRadius extends JPanel {
 
         // Draw the box with border
         g2.draw(border);
-        g2.setColor(Color.WHITE);
-        g2.fill(border);
+        // g2.setColor(Color.WHITE);
+        // g2.fill(border);
     }
 }

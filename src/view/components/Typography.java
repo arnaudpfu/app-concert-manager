@@ -3,9 +3,9 @@ package view.components;
 import javax.swing.*;
 import java.awt.*;
 
-public class Title extends JLabel {
+public class Typography extends JLabel {
 
-    public Title(String content, int level) {
+    public Typography(String content, int level) {
         super(content);
 
         switch (level) {
@@ -15,8 +15,11 @@ public class Title extends JLabel {
             case 2:
                 this.setFont(new Font("Arial", Font.PLAIN, 30));
                 break;
-            default:
+            case 3:
                 this.setFont(new Font("Arial", Font.PLAIN, 20));
+                break;
+            default:
+                this.setFont(new Font("Arial", Font.PLAIN, 15));
                 break;
         }
     }

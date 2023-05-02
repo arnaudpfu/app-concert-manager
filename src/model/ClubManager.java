@@ -14,20 +14,26 @@ public class ClubManager {
         this.clubs = new ArrayList<Club>();
     }
 
-    public ClubManager(ArrayList<Club> clubs) {
-        this.roomManager = new RoomManager();
+    public ClubManager(ArrayList<Room> rooms) {
+        this.roomManager = new RoomManager(rooms);
+        this.clubs = new ArrayList<Club>();
+    }
+
+    public ClubManager(ArrayList<Room> rooms, ArrayList<Club> clubs) {
+        this.roomManager = new RoomManager(rooms);
         this.clubs = clubs;
     }
 
     public Club getClub(String clubName) throws UnknownClubException {
         for (Club club : getClubs()) {
-            if (club.getName().toLowerCase().equals(clubName)) return club;
+            if (club.getName().toLowerCase().equals(clubName))
+                return club;
         }
         throw new UnknownClubException(clubName);
     }
 
     public Member getMember(String memberName) throws UnknownMemberException {
-        for (Club club: this.getClubs()) {
+        for (Club club : this.getClubs()) {
             try {
                 return club.getMember(memberName);
             } catch (UnknownMemberException e) {
@@ -37,8 +43,15 @@ public class ClubManager {
         throw new UnknownMemberException(memberName);
     }
 
-    public RoomManager getRoomManager() { return this.roomManager; }
+    public RoomManager getRoomManager() {
+        return this.roomManager;
+    }
 
-    public ArrayList<Club> getClubs() { return this.clubs; }
-    public void addClub(Club club) { this.clubs.add(club); }
+    public ArrayList<Club> getClubs() {
+        return this.clubs;
+    }
+
+    public void addClub(Club club) {
+        this.clubs.add(club);
+    }
 }

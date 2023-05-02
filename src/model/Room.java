@@ -2,12 +2,17 @@ package model;
 
 /**
  * A Room has a name and a capacity.
-*/
+ */
 public class Room {
     private String name;
     private int nbMaxPlaces;
     private int nbFreePlaces;
 
+    public Room(String name, int nbMaxPlaces) {
+        this.name = name;
+        this.nbMaxPlaces = nbMaxPlaces;
+        this.nbFreePlaces = nbMaxPlaces;
+    }
 
     public Room(String name, int nbMaxPlaces, int nbFreePlaces) {
         this.name = name;
@@ -16,12 +21,13 @@ public class Room {
     }
 
     public void decrementFreePlaces() {
-         this.nbFreePlaces -= 1;
+        this.nbFreePlaces -= 1;
     }
 
     public void incrementFreePlaces() {
         this.nbFreePlaces += 1;
     }
+
     public String getName() {
         return name;
     }

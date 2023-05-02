@@ -6,12 +6,17 @@ import model.Club;
 import model.ClubManager;
 import model.Concert;
 import model.Member;
+import model.Room;
 import view.pages.HomePage;
 import view.pages.InterfaceApp;
 
 class App {
     public static void main(String[] args) {
-        ClubManager clubManager = new ClubManager();
+        Room c201 = new Room("c201", 200);
+        Room c205 = new Room("c205", 180);
+        Room c212 = new Room("c212", 130);
+
+        ClubManager clubManager = new ClubManager(new ArrayList<Room>(Arrays.asList(c201, c205, c212)));
 
         Member m1 = new Member("Jean", 10);
         Member m2 = new Member("Paul", 20);
@@ -20,7 +25,7 @@ class App {
         Concert c1 = new Concert("Metallica", "1", 100, 12);
         Concert c2 = new Concert("AC/DC", "2", 1, 2);
 
-        Club clubMusic = new Club("Les métalleux", clubManager, new ArrayList<Member>(Arrays.asList(m1, m2)));
+        Club clubMusic = new Club("Les métalleux", clubManager, new ArrayList<Member>(Arrays.asList(m1, m2, m3)));
 
         clubMusic.addConcert(c1);
         clubMusic.informMembers(c1);

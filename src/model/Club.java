@@ -75,7 +75,7 @@ public class Club {
      * Dispatches a reservation event.
      * 
      * @param concert The concert that was reserved
-     * @param member The member that made a reservation
+     * @param member  The member that made a reservation
      */
     private void dispatchReservation(Concert concert, Member member) {
         ConcertEvent event = new ConcertEvent(this, concert);
@@ -94,9 +94,14 @@ public class Club {
         }
     }
 
+    public ArrayList<Member> getMembers() {
+        return this.members;
+    }
+
     public Member getMember(String memberName) throws UnknownMemberException {
         for (Member member : members) {
-            if (member.getName().equals(memberName)) return member;
+            if (member.getName().equals(memberName))
+                return member;
         }
         throw new UnknownMemberException(memberName);
     }

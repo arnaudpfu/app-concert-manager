@@ -20,28 +20,8 @@ public class RoomManager {
         }
     }
 
-    /**
-     * Add a room to the manager.
-     * 
-     * @param room Room to add.
-     */
-    public void addRoom(Room room) {
-        this.rooms.put(room, null);
-    }
-
-    /**
-     * Remove a room from the room manager.
-     * 
-     * @param room Room to remove.
-     * 
-     * @exception RuntimeException if the room is reserved.
-     */
-    public void removeRoom(Room room) throws RuntimeException {
-        if (this.roomIsFree(room)) {
-            this.rooms.remove(room);
-        }
-
-        throw new RuntimeException("Room " + room.getName() + " is reserved by " + this.rooms.get(room).getName());
+    public HashMap<Room, Club> getRooms() {
+        return this.rooms;
     }
 
     /**

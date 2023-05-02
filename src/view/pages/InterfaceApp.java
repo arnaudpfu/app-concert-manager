@@ -7,9 +7,12 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import model.ClubManager;
 
@@ -53,10 +56,15 @@ abstract public class InterfaceApp extends JFrame {
         setVisible(true);
     }
 
+    protected void addSpacer(JPanel panel) {
+        panel.add(Box.createRigidArea(new Dimension(0, 20)));
+    }
+
     public void registerFonts() {
         try {
             File fontFile = new File("src\\fonts\\Roboto-Regular.ttf");
-//            InputStream is = getClass().getClassLoader().getResourceAsStream("src\\fonts\\Roboto-Regular.ttf");
+            // InputStream is =
+            // getClass().getClassLoader().getResourceAsStream("src\\fonts\\Roboto-Regular.ttf");
             Font roboto = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(16f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(roboto);
