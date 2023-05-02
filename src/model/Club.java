@@ -114,7 +114,7 @@ public class Club {
         throw new UnknownMemberException(memberName);
     }
 
-    public void reserverBillet(Concert c, Member m, String nomSalle) {
+    public void createTicket(Concert c, Member m, String nomSalle) {
         if (c.getRoomName() != nomSalle) {
             System.out.println("Nom de salle différent");
             return;

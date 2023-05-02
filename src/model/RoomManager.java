@@ -25,7 +25,7 @@ public class RoomManager {
     }
 
     /**
-     * Check if a club an reserve a room.
+     * Check if a club can reserve a room.
      *
      * @param room Room of the room.
      *

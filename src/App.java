@@ -35,17 +35,17 @@ class App {
         clubMusic.addConcert(c3);
         clubMusic.informMembers(c3);
 
-        clubMusic.reserverBillet(c1, m1, "1");
-        clubMusic.reserverBillet(c1, m2, "1");
-        clubMusic.reserverBillet(c3, m2, "3");
+        clubMusic.createTicket(c1, m1, "1");
+        clubMusic.createTicket(c1, m2, "1");
+        clubMusic.createTicket(c3, m2, "3");
 
         System.out.println("\n" + m1.ticketsToString());
         System.out.println(m2.ticketsToString());
 
         // try to trigger exception
         clubMusic.addConcert(c2);
-        clubMusic.reserverBillet(c2, m1, "2");
-        clubMusic.reserverBillet(c2, m2, "2");
+        clubMusic.createTicket(c2, m1, "2");
+        clubMusic.createTicket(c2, m2, "2");
 
         InterfaceApp window = new HomePage(clubManager);
         window.setVisible(true);
