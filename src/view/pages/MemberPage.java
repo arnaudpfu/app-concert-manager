@@ -1,37 +1,39 @@
 package view.pages;
 
-import javax.swing.*;
-
 import model.ClubManager;
+import model.Concert;
 import model.Member;
+import model.Ticket;
+import view.components.TicketLinePanel;
 
-import java.awt.*;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MemberPage extends InterfaceApp {
+    private Member currentMember;
     private JPanel panel;
     private JLabel title;
+    private JLabel ticketsLabel;
+    private JPanel notificationsPanel;
+    private JPanel ticketsPanel;
+    private JLabel thresholdPriceLabel;
+    private JLabel notificationsLabel;
     private JButton backButton;
-
-    private Member currentMember;
+    private JLabel concertName;
+    private JButton cancelButton;
+    private JLabel concertState;
+    private JButton annulerButton;
+    private JPanel ticketLine;
 
     public MemberPage(ClubManager clubManager, Member member) {
-        super("Member Page", clubManager);
+        super("Concert - Mon compte", clubManager);
         this.currentMember = member;
 
-        // create the panel and add components
-        panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        title = new JLabel("Bienvenue, " + currentMember.getName() + " !");
-        title.setFont(new Font("Arial", Font.BOLD, 20));
-        backButton = new JButton("< Back to Home");
-        panel.add(title);
-        panel.add(Box.createRigidArea(new Dimension(0, 20)));
-        panel.add(backButton);
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        setContentPane(panel);
+        title.setText("Bienvenue, " + currentMember.getName() + " !");
+        thresholdPriceLabel.setText("Prix seuil: " + currentMember.getPriceThreshold() + "€");
 
-        // add action listener to the button
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // navigate back to home page
@@ -41,7 +43,25 @@ public class MemberPage extends InterfaceApp {
             }
         });
 
-        // add panel to the frame and center the frame
-        add(panel);
+        updateTickets();
+    }
+
+    public void updateTickets() {
+        if(currentMember.hasNoTickets()) {
+            System.out.print("Pas de billets");
+            ticketsPanel.add(new JLabel("Vous n'avez aucun ticket"));
+        }
+;
+        ticketsPanel.add(new JLabel("Vous n'avez aucun ticket"));
+        ticketsPanel.add(new TicketLinePanel(new Ticket(new Concert("test", "test", 5, 15))));
+
+        for (Ticket ticket: currentMember.getTickets()) {
+            System.out.print("billet\n");
+            ticketsPanel.add(new TicketLinePanel(ticket));
+        }
+
+        // Repaint the panel to reflect the changes
+        revalidate();
+        repaint();
     }
 }

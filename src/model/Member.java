@@ -17,6 +17,10 @@ public class Member {
         return this.getPriceThreshold() >= concert.getTicketPrice();
     }
 
+    public boolean hasNoTickets() {
+        return this.getTickets().isEmpty();
+    }
+
     public String getName() {
         return name;
     }
@@ -31,6 +35,10 @@ public class Member {
 
     public void removeTicket(Ticket b) {
         this.tickets.remove(b);
+    }
+
+    public ArrayList<Ticket> getTickets() {
+        return this.tickets;
     }
 
     public String ticketsToString() {
