@@ -1,13 +1,12 @@
 package view.pages;
 
 import model.ClubManager;
-import view.components.GreyButton;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class HomePage extends InterfaceApp {
+public class HomePage extends InterfaceApp implements ActionListener {
     private JButton memberButton;
     private JButton clubButton;
     private JButton roomManagerButton;
@@ -17,29 +16,25 @@ public class HomePage extends InterfaceApp {
         super("Concert Manager - Connexion", clubManager);
         setContentPane(mainPanel);
 
-        memberButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // navigate to member page
-                ConnexionPage connexionPage = new ConnexionPage(clubManager, "member");
-                connexionPage.setVisible(true);
-                dispose();
-            }
-        });
-        clubButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // navigate to club page
-                ConnexionPage connexionPage = new ConnexionPage(clubManager, "club");
-                connexionPage.setVisible(true);
-                dispose();
-            }
-        });
-        roomManagerButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // navigate to room manager page
-                RoomManagerPage roomManagerPage = new RoomManagerPage(clubManager);
-                roomManagerPage.setVisible(true);
-                dispose();
-            }
-        });
+        memberButton.addActionListener(this);
+        clubButton.addActionListener(this);
+        roomManagerButton.addActionListener(this);
+    }
+
+    public void actionPerformed(ActionEvent event) {
+        // Redirects on the right page
+        Object src = event.getSource();
+        InterfaceApp redirectionPage = null;
+
+        if (src == memberButton) {
+            redirectionPage = new ConnexionPage(clubManager, "member");
+        } else if (src == clubButton ) {
+            redirectionPage = new ConnexionPage(clubManager, "club");
+        } else if (src == roomManagerButton) {
+            redirectionPage = new RoomManagerPage(clubManager);
+        }
+
+        redirectionPage.setVisible(true);
+        dispose();
     }
 }
