@@ -66,7 +66,7 @@ public class RoomManagerPage extends InterfaceApp {
         memberLine.setLayout(new FlowLayout());
 
         memberLine.add(new Typography(member.getName(), 3));
-        memberLine.add(new Typography(String.valueOf(member.getPriceThreshold()) + " €", 3));
+        memberLine.add(new Typography(member.getPriceThreshold() + " €", 3));
 
         JButton removeButton = new JButton("Retirer");
         removeButton.addActionListener(new ActionListener() {
@@ -91,8 +91,7 @@ public class RoomManagerPage extends InterfaceApp {
         membersContainer.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
 
         ArrayList<Member> members = club.getMembers();
-        for (int j = 0; j < members.size(); j++) {
-            Member member = members.get(j);
+        for (Member member : members) {
             membersContainer.add(this.createMemberLine(club, member));
         }
 
@@ -112,11 +111,27 @@ public class RoomManagerPage extends InterfaceApp {
         memberAddLine.add(priceField);
 
         JButton addButton = new JButton("Ajouter");
+
+        // TODO : Delegate to a controller
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String newMemberName = memberField.getText().toLowerCase();
                 String newMemberPrice = priceField.getText().toLowerCase();
-                club.addMember(new Member(newMemberName, Double.valueOf(newMemberPrice)));
+
+                // Validate inputs
+                String errorMessage = "";
+                if(newMemberName.isEmpty()) {
+                    errorMessage += "Veuillez renseigner le nom du membre.\n";
+                }
+                if (newMemberPrice.isEmpty()) {
+                    errorMessage += "Veuillez renseigner le seuil de prix du membre.";
+                }
+                if(!errorMessage.isEmpty()) {
+                    showErrorMessage(errorMessage);
+                    return;
+                }
+
+                club.addMember(new Member(newMemberName, Double.parseDouble(newMemberPrice)));
 
                 refreshPage();
             }
@@ -140,8 +155,7 @@ public class RoomManagerPage extends InterfaceApp {
         clubsContainer.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
         section.add(clubsContainer);
 
-        for (int i = 0; i < clubs.size(); i++) {
-            Club club = clubs.get(i);
+        for (Club club : clubs) {
             clubsContainer.add(new Typography(club.getName(), 2));
             this.addSpacer(clubsContainer);
 
@@ -164,9 +178,14 @@ public class RoomManagerPage extends InterfaceApp {
 
         JButton addButton = new JButton("Ajouter");
 
+        // TODO : Delegate to a controller
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String newClubName = clubField.getText().toLowerCase();
+                if(newClubName.isEmpty()) {
+                    showErrorMessage("Veuillez renseigner le nom du club.");
+                    return;
+                }
                 clubManager.addClubByName(newClubName);
 
                 refreshPage();
