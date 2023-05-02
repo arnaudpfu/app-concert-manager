@@ -46,7 +46,7 @@ abstract public class InterfaceApp extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        this.registerFonts();
+        // this.registerFonts();
 
         // center the frame on the screen
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
