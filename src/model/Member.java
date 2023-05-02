@@ -15,6 +15,7 @@ public class Member {
     public boolean canReserve(Concert concert) {
         return this.getPriceThreshold() >= concert.getTicketPrice();
     }
+    public boolean hasNoTickets() { return this.getTickets().isEmpty(); }
     public String getName() {
         return name;
     }
@@ -29,6 +30,7 @@ public class Member {
         this.tickets.remove(b);
     }
 
+    public ArrayList<Ticket> getTickets() { return this.tickets; }
     public String ticketsToString() {
         String s = this.name + " a acheté les billets suivants : \n";
         for (Ticket b : this.tickets) {
