@@ -102,8 +102,7 @@ public class ClubPage extends InterfaceApp {
         JPanel concertsContainer = new JPanel();
         concertsContainer.setLayout(new BoxLayout(concertsContainer, BoxLayout.Y_AXIS));
 
-        for (int i = 0; i < concerts.size(); i++) {
-            Concert concert = concerts.get(i);
+        for (Concert concert : concerts) {
             JPanel concertLine = new JPanel();
             concertLine.setLayout(new FlowLayout());
 

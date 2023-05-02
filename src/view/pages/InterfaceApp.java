@@ -8,11 +8,9 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.Serial;
 
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import model.ClubManager;
 
@@ -21,6 +19,7 @@ abstract public class InterfaceApp extends JFrame {
     /**
      * Id pour la serialisation
      */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -67,8 +66,6 @@ abstract public class InterfaceApp extends JFrame {
     public void registerFonts() {
         try {
             File fontFile = new File("src\\fonts\\Roboto-Regular.ttf");
-            // InputStream is =
-            // getClass().getClassLoader().getResourceAsStream("src\\fonts\\Roboto-Regular.ttf");
             Font roboto = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(16f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(roboto);
@@ -82,4 +79,7 @@ abstract public class InterfaceApp extends JFrame {
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
     }
 
+    public void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
 }

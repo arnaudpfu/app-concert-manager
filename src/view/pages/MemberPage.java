@@ -68,9 +68,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
             ticketPanel.add(new JLabel("En cours"));
             ticketsPanel.add(ticketPanel);
         }
-;
-        ticketsPanel.add(new JLabel("Vous n'avez aucun ticket"));
-        ticketsPanel.add(new TicketLinePanel(new Ticket(new Concert("test", "test", 5, 15))));
+    }
 
         for (Ticket ticket: currentMember.getTickets()) {
             System.out.print("billet\n");

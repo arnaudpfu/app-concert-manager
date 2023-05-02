@@ -96,8 +96,4 @@ public class ConnexionPage extends InterfaceApp implements ActionListener {
             }
         }
     }
-
-    public void showErrorMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
 }
