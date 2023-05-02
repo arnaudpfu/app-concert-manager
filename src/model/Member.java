@@ -15,12 +15,18 @@ public class Member {
     public boolean canReserve(Concert concert) {
         return this.getPriceThreshold() >= concert.getTicketPrice();
     }
-    public boolean hasNoTickets() { return this.getTickets().isEmpty(); }
+
+    public boolean hasNoTickets() {
+        return this.getTickets().isEmpty();
+    }
+
     public String getName() {
         return name;
     }
 
-    public double getPriceThreshold() { return priceThreshold; }
+    public double getPriceThreshold() {
+        return priceThreshold;
+    }
 
     public void addTicket(Ticket b) {
         this.tickets.add(b);
@@ -30,7 +36,9 @@ public class Member {
         this.tickets.remove(b);
     }
 
-    public ArrayList<Ticket> getTickets() { return this.tickets; }
+    public ArrayList<Ticket> getTickets() {
+        return this.tickets;
+    }
 
     public ArrayList<Concert> getReservedConcerts() {
         ArrayList<Concert> concerts = new ArrayList<>();
