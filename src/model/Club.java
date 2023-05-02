@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import controller.AssistantClub;
 import controller.ConcertEvent;
+import model.exceptions.UnknownMemberException;
 
 /**
  * A club enables to manage members and concerts.
@@ -34,13 +35,14 @@ public class Club {
         this.members = members;
         this.manager = new AssistantClub();
         this.concerts = new ArrayList<>();
+        clubManager.addClub(this);
     }
 
     public String getName() {
         return name;
     }
 
-    public void addMembre(Member m) {
+    public void addMember(Member m) {
         this.members.add(m);
     }
 
@@ -90,6 +92,13 @@ public class Club {
         if (concerts.contains(c) && members.contains(m)) {
             dispatchAnnulation(m, c);
         }
+    }
+
+    public Member getMember(String memberName) throws UnknownMemberException {
+        for (Member member : members) {
+            if (member.getName().equals(memberName)) return member;
+        }
+        throw new UnknownMemberException(memberName);
     }
 
     public void reserverBillet(Concert c, Member m, String nomSalle) {

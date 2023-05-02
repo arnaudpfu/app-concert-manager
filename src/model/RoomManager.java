@@ -7,7 +7,7 @@ import java.util.HashMap;
  * Knows which room is reserved by which club.
 */
 public class RoomManager {
-    public static final String RESERVERD_KEY = "reserved";
+    public static final String RESERVED_KEY = "reserved";
     private HashMap<Room, HashMap<String, Club>> rooms;
 
     public RoomManager() {
@@ -42,7 +42,7 @@ public class RoomManager {
             this.rooms.remove(room);
         }
 
-        throw new RuntimeException("Room " + room.getName() + " is reserved by " + this.rooms.get(room).get(RESERVERD_KEY).getName());
+        throw new RuntimeException("Room " + room.getName() + " is reserved by " + this.rooms.get(room).get(RESERVED_KEY).getName());
     }
 
     /**
@@ -53,7 +53,7 @@ public class RoomManager {
      * @return True if the room is reservable, false otherwise.
      */
     private boolean roomIsFree(Room room) {
-        return this.rooms.get(room).containsKey(RESERVERD_KEY);
+        return this.rooms.get(room).containsKey(RESERVED_KEY);
     }
 
     /**
@@ -66,7 +66,7 @@ public class RoomManager {
      */
     public void reserveRoom(Room room, Club club) throws RuntimeException {
         if (this.roomIsFree(room)) {
-            this.rooms.get(room).put(RESERVERD_KEY, club);
+            this.rooms.get(room).put(RESERVED_KEY, club);
         }
         
         throw new RuntimeException("Room " + room.getName() + " is already reserved by " + club.getName());
@@ -78,7 +78,7 @@ public class RoomManager {
      * @param room Room to free.
      */
     public void freeRoom(Room room) {
-        this.rooms.get(room).remove(RESERVERD_KEY);
+        this.rooms.get(room).remove(RESERVED_KEY);
     }
 
 }

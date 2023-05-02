@@ -2,6 +2,7 @@ package view.pages;
 
 import javax.swing.*;
 
+import model.Club;
 import model.ClubManager;
 
 import java.awt.*;
@@ -13,8 +14,12 @@ public class ClubPage extends InterfaceApp {
     private JLabel title;
     private JButton backButton;
 
-    public ClubPage(ClubManager clubManager) {
+    private Club currentClub;
+
+    public ClubPage(ClubManager clubManager, Club club) {
         super("Club Page", clubManager);
+        this.currentClub = club;
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
 
