@@ -39,4 +39,8 @@ public class Room {
     public int getNbFreePlaces() {
         return nbFreePlaces;
     }
+
+    public String toString() {
+        return this.getName();
+    }
 }

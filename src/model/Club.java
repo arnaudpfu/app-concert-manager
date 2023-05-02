@@ -52,6 +52,10 @@ public class Club {
         this.concerts.add(c);
     }
 
+    public ArrayList<Concert> getConcert() {
+        return this.concerts;
+    }
+
     /**
      * Dispatches an event to warn members of a concert.
      * 

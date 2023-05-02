@@ -53,7 +53,7 @@ public class RoomManagerPage extends InterfaceApp {
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // add panel to the frame and center the frame
-        add(panel);
+        this.getContentPane().add(panel);
 
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -82,7 +82,7 @@ public class RoomManagerPage extends InterfaceApp {
     private void refreshPage() {
         RoomManagerPage roomManagerPage = new RoomManagerPage(clubManager);
         roomManagerPage.setVisible(true);
-        dispose();
+        this.dispose();
     }
 
     private JPanel createMemberContainer(Club club) {

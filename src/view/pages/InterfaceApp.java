@@ -64,10 +64,6 @@ abstract public class InterfaceApp extends JFrame {
         setVisible(true);
     }
 
-    protected void addSpacer(JPanel panel) {
-        panel.add(Box.createRigidArea(new Dimension(0, 20)));
-    }
-
     public void registerFonts() {
         try {
             File fontFile = new File("src\\fonts\\Roboto-Regular.ttf");
@@ -80,6 +76,10 @@ abstract public class InterfaceApp extends JFrame {
             System.out.println("Echec de l'enregistrement de la police.");
             e.printStackTrace();
         }
+    }
+
+    protected void addSpacer(JPanel panel) {
+        panel.add(Box.createRigidArea(new Dimension(0, 20)));
     }
 
 }

@@ -22,11 +22,13 @@ class App {
         Member m2 = new Member("Paul", 100);
         Member m3 = new Member("Jacques", 30);
 
-        Concert c1 = new Concert("Metallica", "1", 100, 12);
-        Concert c2 = new Concert("AC/DC", "2", 1, 2);
-        Concert c3 = new Concert("Dreadknogths", "3", 50, 85);
+        Concert c1 = new Concert("Metallica", c201, 100);
+        Concert c2 = new Concert("AC/DC", c205, 1);
+        Concert c3 = new Concert("Dreadknogths", c212, 85);
 
-        Club clubMusic = new Club("Les métalleux", clubManager, new ArrayList<Member>(Arrays.asList(m1, m2, m3)));
+        // Club clubMusic = new Club("Les métalleux", clubManager, new
+        // ArrayList<Member>(Arrays.asList(m1, m2, m3)));
+        Club clubMusic = new Club("azer", clubManager, new ArrayList<Member>(Arrays.asList(m1, m2, m3)));
 
         clubMusic.addConcert(c1);
         clubMusic.informMembers(c1);
