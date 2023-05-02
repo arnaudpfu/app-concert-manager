@@ -21,7 +21,7 @@ public class ConnexionPage extends InterfaceApp implements ActionListener {
     public ConnexionPage(ClubManager clubManager, String userType) {
         super("Connexion", clubManager);
         this.userType = userType;
-        this.setTitle("Connexion - " + (userType.equals("member")?"Membre":"Club"));
+        this.setTitle("Connexion - " + (userType.equals("member") ? "Membre" : "Club"));
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -58,14 +58,16 @@ public class ConnexionPage extends InterfaceApp implements ActionListener {
         this.setLocationRelativeTo(null);
     }
 
-    /** Method called when the user tries to connect (as either a club or a member) **/
+    /**
+     * Method called when the user tries to connect (as either a club or a member)
+     **/
     public void actionPerformed(ActionEvent event) {
         String textInput = nameField.getText().toLowerCase();
 
         // Validates input
-        if(textInput.isEmpty()) {
+        if (textInput.isEmpty()) {
             // TODO : Better error message
-            showErrorMessage("Veuillez insérer un nom de " + (userType.equals("member")?"membre":"club"));
+            showErrorMessage("Veuillez insérer un nom de " + (userType.equals("member") ? "membre" : "club"));
             return;
         }
 
@@ -81,7 +83,7 @@ public class ConnexionPage extends InterfaceApp implements ActionListener {
                 showErrorMessage("Ce membre n'existe pas");
             }
 
-        // Check if club exists
+            // Check if club exists
         } else if (userType.equals("club")) {
             try {
                 Club club = clubManager.getClub(textInput);

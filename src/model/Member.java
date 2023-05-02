@@ -12,14 +12,18 @@ public class Member {
         this.priceThreshold = priceThreshold;
         this.tickets = new ArrayList<>();
     }
+
     public boolean canReserve(Concert concert) {
         return this.getPriceThreshold() >= concert.getTicketPrice();
     }
+
     public String getName() {
         return name;
     }
 
-    public double getPriceThreshold() { return priceThreshold; }
+    public double getPriceThreshold() {
+        return priceThreshold;
+    }
 
     public void addTicket(Ticket b) {
         this.tickets.add(b);

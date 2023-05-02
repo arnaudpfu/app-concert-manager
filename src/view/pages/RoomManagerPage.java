@@ -18,7 +18,6 @@ import java.util.Map;
 
 public class RoomManagerPage extends InterfaceApp {
     private JPanel panel;
-    private JLabel title;
     private JButton backButton;
 
     public RoomManagerPage(ClubManager clubManager) {
@@ -27,7 +26,7 @@ public class RoomManagerPage extends InterfaceApp {
         // create the panel and add components
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setSize(800, 800);
+        // panel.setSize(InterfaceApp.WIDTH, InterfaceApp.HEIGHT);
 
         backButton = new JButton("< Back to Home");
         // add action listener to the button
@@ -62,15 +61,28 @@ public class RoomManagerPage extends InterfaceApp {
         add(scrollPane, BorderLayout.EAST);
     }
 
-    private JPanel createMemberLine(Member member) {
+    private JPanel createMemberLine(Club club, Member member) {
         JPanel memberLine = new JPanel();
-        memberLine.setLayout(new BoxLayout(memberLine, BoxLayout.X_AXIS));
+        memberLine.setLayout(new FlowLayout());
 
         memberLine.add(new Typography(member.getName(), 3));
+        memberLine.add(new Typography(String.valueOf(member.getPriceThreshold()) + " €", 3));
 
         JButton removeButton = new JButton("Retirer");
+        removeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                club.removeMember(member);
+                refreshPage();
+            }
+        });
         memberLine.add(removeButton);
         return memberLine;
+    }
+
+    private void refreshPage() {
+        RoomManagerPage roomManagerPage = new RoomManagerPage(clubManager);
+        roomManagerPage.setVisible(true);
+        dispose();
     }
 
     private JPanel createMemberContainer(Club club) {
@@ -81,19 +93,34 @@ public class RoomManagerPage extends InterfaceApp {
         ArrayList<Member> members = club.getMembers();
         for (int j = 0; j < members.size(); j++) {
             Member member = members.get(j);
-            membersContainer.add(this.createMemberLine(member));
+            membersContainer.add(this.createMemberLine(club, member));
         }
 
         JPanel memberAddLine = new JPanel();
         memberAddLine.setLayout(new BoxLayout(memberAddLine, BoxLayout.X_AXIS));
-        // memberLine.add(new Typography(member.getName(), 3));
 
+        memberAddLine.add(new Typography("Nom : ", 3));
         JTextField memberField = new JTextField();
-        memberField.setHorizontalAlignment(JTextField.CENTER);
-        memberField.setPreferredSize(new Dimension(200, 30));
+        memberField.setHorizontalAlignment(JTextField.LEFT);
+        memberField.setPreferredSize(new Dimension(120, 30));
         memberAddLine.add(memberField);
 
+        memberAddLine.add(new Typography("Prix seuil : ", 3));
+        JTextField priceField = new JTextField();
+        priceField.setHorizontalAlignment(JTextField.LEFT);
+        priceField.setPreferredSize(new Dimension(120, 30));
+        memberAddLine.add(priceField);
+
         JButton addButton = new JButton("Ajouter");
+        addButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String newMemberName = memberField.getText().toLowerCase();
+                String newMemberPrice = priceField.getText().toLowerCase();
+                club.addMember(new Member(newMemberName, Double.valueOf(newMemberPrice)));
+
+                refreshPage();
+            }
+        });
         memberAddLine.add(addButton);
 
         membersContainer.add(memberAddLine);
@@ -136,6 +163,15 @@ public class RoomManagerPage extends InterfaceApp {
         clubAddLine.add(clubField);
 
         JButton addButton = new JButton("Ajouter");
+
+        addButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String newClubName = clubField.getText().toLowerCase();
+                clubManager.addClubByName(newClubName);
+
+                refreshPage();
+            }
+        });
         clubAddLine.add(addButton);
 
         panel.add(clubAddLine);
@@ -146,6 +182,8 @@ public class RoomManagerPage extends InterfaceApp {
         memberLine.setLayout(new BoxLayout(memberLine, BoxLayout.X_AXIS));
 
         memberLine.add(new Typography(room.getName(), 3));
+
+        memberLine.add(Box.createRigidArea(new Dimension(100, 20)));
 
         memberLine.add(new Typography(club == null ? "Vide" : "Salle occupé par le club " + club.getName(), 3));
 

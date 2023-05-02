@@ -26,11 +26,19 @@ abstract public class InterfaceApp extends JFrame {
     /**
      * Largeur de la fenêtre
      */
-    private static final int WIDTH = 800;
+    protected static final int WIDTH = 800;
     /**
      * Hauteur de la fenêtre
      */
-    private static final int HEIGHT = 800;
+    protected static final int HEIGHT = 800;
+    /**
+     * Largeur intérieure de la fenêtre
+     */
+    protected static final int INNER_WIDTH = 700;
+    /**
+     * Hauteur intérieure de la fenêtre
+     */
+    protected static final int INNER_HEIGHT = 700;
 
     /**
      * ClubManager

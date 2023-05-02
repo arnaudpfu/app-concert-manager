@@ -51,6 +51,11 @@ public class ClubManager {
         return this.clubs;
     }
 
+    public void addClubByName(String clubName) {
+        Club club = new Club(clubName, this);
+        this.clubs.add(club);
+    }
+
     public void addClub(Club club) {
         this.clubs.add(club);
     }

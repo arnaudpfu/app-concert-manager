@@ -40,8 +40,12 @@ public class Club {
         return name;
     }
 
-    public void addMember(Member m) {
-        this.members.add(m);
+    public void addMember(Member member) {
+        this.members.add(member);
+    }
+
+    public void removeMember(Member member) {
+        this.members.remove(member);
     }
 
     public void addConcert(Concert c) {
