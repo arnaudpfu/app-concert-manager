@@ -96,6 +96,8 @@ public class Club {
         return this.members;
     }
 
+    public ArrayList<Concert> getConcerts() { return this.concerts; }
+
     public Member getMember(String memberName) throws UnknownMemberException {
         for (Member member : members) {
             if (member.getName().equals(memberName))

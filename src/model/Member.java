@@ -31,6 +31,18 @@ public class Member {
     }
 
     public ArrayList<Ticket> getTickets() { return this.tickets; }
+
+    public ArrayList<Concert> getReservedConcerts() {
+        ArrayList<Concert> concerts = new ArrayList<>();
+        for (Ticket ticket: getTickets()) {
+            concerts.add(ticket.getConcert());
+        }
+        return concerts;
+    }
+
+    public boolean hasReserved(Concert concert) {
+        return getReservedConcerts().contains(concert);
+    }
     public String ticketsToString() {
         String s = this.name + " a acheté les billets suivants : \n";
         for (Ticket b : this.tickets) {

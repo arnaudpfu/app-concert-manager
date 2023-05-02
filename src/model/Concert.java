@@ -4,7 +4,6 @@ import model.exceptions.FullRoomException;
 
 public class Concert {
     public String nom;
-
     private Room room;
     private double ticketPrice;
 
@@ -45,6 +44,7 @@ public class Concert {
         return this.room.getNbFreePlaces();
     }
 
+    public boolean isFull() { return room.isFull(); }
     public String toString() {
         return "Concert " + this.nom + " : " + this.getNbFreePlaces() + " / " + this.getNbMaxPlaces() + " places disponibles.";
     }
