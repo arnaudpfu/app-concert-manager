@@ -13,7 +13,7 @@ public class HomePage extends InterfaceApp implements ActionListener {
     private JPanel mainPanel;
 
     public HomePage(ClubManager clubManager) {
-        super("Concert Manager - Connexion", clubManager);
+        super("Concert Manager", clubManager);
         setContentPane(mainPanel);
 
         memberButton.addActionListener(this);

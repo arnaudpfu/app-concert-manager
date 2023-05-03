@@ -25,11 +25,11 @@ abstract public class InterfaceApp extends JFrame {
     /**
      * Largeur de la fenêtre
      */
-    protected static final int WIDTH = 800;
+    protected static final int WIDTH = 600;
     /**
      * Hauteur de la fenêtre
      */
-    protected static final int HEIGHT = 800;
+    protected static final int HEIGHT = 500;
     /**
      * Largeur intérieure de la fenêtre
      */
@@ -51,7 +51,6 @@ abstract public class InterfaceApp extends JFrame {
 
         setTitle(title);
         setSize(WIDTH, HEIGHT);
-        setResizable(false);
         setIconImage(logo.getImage());
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());

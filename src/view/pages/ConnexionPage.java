@@ -1,98 +1,76 @@
 package view.pages;
 
-import javax.swing.*;
-
 import model.Club;
 import model.ClubManager;
 import model.Member;
 import model.exceptions.UnknownClubException;
 import model.exceptions.UnknownMemberException;
 
-import java.awt.event.*;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ConnexionPage extends InterfaceApp implements ActionListener {
+    private JPanel mainPanel;
+    private JPanel connexionPanel;
     private JLabel title;
     private JLabel nameLabel;
-    private JTextField nameField;
-    private JButton submitButton;
+    private JTextField nameInput;
+    private JButton connectButton;
+    private JLabel errorLabel;
     private JButton backButton;
+
     private String userType;
 
     public ConnexionPage(ClubManager clubManager, String userType) {
-        super("Connexion", clubManager);
+        super("Concert Manager - Connexion", clubManager);
+        setContentPane(mainPanel);
         this.userType = userType;
-        this.setTitle("Connexion - " + (userType.equals("member") ? "Membre" : "Club"));
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        backButton = new JButton("< Back to Home");
-        backButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // navigate back to home page
-                HomePage homePage = new HomePage(clubManager);
-                dispose();
-            }
-        });
-
-        title = new JLabel("Connexion");
-        title.setHorizontalAlignment(JLabel.CENTER);
-
-        nameLabel = new JLabel("Votre nom");
-        nameLabel.setHorizontalAlignment(JLabel.CENTER);
-
-        nameField = new JTextField();
-        nameField.setHorizontalAlignment(JTextField.CENTER);
-
-        submitButton = new JButton("Se connecter");
-        submitButton.addActionListener(this);
-
-        panel.add(backButton);
-        panel.add(title);
-        panel.add(nameLabel);
-        panel.add(nameField);
-        panel.add(submitButton);
-
-        this.add(panel);
-        this.setLocationRelativeTo(null);
+        title.setText("Connexion - " + (userType.equals("member") ? "Membre" : "Club"));
+        connectButton.addActionListener(this);
+        backButton.addActionListener(this);
     }
 
-    /**
-     * Method called when the user tries to connect (as either a club or a member)
-     **/
+    @Override
     public void actionPerformed(ActionEvent event) {
-        String textInput = nameField.getText().toLowerCase();
+        Object src = event.getSource();
+        if(src == connectButton) {
+            String textInput = nameInput.getText().toLowerCase();
 
-        // Validates input
-        if (textInput.isEmpty()) {
-            // TODO : Better error message
-            showErrorMessage("Veuillez insérer un nom de " + (userType.equals("member") ? "membre" : "club"));
-            return;
-        }
-
-        // Check if user exists
-        if (userType.equals("member")) {
-            try {
-                Member member = clubManager.getMember(textInput);
-                MemberPage page = new MemberPage(clubManager, member);
-                page.setVisible(true);
-                dispose();
-            } catch (UnknownMemberException ex) {
-                // TODO : Better error message
-                showErrorMessage("Ce membre n'existe pas");
+            // Validates input
+            if (textInput.isEmpty()) {
+                errorLabel.setText("Veuillez insérer un nom de " + (userType.equals("member") ? "membre" : "club"));
+                return;
             }
 
-            // Check if club exists
-        } else if (userType.equals("club")) {
-            try {
-                Club club = clubManager.getClub(textInput);
-                ClubPage page = new ClubPage(clubManager, club);
-                page.setVisible(true);
-                dispose();
-            } catch (UnknownClubException ex) {
-                // TODO : Better error message
-                showErrorMessage("Ce club n'existe pas");
+            // Check if user exists
+            if (userType.equals("member")) {
+                try {
+                    Member member = clubManager.getMember(textInput);
+                    MemberPage page = new MemberPage(clubManager, member);
+                    page.setVisible(true);
+                    dispose();
+                } catch (UnknownMemberException ex) {
+                    errorLabel.setText("Ce membre n'existe pas");
+                }
+
+                // Check if club exists
+            } else if (userType.equals("club")) {
+                try {
+                    Club club = clubManager.getClub(textInput);
+                    ClubPage page = new ClubPage(clubManager, club);
+                    page.setVisible(true);
+                    dispose();
+                } catch (UnknownClubException ex) {
+                    errorLabel.setText("Ce club n'existe pas");
+                }
             }
         }
+        if(src == backButton) {
+            new HomePage(clubManager);
+            dispose();
+        }
+
     }
 }
