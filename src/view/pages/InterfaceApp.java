@@ -25,11 +25,11 @@ abstract public class InterfaceApp extends JFrame {
     /**
      * Largeur de la fenêtre
      */
-    protected static final int WIDTH = 600;
+    protected static final int WIDTH = 800;
     /**
      * Hauteur de la fenêtre
      */
-    protected static final int HEIGHT = 500;
+    protected static final int HEIGHT = 600;
     /**
      * Largeur intérieure de la fenêtre
      */

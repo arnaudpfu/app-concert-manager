@@ -49,7 +49,6 @@ public class ConnexionPage extends InterfaceApp implements ActionListener {
                 try {
                     Member member = clubManager.getMember(textInput);
                     MemberPage page = new MemberPage(clubManager, member);
-                    page.setVisible(true);
                     dispose();
                 } catch (UnknownMemberException ex) {
                     errorLabel.setText("Ce membre n'existe pas");
