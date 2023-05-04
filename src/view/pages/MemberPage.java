@@ -1,7 +1,8 @@
 package view.pages;
 
-import model.ClubManager;
-import model.Member;
+import model.*;
+import view.components.DefaultLabel;
+import view.components.SecondaryButton;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -17,6 +18,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
     private JPanel notificationsPanel;
     private JPanel ticketsPanel;
     private JPanel newConcertsPanel;
+    private JTable ticketsTable;
 
     private Member currentMember;
     public MemberPage(ClubManager clubManager, Member member) {
@@ -28,6 +30,12 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         priceThresholdLabel.setText("Prix seuil: " + currentMember.getPriceThreshold() + "€");
 
         disconnectButton.addActionListener(this);
+        // TODO : other updates
+//        updateConcertsPanel();
+//        updateNotificationsPanel();
+        // TODO : Delete manual add
+        currentMember.addTicket(new Ticket(new Concert("Test", new Room("TestRoom",15), 15)));
+        updateTicketsPanel();
     }
 
     @Override
@@ -36,6 +44,21 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         if(src == disconnectButton) {
             new ConnexionPage(clubManager, "member");
             dispose();
+        }
+    }
+
+    public void updateTicketsPanel() {
+        if(currentMember.hasNoTickets()) {
+            ticketsPanel.add(new DefaultLabel("Aucun ticket"));
+        }
+
+        for (Ticket ticket : currentMember.getTickets()) {
+            JPanel ticketPanel = new JPanel();
+            ticketPanel.setOpaque(false);
+            ticketPanel.add(new DefaultLabel(ticket.getConcert().getName()));
+            ticketPanel.add(new SecondaryButton("Annuler"));
+            ticketPanel.add(new DefaultLabel("En cours"));
+            ticketsPanel.add(ticketPanel);
         }
     }
 }

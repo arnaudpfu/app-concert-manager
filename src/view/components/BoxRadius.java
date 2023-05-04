@@ -5,8 +5,14 @@ import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
 public class BoxRadius extends JPanel {
+    public Color color;
 
     public BoxRadius() {
+        this(Color.BLACK);
+    }
+
+    public BoxRadius(Color color) {
+        this.color = color;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
     }
@@ -18,7 +24,7 @@ public class BoxRadius extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // Set the border color and thickness
-        g2.setColor(Color.BLACK);
+        g2.setColor(this.color);
         g2.setStroke(new BasicStroke(1));
 
         // Set the border radius
