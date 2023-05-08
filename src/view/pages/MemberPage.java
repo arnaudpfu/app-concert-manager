@@ -37,6 +37,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
     public MemberPage(ClubManager clubManager, Member member) {
         super("Concert - Mon compte", clubManager);
         this.currentMember = member;
+        setSize(new Dimension(1000, 800));
 
         // Back button
         backButtonPanel = new BackButtonPanel("< Déconnexion");
@@ -87,6 +88,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
 
         // Making the main panel scrollable
         JScrollPane scrollPane = new JScrollPane(mainPanel);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(50);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         this.add(scrollPane);
 
