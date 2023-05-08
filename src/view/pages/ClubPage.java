@@ -28,7 +28,7 @@ public class ClubPage extends InterfaceApp {
         JButton backButton = new JButton("< Back to Home");
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                HomePage homePage = new HomePage(clubManager);
+                new HomePage(clubManager);
                 dispose();
             }
         });
@@ -69,7 +69,7 @@ public class ClubPage extends InterfaceApp {
         concertForm.add(new Typography("Salle :", 3));
         Set<Room> keySet = this.clubManager.getRoomManager().getRooms().keySet();
         Room[] rooms = keySet.toArray(new Room[keySet.size()]);
-        JComboBox<Room> select = new JComboBox<Room>(rooms);
+        JComboBox<Room> select = new JComboBox<>(rooms);
         concertForm.add(select);
 
         concertForm.add(new Typography("Prix :", 3));
@@ -82,7 +82,7 @@ public class ClubPage extends InterfaceApp {
             public void actionPerformed(ActionEvent e) {
                 String newMemberName = nameField.getText();
                 Room room = (Room) select.getSelectedItem();
-                Double newMemberPrice = Double.valueOf(priceField.getText());
+                double newMemberPrice = Double.parseDouble(priceField.getText());
 
                 club.addConcert(new Concert(newMemberName, room, newMemberPrice));
                 refreshPage();
@@ -107,10 +107,10 @@ public class ClubPage extends InterfaceApp {
 
             concertLine.add(new Typography(concert.getName(), 3));
             concertLine.add(new Typography(
-                    String.valueOf(concert.getNbMaxPlaces() - concert.getNbFreePlaces()) + "/"
+                    concert.getNbMaxPlaces() - concert.getNbFreePlaces() + "/"
                             + concert.getNbMaxPlaces(),
                     3));
-            concertLine.add(new Typography(String.valueOf(concert.getTicketPrice()) + "€", 3));
+            concertLine.add(new Typography(concert.getTicketPrice() + "€", 3));
             JButton cancelButton = new JButton("Annuler");
             cancelButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
