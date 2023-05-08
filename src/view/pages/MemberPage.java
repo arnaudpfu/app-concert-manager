@@ -1,64 +1,150 @@
 package view.pages;
 
-import model.*;
-import view.components.DefaultLabel;
-import view.components.SecondaryButton;
-
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.border.EmptyBorder;
+
+import model.*;
+import view.components.*;
+
+import java.awt.*;
+import java.awt.event.*;
 
 public class MemberPage extends InterfaceApp implements ActionListener {
-    private JButton disconnectButton;
-    private JPanel connexionPanel;
-    private JLabel title;
-    private JPanel mainPanel;
-    private JLabel priceThresholdLabel;
-    private JPanel topPanel;
-    private JPanel notificationsPanel;
-    private JPanel ticketsPanel;
-    private JPanel newConcertsPanel;
-    private JTable ticketsTable;
 
+    // --------- PANELS --------- //
+    private JPanel mainPanel = new MainPanel();
+    private JPanel topPanel = new JPanel(new GridLayout(1, 0));
+    private JPanel contentPanelContainer = new JPanel(new GridLayout());
+    private JPanel contentPanel = new JPanel(new GridLayout(0, 1));
+    private JPanel ticketsPanel = new JPanel();
+    private JPanel notificationsPanel = new JPanel();
+    private JPanel newConcertsPanel = new JPanel();
+
+    // --------- LABELS --------- //
+
+    private JLabel title = new TitleLabel("Bienvenue !");
+    private JLabel thresholdPriceLabel = new DefaultLabel("Prix seuil :");
+    private JLabel notificationsTitle = new TitleLabel("Notifications");
+    private JLabel ticketsTitle = new TitleLabel("Vos billets");
+    private JLabel newConcertsTitle = new TitleLabel("Nouveaux concerts");
+
+    // --------- OTHERS --------- //
+
+    private BackButtonPanel backButtonPanel;
+    private JButton refreshButton = new JButton("Refresh");
     private Member currentMember;
+
     public MemberPage(ClubManager clubManager, Member member) {
-        super("Concert Manager - Mon compte", clubManager);
+        super("Concert - Mon compte", clubManager);
         this.currentMember = member;
-        setContentPane(mainPanel);
 
+        // Back button
+        backButtonPanel = new BackButtonPanel("< Déconnexion");
+        backButtonPanel.getBackButton().addActionListener(this);
+        mainPanel.add(backButtonPanel);
+
+        // TODO : Remove refresh button
+        refreshButton.addActionListener(this);
+        mainPanel.add(refreshButton);
+
+        // Top panel (title and price threshold)
+        topPanel.setForeground(new Color(187, 187, 187));
+        topPanel.setOpaque(false);
         title.setText("Bienvenue, " + currentMember.getName() + " !");
-        priceThresholdLabel.setText("Prix seuil: " + currentMember.getPriceThreshold() + "€");
+        thresholdPriceLabel.setText("Prix seuil: " + currentMember.getPriceThreshold() + "€");
+        topPanel.add(title);
+        topPanel.add(Box.createHorizontalStrut(0));
+        topPanel.add(thresholdPriceLabel);
+        mainPanel.add(topPanel);
 
-        disconnectButton.addActionListener(this);
-        // TODO : other updates
-//        updateConcertsPanel();
-//        updateNotificationsPanel();
-        // TODO : Delete manual add
-        currentMember.addTicket(new Ticket(new Concert("Test", new Room("TestRoom",15), 15)));
-        updateTicketsPanel();
+        // Content panel (notifications, tickets and new concerts)
+        contentPanel.setBorder(new EmptyBorder(50, 50, 50, 50));
+        contentPanel.setBackground(new Color(46,46,46));
+        contentPanelContainer.setOpaque(false);
+        contentPanelContainer.setBackground(new Color(46,46,46));
+
+        ticketsPanel.setLayout(new BoxLayout(ticketsPanel, BoxLayout.Y_AXIS));
+        newConcertsPanel.setLayout(new BoxLayout(newConcertsPanel, BoxLayout.Y_AXIS));
+
+        updateNotifications();
+        updateTickets();
+        updateConcerts();
+
+
+        contentPanel.add(notificationsTitle);
+        contentPanel.add(notificationsPanel);
+        contentPanel.add(ticketsTitle);
+        contentPanel.add(ticketsPanel);
+        contentPanel.add(newConcertsTitle);
+        contentPanel.add(newConcertsPanel);
+
+        // Centering the content panel inside the main panel
+        GridBagConstraints cpcConstraints = new GridBagConstraints();
+        cpcConstraints.fill = GridBagConstraints.VERTICAL;
+        cpcConstraints.anchor = GridBagConstraints.CENTER;
+        contentPanelContainer.add(contentPanel, cpcConstraints);
+        mainPanel.add(contentPanelContainer);
+
+        // Making the main panel scrollable
+        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        this.add(scrollPane);
+
+        this.setLocationRelativeTo(null);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent event) {
-        Object src = event.getSource();
-        if(src == disconnectButton) {
-            new ConnexionPage(clubManager, "member");
-            dispose();
-        }
-    }
-
-    public void updateTicketsPanel() {
+    /** Updates the tickets panel **/
+    public void updateTickets() {
+        ticketsPanel.removeAll();
         if(currentMember.hasNoTickets()) {
-            ticketsPanel.add(new DefaultLabel("Aucun ticket"));
+            ticketsPanel.add(new JLabel("Aucun ticket"));
         }
 
         for (Ticket ticket : currentMember.getTickets()) {
             JPanel ticketPanel = new JPanel();
-            ticketPanel.setOpaque(false);
-            ticketPanel.add(new DefaultLabel(ticket.getConcert().getName()));
-            ticketPanel.add(new SecondaryButton("Annuler"));
-            ticketPanel.add(new DefaultLabel("En cours"));
+            ticketPanel.add(new JLabel(ticket.getConcert().getName()));
+            ticketPanel.add(new JButton("Annuler"));
+            ticketPanel.add(new JLabel("En cours"));
             ticketsPanel.add(ticketPanel);
+            ticketsPanel.revalidate();
+        }
+        ticketsPanel.repaint();
+    }
+
+    /** Updates the notifications panel **/
+    public void updateNotifications() {
+        // TODO : Display notifications
+        notificationsPanel.removeAll();
+        notificationsPanel.add(new JLabel("Aucune notification"));
+        notificationsPanel.repaint();
+        notificationsPanel.revalidate();
+    }
+
+    /** Updates the concerts panel **/
+    public void updateConcerts() {
+//        newConcertsPanel.removeAll();
+        for (Concert concert: clubManager.getConcerts()) {
+            if(!currentMember.hasReserved(concert)) {
+                JPanel concertPanel = new JPanel();
+                concertPanel.add(new JLabel(concert.getName()));
+                concertPanel.add(new JLabel(concert.getTicketPrice() + "€"));
+                concertPanel.add(new JButton("Réserver"));
+                newConcertsPanel.add(concertPanel);
+            }
+        }
+        newConcertsPanel.repaint();
+        newConcertsPanel.revalidate();
+    }
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        if(event.getSource() == backButtonPanel.getBackButton()) {
+            new HomePage(clubManager);
+            dispose();
+        }
+        if(event.getSource() == refreshButton) {
+            updateTickets();
+            updateConcerts();
+            updateNotifications();
         }
     }
 }
