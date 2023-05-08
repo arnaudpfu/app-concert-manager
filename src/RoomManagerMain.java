@@ -1,6 +1,5 @@
 import model.*;
 import view.pages.InterfaceApp;
-import view.pages.MemberPage;
 import view.pages.RoomManagerPage;
 
 import java.util.ArrayList;

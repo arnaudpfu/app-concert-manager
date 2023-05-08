@@ -13,6 +13,7 @@ public class BoxRadius extends JPanel {
 
     public BoxRadius(Color color) {
         this.color = color;
+        this.setOpaque(false);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
     }

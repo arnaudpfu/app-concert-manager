@@ -115,7 +115,6 @@ public class ClubPage extends InterfaceApp implements ActionListener {
 
             Concert concert = new Concert(newMemberName, room, newMemberPrice);
             club.addConcert(concert);
-            club.informMembers(concert);
             refreshPage();
         }
     }

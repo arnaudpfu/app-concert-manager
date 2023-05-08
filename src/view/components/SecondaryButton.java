@@ -3,16 +3,15 @@ package view.components;
 import javax.swing.*;
 import java.awt.*;
 
-public class SecondaryButton extends BoxRadius {
+public class SecondaryButton extends JButton {
     public SecondaryButton(String text, Integer size) {
-        super(new Color(67,67,67));
+        super(text);
+        setBorderPainted(false);
+        setFocusPainted(false);
         setOpaque(false);
-        JButton button = new JButton(text);
-        button.setOpaque(false);
-        button.setForeground(new Color(195, 149, 252));
-        button.setFont(new Font("Inter", Font.PLAIN, size));
-        button.setOpaque(false);
-        add(button);
+        setForeground(new Color(195, 149, 252));
+        setBackground(new Color(46,46,46));
+        setFont(new Font("Inter", Font.PLAIN, size));
     }
 
     public SecondaryButton(String text) {
