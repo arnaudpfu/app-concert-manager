@@ -1,12 +1,13 @@
 import model.*;
-import view.pages.ClubPage;
 import view.pages.InterfaceApp;
+import view.pages.MemberPage;
+import view.pages.RoomManagerPage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-class ClubMain {
+class RoomManagerMain {
     public static void main(String[] args) {
         Room c201 = new Room("c201", 200);
         Room c205 = new Room("c205", 180);
@@ -29,8 +30,7 @@ class ClubMain {
         clubMusic.createTicket(c1, m2, "c201");
         clubMusic.createTicket(c3, m2, "c212");
 
-
-        InterfaceApp window = new ClubPage(clubManager, clubMusic);
+        InterfaceApp window = new RoomManagerPage(clubManager);
         window.setVisible(true);
     }
 }

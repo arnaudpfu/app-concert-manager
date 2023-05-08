@@ -48,8 +48,11 @@ public class Club {
         this.members.remove(member);
     }
 
-    public void addConcert(Concert c) {
-        this.concerts.add(c);
+    public void addConcert(Concert concert) {
+        concerts.add(concert);
+        if (concerts.contains(concert)) {
+            dispatchInformation(concert);
+        }
     }
 
     public void removeConcert(Concert concert) {
@@ -96,12 +99,6 @@ public class Club {
     private void dispatchReservation(Concert concert, Member member) {
         ConcertEvent event = new ConcertEvent(this, concert);
         this.manager.onReservation(event, member);
-    }
-
-    public void informMembers(Concert c) {
-        if (concerts.contains(c)) {
-            dispatchInformation(c);
-        }
     }
 
     public void cancelMemberReservation(Concert c, Member m) {

@@ -31,9 +31,7 @@ class HomeMain {
         Club clubMusic = new Club("azer", clubManager, new ArrayList<>(Arrays.asList(m1, m2, m3)));
 
         clubMusic.addConcert(c1);
-        clubMusic.informMembers(c1);
         clubMusic.addConcert(c3);
-        clubMusic.informMembers(c3);
 
         clubMusic.createTicket(c1, m1, "1");
         clubMusic.createTicket(c1, m2, "c201");
