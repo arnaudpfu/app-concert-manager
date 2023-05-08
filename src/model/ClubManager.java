@@ -33,9 +33,7 @@ public class ClubManager {
         for (Club club : this.getClubs()) {
             try {
                 return club.getMember(memberName);
-            } catch (UnknownMemberException e) {
-                continue;
-            }
+            } catch (UnknownMemberException ignored) { }
         }
         throw new UnknownMemberException(memberName);
     }

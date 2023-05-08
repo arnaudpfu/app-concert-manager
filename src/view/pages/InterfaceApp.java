@@ -1,11 +1,4 @@
 package view.pages;
-
-import java.io.IOException;
-import java.io.File;
-
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.GraphicsEnvironment;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.Serial;

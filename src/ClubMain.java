@@ -1,7 +1,6 @@
 import model.*;
 import view.pages.ClubPage;
 import view.pages.InterfaceApp;
-import view.pages.MemberPage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
