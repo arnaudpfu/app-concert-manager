@@ -6,8 +6,7 @@ import model.Club;
 import model.ClubManager;
 import model.Concert;
 import model.Room;
-import view.components.BoxRadius;
-import view.components.Typography;
+import view.components.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,53 +14,45 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class ClubPage extends InterfaceApp {
+public class ClubPage extends InterfaceApp implements ActionListener {
     private Club club;
 
+    private BackButtonPanel backButtonPanel = new BackButtonPanel("< Retour à l'accueil");
     public ClubPage(ClubManager clubManager, Club club) {
         super("Club Page", clubManager);
         this.club = club;
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JPanel panel = new MainPanel();
 
-        JButton backButton = new JButton("< Back to Home");
-        backButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new HomePage(clubManager);
-                dispose();
-            }
-        });
+        // Back button
+        backButtonPanel.getBackButton().addActionListener(this);
+        panel.add(backButtonPanel);
 
-        panel.add(backButton);
-        this.addSpacer(panel);
-        panel.add(new Typography("Club " + club.getName(), 1));
-        this.addSpacer(panel);
-
+        panel.add(new TitleLabel("Club " + club.getName()));
         panel.add(new Typography("Concerts", 2));
+
         panel.add(this.createConcertSection());
 
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        this.getContentPane().add(panel);
-
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        add(scrollPane, BorderLayout.EAST);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(50);
+        add(scrollPane);
     }
 
     private void refreshPage() {
         ClubPage clubPage = new ClubPage(clubManager, club);
         clubPage.setVisible(true);
-        this.dispose();
+        dispose();
     }
 
     private JPanel createConcertForm() {
         JPanel concertForm = new JPanel();
         concertForm.setLayout(new BoxLayout(concertForm, BoxLayout.Y_AXIS));
 
-        concertForm.add(new Typography("Name :", 3));
+        concertForm.add(new Typography("Nom :", 3));
         JTextField nameField = new JTextField();
         nameField.setSize(100, 30);
         concertForm.add(nameField);
@@ -84,9 +75,10 @@ public class ClubPage extends InterfaceApp {
                 Room room = (Room) select.getSelectedItem();
                 double newMemberPrice = Double.parseDouble(priceField.getText());
 
-                club.addConcert(new Concert(newMemberName, room, newMemberPrice));
+                Concert concert = new Concert(newMemberName, room, newMemberPrice);
+                club.addConcert(concert);
+                club.informMembers(concert);
                 refreshPage();
-
             }
         });
         concertForm.add(validationButton);
@@ -127,5 +119,14 @@ public class ClubPage extends InterfaceApp {
 
         section.add(concertsContainer);
         return section;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        Object src = event.getSource();
+        if(src == backButtonPanel.getBackButton()) {
+            new HomePage(clubManager);
+            dispose();
+        }
     }
 }

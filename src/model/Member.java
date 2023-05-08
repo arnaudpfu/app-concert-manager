@@ -1,5 +1,7 @@
 package model;
 
+import view.pages.MemberPage;
+
 import java.util.ArrayList;
 
 public class Member {
@@ -7,18 +9,23 @@ public class Member {
     private double priceThreshold;
     private ArrayList<Ticket> tickets;
 
+    private MemberPage window = null;
+
     public Member(String name, double priceThreshold) {
         this.name = name.toLowerCase();
         this.priceThreshold = priceThreshold;
         this.tickets = new ArrayList<>();
     }
+
+    public void onNotifyNewConcert(Concert concert) {
+        if(canReserve(concert)) System.out.println(getName() + " est intéressé par " + concert.getName());
+        if(window != null) window.onNotifyNewConcert(concert);
+    }
     public boolean canReserve(Concert concert) {
         return this.getPriceThreshold() >= concert.getTicketPrice();
     }
 
-    public boolean hasNoTickets() {
-        return this.getTickets().isEmpty();
-    }
+    public boolean hasNoTickets() { return this.getTickets().isEmpty(); }
 
     public String getName() {
         return name;
@@ -58,4 +65,7 @@ public class Member {
         }
         return s;
     }
+
+    public MemberPage getWindow() { return window; }
+    public void setWindow(MemberPage _window) { window = _window;}
 }

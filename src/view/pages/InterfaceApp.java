@@ -54,24 +54,8 @@ abstract public class InterfaceApp extends JFrame {
         setIconImage(logo.getImage());
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-
-        // this.registerFonts();
-
-        // center the frame on the screen
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
-    }
-
-    public void registerFonts() {
-        try {
-            File fontFile = new File("src\\fonts\\Roboto-Regular.ttf");
-            Font roboto = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(16f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(roboto);
-        } catch (IOException | FontFormatException e) {
-            System.out.println("Echec de l'enregistrement de la police.");
-            e.printStackTrace();
-        }
     }
 
     protected void addSpacer(JPanel panel) {

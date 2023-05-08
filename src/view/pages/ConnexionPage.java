@@ -48,13 +48,13 @@ public class ConnexionPage extends InterfaceApp implements ActionListener {
             if (userType.equals("member")) {
                 try {
                     Member member = clubManager.getMember(textInput);
-                    MemberPage page = new MemberPage(clubManager, member);
+                    new MemberPage(clubManager, member);
                     dispose();
                 } catch (UnknownMemberException ex) {
                     errorLabel.setText("Ce membre n'existe pas");
                 }
 
-                // Check if club exists
+            // Check if club exists
             } else if (userType.equals("club")) {
                 try {
                     Club club = clubManager.getClub(textInput);
@@ -70,6 +70,5 @@ public class ConnexionPage extends InterfaceApp implements ActionListener {
             new HomePage(clubManager);
             dispose();
         }
-
     }
 }

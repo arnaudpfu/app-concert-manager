@@ -8,20 +8,17 @@ import java.util.ArrayList;
 public class ClubManager {
     private RoomManager roomManager;
     private ArrayList<Club> clubs;
-
-    public ClubManager() {
-        this.roomManager = new RoomManager();
-        this.clubs = new ArrayList<Club>();
-    }
-
-    public ClubManager(ArrayList<Room> rooms) {
-        this.roomManager = new RoomManager(rooms);
-        this.clubs = new ArrayList<Club>();
-    }
-
     public ClubManager(ArrayList<Room> rooms, ArrayList<Club> clubs) {
         this.roomManager = new RoomManager(rooms);
         this.clubs = clubs;
+    }
+
+    public ClubManager() {
+        this(new ArrayList<>(), new ArrayList<>());
+    }
+
+    public ClubManager(ArrayList<Room> rooms) {
+        this(rooms, new ArrayList<>());
     }
 
     public Club getClub(String clubName) throws UnknownClubException {

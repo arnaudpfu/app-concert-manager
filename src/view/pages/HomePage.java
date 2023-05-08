@@ -35,6 +35,5 @@ public class HomePage extends InterfaceApp implements ActionListener {
         }
 
         redirectionPage.setVisible(true);
-        dispose();
     }
 }

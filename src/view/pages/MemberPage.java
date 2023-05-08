@@ -8,6 +8,7 @@ import view.components.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class MemberPage extends InterfaceApp implements ActionListener {
 
@@ -33,9 +34,11 @@ public class MemberPage extends InterfaceApp implements ActionListener {
     private BackButtonPanel backButtonPanel;
     private JButton refreshButton = new JButton("Refresh");
     private Member currentMember;
+    private ArrayList<String> notifications = new ArrayList<>();
 
     public MemberPage(ClubManager clubManager, Member member) {
         super("Concert - Mon compte", clubManager);
+        member.setWindow(this);
         this.currentMember = member;
         setSize(new Dimension(1000, 800));
 
@@ -113,18 +116,28 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         ticketsPanel.repaint();
     }
 
+    public void onNotifyNewConcert(Concert concert) {
+        notifications.add(concert.getName());
+        updateNotifications();
+        updateConcerts();
+    }
+
     /** Updates the notifications panel **/
     public void updateNotifications() {
-        // TODO : Display notifications
         notificationsPanel.removeAll();
-        notificationsPanel.add(new JLabel("Aucune notification"));
+        if(notifications.isEmpty()) {
+            notificationsPanel.add(new JLabel("Aucune notification"));
+        }
+        for (String concertName: notifications) {
+            notificationsPanel.add(new DefaultLabel("Le concert " + concertName + " peut vous intéresser", true));
+        }
         notificationsPanel.repaint();
         notificationsPanel.revalidate();
     }
 
     /** Updates the concerts panel **/
     public void updateConcerts() {
-//        newConcertsPanel.removeAll();
+        newConcertsPanel.removeAll();
         for (Concert concert: clubManager.getConcerts()) {
             if(!currentMember.hasReserved(concert)) {
                 JPanel concertPanel = new JPanel();
@@ -148,5 +161,11 @@ public class MemberPage extends InterfaceApp implements ActionListener {
             updateConcerts();
             updateNotifications();
         }
+    }
+
+    @Override
+    public void dispose() {
+        currentMember.setWindow(null);
+        super.dispose();
     }
 }

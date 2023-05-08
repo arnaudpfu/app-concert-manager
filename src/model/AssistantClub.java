@@ -6,12 +6,7 @@ import model.exceptions.FullRoomException;
 public class AssistantClub implements ConcertListener {
     public void onMembersInformed(ConcertEvent event, ArrayList<Member> members) {
         for (Member m : members) {
-            if (m.getPriceThreshold() >= event.getConcert().getTicketPrice()) {
-                System.out.println(
-                        m.getName() + " est intéressé par " + event.getConcert().getName() + ".");
-            } else {
-                System.out.println(m.getName() + " trouve ce concert trop cher !");
-            }
+            m.onNotifyNewConcert(event.getConcert());
         }
     }
 
