@@ -36,8 +36,8 @@ class HomeMain {
         clubMusic.informMembers(c3);
 
         clubMusic.createTicket(c1, m1, "1");
-        clubMusic.createTicket(c1, m2, "1");
-        clubMusic.createTicket(c3, m2, "3");
+        clubMusic.createTicket(c1, m2, "c201");
+        clubMusic.createTicket(c3, m2, "c212");
 
         System.out.println("\n" + m1.ticketsToString());
         System.out.println(m2.ticketsToString());

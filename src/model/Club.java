@@ -52,8 +52,9 @@ public class Club {
         this.concerts.add(c);
     }
 
-    public ArrayList<Concert> getConcert() {
-        return this.concerts;
+    public void removeConcert(Concert concert) {
+        this.concerts.remove(concert);
+        dispatchConcertAnnulation(concert);
     }
 
     /**
@@ -64,6 +65,15 @@ public class Club {
     private void dispatchInformation(Concert concert) {
         ConcertEvent event = new ConcertEvent(this, concert);
         this.manager.onMembersInformed(event, members);
+    }
+
+    /**
+     * Dispatches a concert annulation.
+     * @param concert The concert that got cancelled
+     */
+    private void dispatchConcertAnnulation(Concert concert) {
+        ConcertEvent event = new ConcertEvent(this, concert);
+        this.manager.onConcertAnnulation(event, members);
     }
 
     /**

@@ -9,6 +9,11 @@ public class AssistantClub implements ConcertListener {
             m.onNotifyNewConcert(event.getConcert());
         }
     }
+    public void onConcertAnnulation(ConcertEvent event, ArrayList<Member> members) {
+        for (Member m : members) {
+            m.onNotifyConcertAnnulation(event.getConcert());
+        }
+    }
 
     public void onReservation(ConcertEvent event, Member member) {
         // Tests if the member has a big enough threshold

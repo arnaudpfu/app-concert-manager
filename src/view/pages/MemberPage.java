@@ -116,25 +116,30 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         ticketsPanel.repaint();
     }
 
-    public void onNotifyNewConcert(Concert concert) {
-        notifications.add(concert.getName());
-        updateNotifications();
-        updateConcerts();
-    }
-
     /** Updates the notifications panel **/
     public void updateNotifications() {
         notificationsPanel.removeAll();
         if(notifications.isEmpty()) {
             notificationsPanel.add(new JLabel("Aucune notification"));
         }
-        for (String concertName: notifications) {
-            notificationsPanel.add(new DefaultLabel("Le concert " + concertName + " peut vous intéresser", true));
+        for (String message: notifications) {
+            notificationsPanel.add(new DefaultLabel(message, true));
         }
         notificationsPanel.repaint();
         notificationsPanel.revalidate();
     }
 
+    /** Removes a concert from the notifications panel (likely due to a concert annulation) **/
+    public void removeNotification(String notification) {
+        notifications.remove(notification);
+        updateNotifications();
+    }
+
+    /** Adds a message notifications panel **/
+    public void addNotification(String notification) {
+        notifications.add(notification);
+        updateNotifications();
+    }
     /** Updates the concerts panel **/
     public void updateConcerts() {
         newConcertsPanel.removeAll();
@@ -149,6 +154,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         }
         newConcertsPanel.repaint();
         newConcertsPanel.revalidate();
+        revalidate();
     }
     @Override
     public void actionPerformed(ActionEvent event) {

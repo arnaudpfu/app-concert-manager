@@ -3,6 +3,7 @@ package model;
 import view.pages.MemberPage;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class Member {
     private String name;
@@ -19,7 +20,33 @@ public class Member {
 
     public void onNotifyNewConcert(Concert concert) {
         if(canReserve(concert)) System.out.println(getName() + " est intéressé par " + concert.getName());
-        if(window != null) window.onNotifyNewConcert(concert);
+        if(window != null) {
+            window.addNotification("Le concert " + concert.getName() + " peut vous intéresser");
+            window.updateConcerts();
+        }
+    }
+
+    public void onNotifyConcertAnnulation(Concert concert) {
+        // Getting all tickets to delete
+        ArrayList<Ticket> ticketsToDelete = tickets.stream()
+                .filter(ticket -> ticket.getConcert() == concert)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        // Deleting tickets
+        for (Ticket ticket : ticketsToDelete) {
+            tickets.remove(ticket);
+        }
+
+        // Notifying the MemberPage window
+        if(window != null) {
+            window.removeNotification("Le concert " + concert.getName() + " peut vous intéresser");
+            window.updateConcerts();
+        }
+        if(window != null && !ticketsToDelete.isEmpty()) {
+            window.addNotification("Le concert " + concert.getName() + " a été annulé, vous avez perdu " + ticketsToDelete.size() + " tickets :(");
+            window.updateTickets();
+        }
+
     }
     public boolean canReserve(Concert concert) {
         return this.getPriceThreshold() >= concert.getTicketPrice();
