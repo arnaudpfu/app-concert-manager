@@ -10,13 +10,13 @@ import model.Room;
 import view.pages.HomePage;
 import view.pages.InterfaceApp;
 
-class App {
+class HomeMain {
     public static void main(String[] args) {
         Room c201 = new Room("c201", 200);
         Room c205 = new Room("c205", 180);
         Room c212 = new Room("c212", 130);
 
-        ClubManager clubManager = new ClubManager(new ArrayList<Room>(Arrays.asList(c201, c205, c212)));
+        ClubManager clubManager = new ClubManager(new ArrayList<>(Arrays.asList(c201, c205, c212)));
 
         Member m1 = new Member("Jean", 10);
         Member m2 = new Member("Paul", 100);
@@ -28,7 +28,7 @@ class App {
 
         // Club clubMusic = new Club("Les métalleux", clubManager, new
         // ArrayList<Member>(Arrays.asList(m1, m2, m3)));
-        Club clubMusic = new Club("azer", clubManager, new ArrayList<Member>(Arrays.asList(m1, m2, m3)));
+        Club clubMusic = new Club("azer", clubManager, new ArrayList<>(Arrays.asList(m1, m2, m3)));
 
         clubMusic.addConcert(c1);
         clubMusic.informMembers(c1);
