@@ -7,6 +7,7 @@ import model.ClubManager;
 import model.Concert;
 import model.Member;
 import model.Room;
+import model.exceptions.FullRoomException;
 import view.pages.HomePage;
 import view.pages.InterfaceApp;
 
@@ -31,19 +32,21 @@ class HomeMain {
         Club clubMusic = new Club("azer", clubManager, new ArrayList<>(Arrays.asList(m1, m2, m3)));
 
         clubMusic.addConcert(c1);
+        clubMusic.addConcert(c2);
         clubMusic.addConcert(c3);
 
-        clubMusic.createTicket(c1, m1, "1");
-        clubMusic.createTicket(c1, m2, "c201");
-        clubMusic.createTicket(c3, m2, "c212");
+        try {
+            clubManager.attemptReservation(m1, c1);
+            clubManager.attemptReservation(m2, c1);
+            clubManager.attemptReservation(m2, c3);
+            clubManager.attemptReservation(m1, c2);
+            clubManager.attemptReservation(m2, c2);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
 
         System.out.println("\n" + m1.ticketsToString());
         System.out.println(m2.ticketsToString());
-
-        // try to trigger exception
-        clubMusic.addConcert(c2);
-        clubMusic.createTicket(c2, m1, "2");
-        clubMusic.createTicket(c2, m2, "2");
 
         InterfaceApp window = new HomePage(clubManager);
         window.setVisible(true);

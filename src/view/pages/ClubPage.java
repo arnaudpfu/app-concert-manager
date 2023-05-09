@@ -6,6 +6,7 @@ import model.Club;
 import model.ClubManager;
 import model.Concert;
 import model.Room;
+import model.exceptions.FullRoomException;
 import view.components.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +24,7 @@ public class ClubPage extends InterfaceApp implements ActionListener {
     public ClubPage(ClubManager clubManager, Club club) {
         super("Club Page", clubManager);
         this.club = club;
+        this.clubManager = clubManager;
 
         JPanel panel = new MainPanel();
 
@@ -107,31 +109,41 @@ public class ClubPage extends InterfaceApp implements ActionListener {
             new HomePage(clubManager);
             dispose();
         }
-        // Validation button for creating a new concert
+        // Concert creation
         if(src == validationButton) {
-            String newMemberName = nameField.getText();
+            String concertName = nameField.getText();
             Room room = (Room) roomComboBox.getSelectedItem();
 
+            // Validate inputs
             String error_message = "";
-            double newMemberPrice = 0;
-            if(priceField.getText().isEmpty())  error_message += "Veuillez préciser un prix seuil\n";
+            double concertPrice = 0;
+            if(priceField.getText().isEmpty())  error_message += "Veuillez préciser un prix de concert\n";
             else {
                 try {
-                    newMemberPrice = Double.parseDouble(priceField.getText());
+                    concertPrice = Double.parseDouble(priceField.getText());
                 } catch (Exception e) {
-                    error_message += "Le prix seuil doit être un nombre\n";
+                    error_message += "Le prix doit être un nombre\n";
                 }
             }
-            if(newMemberName.isEmpty()) error_message += "Veuillez préciser un nom";
+            if(concertName.isEmpty()) error_message += "Veuillez préciser un nom de concert";
 
+            // Display errors
             if(!error_message.isEmpty()) {
                 showErrorMessage(error_message);
                 return;
             }
 
-            Concert concert = new Concert(newMemberName, room, newMemberPrice);
+            //
+            try {
+              clubManager.getRoomManager().attemptRoomReservation(room, club);
+            } catch (FullRoomException ex) {
+                showErrorMessage("La salle " + room.getName() + " est déjà réservé par un club");
+                return;
+            }
+
+            Concert concert = new Concert(concertName, room, concertPrice);
             club.addConcert(concert);
-            refreshPage();
+            updateConcerts();
         }
     }
 }

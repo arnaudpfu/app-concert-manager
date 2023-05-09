@@ -62,7 +62,6 @@ public class ClubManager {
         member.addTicket(new Ticket(concert));
         concert.getRoom().decrementFreePlaces();
     }
-
     public ArrayList<Concert> getConcerts() {
         ArrayList<Concert> concerts = new ArrayList<>();
         for (Club club: getClubs()) {

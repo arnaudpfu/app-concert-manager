@@ -1,5 +1,7 @@
 package model;
 
+import model.exceptions.FullRoomException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -41,14 +43,11 @@ public class RoomManager {
      * @param room Room to reserve.
      * @param club Club that wants to reserve the room.
      * 
-     * @throws RuntimeException if the room is already reserved.
+     * @throws FullRoomException if the room is already reserved.
      */
-    public void reserveRoom(Room room, Club club) throws RuntimeException {
-        if (this.roomIsFree(room)) {
-            this.rooms.put(room, club);
-        }
-
-        throw new RuntimeException("Room " + room.getName() + " is already reserved by " + club.getName());
+    public void attemptRoomReservation(Room room, Club club) throws FullRoomException {
+        if (!this.roomIsFree(room)) throw new FullRoomException(room);
+        this.rooms.put(room, club);
     }
 
     /**
