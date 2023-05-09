@@ -12,10 +12,6 @@ public class ClubManager {
         this.clubs = clubs;
     }
 
-    public ClubManager() {
-        this(new ArrayList<>(), new ArrayList<>());
-    }
-
     public ClubManager(ArrayList<Room> rooms) {
         this(rooms, new ArrayList<>());
     }
@@ -62,6 +58,8 @@ public class ClubManager {
         // Add new ticket
         member.addTicket(new Ticket(concert));
         concert.getRoom().decrementFreePlaces();
+
+        roomManager.notifyReservationChange();
     }
 
     public void attemptNewConcert(Club club, Room room, String concertName, double concertPrice) throws FullRoomException {
@@ -75,9 +73,10 @@ public class ClubManager {
         club.removeConcert(concert);
     }
 
-    public void attempRemoveReservation(Member currentMember, Ticket ticket) {
+    public void attemptRemoveReservation(Member member, Ticket ticket) {
         ticket.getConcert().getRoom().incrementFreePlaces();
-        currentMember.removeTicket(ticket);
+        roomManager.notifyReservationChange();
+        member.removeTicket(ticket);
     }
     public ArrayList<Concert> getConcerts() {
         ArrayList<Concert> concerts = new ArrayList<>();
@@ -86,7 +85,5 @@ public class ClubManager {
         }
         return concerts;
     }
-    public void addClub(Club club) {
-        this.clubs.add(club);
-    }
+    public void addClub(Club club) { this.clubs.add(club); }
 }

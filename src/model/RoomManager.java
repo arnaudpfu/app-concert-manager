@@ -1,6 +1,7 @@
 package model;
 
 import model.exceptions.FullRoomException;
+import view.pages.RoomManagerPage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,12 +10,8 @@ import java.util.HashMap;
  * Knows which room is reserved by which club.
  */
 public class RoomManager {
+    private RoomManagerPage window = null;
     private HashMap<Room, Club> rooms;
-
-    public RoomManager() {
-        this.rooms = new HashMap<>();
-    }
-
     public RoomManager(ArrayList<Room> rooms) {
         this.rooms = new HashMap<>();
         for (Room room : rooms) {
@@ -59,4 +56,8 @@ public class RoomManager {
         this.rooms.put(room, null);
     }
 
+    public void notifyReservationChange() {
+        if(window != null) {window.updateRooms(); }
+    }
+    public void setWindow(RoomManagerPage _window) { window = _window;}
 }

@@ -3,7 +3,7 @@ import model.Concert;
 import javax.swing.*;
 
 public class ConcertLine extends JPanel {
-    private JButton cancelButton = new JButton("Annuler");
+    private JButton cancelButton = new SecondaryButton("Annuler");
     private Concert concert;
 
     /**
@@ -13,12 +13,12 @@ public class ConcertLine extends JPanel {
     public ConcertLine(Concert _concert) {
         this.concert = _concert;
 
-        add(new Typography(concert.getName(), 3));
-        add(new Typography(
+        add(new DefaultLabel(concert.getName()));
+        add(new DefaultLabel(
                 concert.getNbMaxPlaces() - concert.getNbFreePlaces() + "/"
-                        + concert.getNbMaxPlaces(),
-                3));
-        add(new Typography(concert.getTicketPrice() + "€", 3));
+                        + concert.getNbMaxPlaces()));
+        add(new DefaultLabel(concert.getTicketPrice() + "€"));
+        setOpaque(false);
         add(cancelButton);
     }
 

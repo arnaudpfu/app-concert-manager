@@ -2,27 +2,23 @@ package view.pages;
 
 import javax.swing.*;
 
-import model.Club;
-import model.ClubManager;
-import model.Member;
-import model.Room;
+import model.*;
 import view.components.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class RoomManagerPage extends InterfaceApp implements ActionListener {
     private JPanel panel;
     private BackButtonPanel backButtonPanel = new BackButtonPanel("< Retour à l'accueil");
-
+    private JPanel roomsPanel = new JPanel();
     private JPanel clubsPanel = new JPanel();
-
     public RoomManagerPage(ClubManager clubManager) {
         super("Room Manager Page", clubManager);
+        clubManager.getRoomManager().setWindow(this);
 
         panel = new MainPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -44,7 +40,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        add(scrollPane);
+        setContentPane(scrollPane);
 
     }
 
@@ -77,7 +73,6 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         JTextField clubField = new DefaultTextField();
         clubAddLine.add(clubField);
         JButton addButton = new PrimaryButton("Ajouter");
-        // TODO : Delegate to a controller
         addButton.addActionListener(e -> {
             String newClubName = clubField.getText().toLowerCase();
             if (newClubName.isEmpty()) {
@@ -151,16 +146,17 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
     private JPanel createRoomLine(Room room, Club club) {
         JPanel memberLine = new JPanel();
         memberLine.setLayout(new BoxLayout(memberLine, BoxLayout.X_AXIS));
+//        memberLine.setAlignmentX(LEFT_ALIGNMENT);
         memberLine.setOpaque(false);
 
         memberLine.add(new DefaultLabel(room.getName()));
-
         memberLine.add(Box.createRigidArea(new Dimension(100, 20)));
 
-        if(club == null){
-            memberLine.add(new DefaultLabel(club == null ? "Innocupé" : "Salle occupé par le club " + club.getName()));
-        }else{
-            memberLine.add(new DefaultLabel("    " + room.getNbFreePlaces() + " / " + room.getNbMaxPlaces()));
+        memberLine.add(new DefaultLabel(club == null ? "Innocupé" : "Salle occupé par le club " + club.getName()));
+
+        if(club != null){
+            memberLine.add(Box.createRigidArea(new Dimension(100, 20)));
+            memberLine.add(new DefaultLabel(room.getPlacesRatio()));
         }
 
         return memberLine;
@@ -169,27 +165,26 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
     private void addRoomSection(JPanel panel) {
         panel.add(new TitleLabel("Salles"));
         this.addSpacer(panel);
-
         BoxRadius section = new BoxRadius(new Color(229, 229, 229));
 
-        HashMap<Room, Club> rooms = clubManager.getRoomManager().getRooms();
-        JPanel roomsContainer = new JPanel();
-        roomsContainer.setOpaque(false);
-        roomsContainer.setLayout(new BoxLayout(roomsContainer, BoxLayout.Y_AXIS));
-        roomsContainer.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
-
-        for (Map.Entry<Room, Club> set : rooms.entrySet()) {
-            Room room = set.getKey();
-            Club club = set.getValue();
-
-            roomsContainer.add(this.createRoomLine(room, club));
-        }
-
-        section.add(roomsContainer);
-
+        roomsPanel.setOpaque(false);
+        roomsPanel.setLayout(new BoxLayout(roomsPanel, BoxLayout.Y_AXIS));
+        roomsPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
+        updateRooms();
+        section.add(roomsPanel);
         panel.add(section);
     }
 
+    public void updateRooms() {
+        roomsPanel.removeAll();
+        for (Map.Entry<Room, Club> set : clubManager.getRoomManager().getRooms().entrySet()) {
+            Room room = set.getKey();
+            Club club = set.getValue();
+            roomsPanel.add(this.createRoomLine(room, club));
+        }
+        roomsPanel.repaint();
+        roomsPanel.revalidate();
+    }
     @Override
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == backButtonPanel.getBackButton()) {

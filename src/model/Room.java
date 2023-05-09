@@ -14,12 +14,6 @@ public class Room {
         this.nbFreePlaces = nbMaxPlaces;
     }
 
-    public Room(String name, int nbMaxPlaces, int nbFreePlaces) {
-        this.name = name;
-        this.nbMaxPlaces = nbMaxPlaces;
-        this.nbFreePlaces = nbFreePlaces;
-    }
-
     public void decrementFreePlaces() {
         this.nbFreePlaces -= 1;
     }
@@ -40,6 +34,8 @@ public class Room {
     public int getNbFreePlaces() {
         return nbFreePlaces;
     }
+
+    public String getPlacesRatio() { return (nbMaxPlaces - nbFreePlaces) + " / " + nbMaxPlaces; }
 
     public String toString() {
         return this.getName();
