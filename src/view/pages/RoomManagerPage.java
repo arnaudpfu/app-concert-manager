@@ -20,6 +20,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
     private BackButtonPanel backButtonPanel = new BackButtonPanel("< Retour à l'accueil");
 
     private JPanel clubsPanel = new JPanel();
+
     public RoomManagerPage(ClubManager clubManager) {
         super("Room Manager Page", clubManager);
 
@@ -46,6 +47,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         add(scrollPane);
 
     }
+
     public void addClubsPanel() {
         BoxRadius section = new BoxRadius(new Color(229, 229, 229));
         clubsPanel.setOpaque(false);
@@ -78,7 +80,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         // TODO : Delegate to a controller
         addButton.addActionListener(e -> {
             String newClubName = clubField.getText().toLowerCase();
-            if(newClubName.isEmpty()) {
+            if (newClubName.isEmpty()) {
                 showErrorMessage("Veuillez renseigner le nom du club.");
                 return;
             }
@@ -124,13 +126,13 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
 
             // Validate inputs
             String errorMessage = "";
-            if(newMemberName.isEmpty()) {
+            if (newMemberName.isEmpty()) {
                 errorMessage += "Veuillez renseigner le nom du membre.\n";
             }
             if (newMemberPrice.isEmpty()) {
                 errorMessage += "Veuillez renseigner le seuil de prix du membre.";
             }
-            if(!errorMessage.isEmpty()) {
+            if (!errorMessage.isEmpty()) {
                 showErrorMessage(errorMessage);
                 return;
             }
@@ -155,7 +157,11 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
 
         memberLine.add(Box.createRigidArea(new Dimension(100, 20)));
 
-        memberLine.add(new DefaultLabel(club == null ? "Vide" : "Salle occupé par le club " + club.getName()));
+        if(club == null){
+            memberLine.add(new DefaultLabel(club == null ? "Innocupé" : "Salle occupé par le club " + club.getName()));
+        }else{
+            memberLine.add(new DefaultLabel("    " + room.getNbFreePlaces() + " / " + room.getNbMaxPlaces()));
+        }
 
         return memberLine;
     }
@@ -186,7 +192,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        if(event.getSource() == backButtonPanel.getBackButton()) {
+        if (event.getSource() == backButtonPanel.getBackButton()) {
             new HomePage(clubManager);
             dispose();
         }
