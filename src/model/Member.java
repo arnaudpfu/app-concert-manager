@@ -62,8 +62,13 @@ public class Member {
         return priceThreshold;
     }
 
-    public void addTicket(Ticket b) {
-        this.tickets.add(b);
+    public void addTicket(Ticket ticket) {
+        this.tickets.add(ticket);
+        if(window != null) {
+            window.addNotification("Votre ticket pour " + ticket.getConcert().getName() + " à été ajouté");
+            window.updateConcerts();
+            window.updateTickets();
+        }
     }
 
     public void removeTicket(Ticket b) {

@@ -18,9 +18,7 @@ public class Concert {
     }
 
     public void addReservation(Member m) throws FullRoomException {
-        if (this.getNbFreePlaces() <= 0) {
-            throw new FullRoomException();
-        }
+        if (this.getNbFreePlaces() <= 0) { throw new FullRoomException(this.getRoom()); }
         this.room.decrementFreePlaces();
         m.addTicket(new Ticket(this));
     }
@@ -34,6 +32,7 @@ public class Concert {
         return nom;
     }
 
+    public Room getRoom() { return this.room; }
     public String getRoomName() {
         return this.room.getName();
     }

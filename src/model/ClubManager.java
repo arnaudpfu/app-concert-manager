@@ -1,7 +1,6 @@
 package model;
 
-import model.exceptions.UnknownClubException;
-import model.exceptions.UnknownMemberException;
+import model.exceptions.*;
 
 import java.util.ArrayList;
 
@@ -49,6 +48,19 @@ public class ClubManager {
     public void addClubByName(String clubName) {
         Club club = new Club(clubName, this);
         this.clubs.add(club);
+    }
+
+    public void attemptReservation(Member member, Concert concert) throws FullConcertException, AlreadyBookedException {
+        // Test if member already booked
+        for (Ticket ticket : member.getTickets()) {
+            if(ticket.getConcert() == concert) throw new AlreadyBookedException(ticket, member);
+        }
+        // Test if concert is full
+        if(concert.getRoom().isFull()) throw new FullConcertException(concert);
+
+        // Add new ticket
+        member.addTicket(new Ticket(concert));
+        concert.getRoom().decrementFreePlaces();
     }
 
     public ArrayList<Concert> getConcerts() {

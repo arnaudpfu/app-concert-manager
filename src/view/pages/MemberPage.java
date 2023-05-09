@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import model.*;
+import model.exceptions.AlreadyBookedException;
+import model.exceptions.FullConcertException;
 import view.components.*;
 
 import java.awt.*;
@@ -69,6 +71,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
 
         ticketsPanel.setLayout(new BoxLayout(ticketsPanel, BoxLayout.Y_AXIS));
         newConcertsPanel.setLayout(new BoxLayout(newConcertsPanel, BoxLayout.Y_AXIS));
+        notificationsPanel.setLayout(new BoxLayout(notificationsPanel, BoxLayout.Y_AXIS));
 
         updateNotifications();
         updateTickets();
@@ -148,7 +151,17 @@ public class MemberPage extends InterfaceApp implements ActionListener {
                 JPanel concertPanel = new JPanel();
                 concertPanel.add(new JLabel(concert.getName()));
                 concertPanel.add(new JLabel(concert.getTicketPrice() + "€"));
-                concertPanel.add(new JButton("Réserver"));
+                JButton reserveButton = new SecondaryButton("Réserver");
+                reserveButton.addActionListener(e -> {
+                    try {
+                        clubManager.attemptReservation(currentMember, concert);
+                    } catch (FullConcertException ex) {
+                        showErrorMessage(ex.getMessage());
+                    } catch (AlreadyBookedException ex) {
+                        showErrorMessage("Vous avez déjà un ticket pour ce concert !");
+                    }
+                });
+                concertPanel.add(reserveButton);
                 newConcertsPanel.add(concertPanel);
             }
         }

@@ -111,7 +111,23 @@ public class ClubPage extends InterfaceApp implements ActionListener {
         if(src == validationButton) {
             String newMemberName = nameField.getText();
             Room room = (Room) roomComboBox.getSelectedItem();
-            double newMemberPrice = Double.parseDouble(priceField.getText());
+
+            String error_message = "";
+            double newMemberPrice = 0;
+            if(priceField.getText().isEmpty())  error_message += "Veuillez préciser un prix seuil\n";
+            else {
+                try {
+                    newMemberPrice = Double.parseDouble(priceField.getText());
+                } catch (Exception e) {
+                    error_message += "Le prix seuil doit être un nombre\n";
+                }
+            }
+            if(newMemberName.isEmpty()) error_message += "Veuillez préciser un nom";
+
+            if(!error_message.isEmpty()) {
+                showErrorMessage(error_message);
+                return;
+            }
 
             Concert concert = new Concert(newMemberName, room, newMemberPrice);
             club.addConcert(concert);

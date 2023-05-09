@@ -1,8 +1,11 @@
 package model.exceptions;
+
+import model.Room;
+
 public class FullRoomException extends Exception {
 
-    public FullRoomException() {
-        super("La salle est pleine !");
+    public FullRoomException(Room room) {
+        super("La salle " + room.getName() + " est pleine !");
     }
 
 }
