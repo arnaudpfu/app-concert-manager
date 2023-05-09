@@ -58,7 +58,6 @@ public class ClubManager {
         // Add new ticket
         member.addTicket(new Ticket(concert));
         concert.getRoom().decrementFreePlaces();
-
         roomManager.notifyReservationChange();
     }
 
@@ -66,17 +65,19 @@ public class ClubManager {
         getRoomManager().attemptRoomReservation(room, club);
         Concert concert = new Concert(concertName, room, concertPrice);
         club.addConcert(concert);
+        roomManager.notifyReservationChange();
     }
 
     public void attemptRemoveConcert(Club club, Concert concert) {
         getRoomManager().freeRoom(concert.getRoom());
         club.removeConcert(concert);
+        roomManager.notifyReservationChange();
     }
 
     public void attemptRemoveReservation(Member member, Ticket ticket) {
         ticket.getConcert().getRoom().incrementFreePlaces();
-        roomManager.notifyReservationChange();
         member.removeTicket(ticket);
+        roomManager.notifyReservationChange();
     }
     public ArrayList<Concert> getConcerts() {
         ArrayList<Concert> concerts = new ArrayList<>();

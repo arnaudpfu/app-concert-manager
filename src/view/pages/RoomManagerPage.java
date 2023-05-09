@@ -113,7 +113,6 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         JTextField priceField = new DefaultTextField();
         memberAddLine.add(priceField);
 
-        // TODO : Delegate to a controller
         JButton addMemberButton = new PrimaryButton("Ajouter");
         addMemberButton.addActionListener(e -> {
             String newMemberName = memberField.getText().toLowerCase();

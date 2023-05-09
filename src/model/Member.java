@@ -88,7 +88,7 @@ public class Member {
         return concerts;
     }
 
-    public boolean hasReserved(Concert concert) {
+    public boolean hasBooked(Concert concert) {
         return getReservedConcerts().contains(concert);
     }
     public String ticketsToString() {
@@ -99,6 +99,5 @@ public class Member {
         return s;
     }
 
-    public MemberPage getWindow() { return window; }
     public void setWindow(MemberPage _window) { window = _window;}
 }

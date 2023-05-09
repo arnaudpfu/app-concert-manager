@@ -34,7 +34,6 @@ public class MemberPage extends InterfaceApp implements ActionListener {
     // --------- OTHERS --------- //
 
     private BackButtonPanel backButtonPanel;
-    private JButton refreshButton = new JButton("Refresh");
     private Member currentMember;
     private ArrayList<String> notifications = new ArrayList<>();
 
@@ -48,10 +47,6 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         backButtonPanel = new BackButtonPanel("< Déconnexion");
         backButtonPanel.getBackButton().addActionListener(this);
         mainPanel.add(backButtonPanel);
-
-        // TODO : Remove refresh button
-//        refreshButton.addActionListener(this);
-//        mainPanel.add(refreshButton);
 
         // Top panel (title and price threshold)
         topPanel.setForeground(new Color(187, 187, 187));
@@ -99,6 +94,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(50);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.add(scrollPane);
 
         this.setLocationRelativeTo(null);
@@ -155,10 +151,14 @@ public class MemberPage extends InterfaceApp implements ActionListener {
     }
     /** Updates the concerts panel **/
     public void updateConcerts() {
+        // Remove all concerts lines
         newConcertsPanel.removeAll();
-        for (Concert concert: clubManager.getConcerts()) {
-            if(currentMember.hasReserved(concert)) continue;
 
+        for (Concert concert: clubManager.getConcerts()) {
+            // If member hasn't booked yet
+            if(currentMember.hasBooked(concert)) continue;
+
+            // Add a concert line
             JPanel concertPanel = new JPanel();
             concertPanel.setOpaque(false);
             concertPanel.add(new DefaultLabel(concert.getName()));
@@ -184,11 +184,6 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         if(event.getSource() == backButtonPanel.getBackButton()) {
             new HomePage(clubManager);
             dispose();
-        }
-        if(event.getSource() == refreshButton) {
-            updateTickets();
-            updateConcerts();
-            updateNotifications();
         }
     }
 
