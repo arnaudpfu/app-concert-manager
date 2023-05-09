@@ -16,7 +16,6 @@ import java.util.ArrayList;
 public class MemberPage extends InterfaceApp implements ActionListener {
 
     // --------- PANELS --------- //
-    private JPanel mainPanel = new MainPanel();
     private JPanel topPanel = new JPanel(new GridLayout(1, 0));
     private JPanel contentPanelContainer = new JPanel(new GridLayout());
     private JPanel contentPanel = new JPanel(new GridLayout(0, 1));
@@ -33,7 +32,6 @@ public class MemberPage extends InterfaceApp implements ActionListener {
     private JLabel newConcertsTitle = new TitleLabel("Nouveaux concerts");
 
     // --------- OTHERS --------- //
-
     private BackButtonPanel backButtonPanel;
     private Member currentMember;
     private ArrayList<String> notifications = new ArrayList<>();
@@ -42,7 +40,6 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         super("Mon compte - " + member.getName(), clubManager);
         member.setWindow(this);
         this.currentMember = member;
-        setSize(new Dimension(1000, 800));
 
         // Back button
         backButtonPanel = new BackButtonPanel("< Déconnexion");
@@ -76,7 +73,6 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         updateTickets();
         updateConcerts();
 
-
         contentPanel.add(notificationsTitle);
         contentPanel.add(notificationsPanel);
         contentPanel.add(ticketsTitle);
@@ -91,14 +87,8 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         contentPanelContainer.add(contentPanel, cpcConstraints);
         mainPanel.add(contentPanelContainer);
 
-        // Making the main panel scrollable
-        JScrollPane scrollPane = new JScrollPane(mainPanel);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(50);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        this.add(scrollPane);
-
-        this.setLocationRelativeTo(null);
+        // Making the window scrollable
+        endFrameCreation();
     }
 
     /** Updates the tickets panel **/

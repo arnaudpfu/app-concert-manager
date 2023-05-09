@@ -6,41 +6,22 @@ import java.io.Serial;
 import javax.swing.*;
 
 import model.ClubManager;
+import view.components.MainPanel;
 
 abstract public class InterfaceApp extends JFrame {
-
-    /**
-     * Id pour la serialisation
-     */
     @Serial
     private static final long serialVersionUID = 1L;
-
-    /**
-     * Largeur de la fenêtre
-     */
     protected static final int WIDTH = 800;
-    /**
-     * Hauteur de la fenêtre
-     */
     protected static final int HEIGHT = 600;
-    /**
-     * Largeur intérieure de la fenêtre
-     */
     protected static final int INNER_WIDTH = 700;
-    /**
-     * Hauteur intérieure de la fenêtre
-     */
     protected static final int INNER_HEIGHT = 700;
-
-    /**
-     * ClubManager
-     */
     protected ClubManager clubManager;
-
     ImageIcon logo = new ImageIcon(".//src//images//logo.png");
+    protected JPanel mainPanel;
 
     public InterfaceApp(String title, ClubManager clubManager) {
         this.clubManager = clubManager;
+        this.mainPanel = new MainPanel();
 
         setTitle(title);
         setSize(WIDTH, HEIGHT);
@@ -51,11 +32,26 @@ abstract public class InterfaceApp extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Method that MUST be called by child classes when they finish adding component to the window
+     * For now, it only makes the window scrollable.
+     * (To make the window not scrollable, use setContentPane(mainPanel) instead).
+     */
+    protected void endFrameCreation() {
+        // Makes the mainPanel scrollable
+        JScrollPane scrollPanel = new JScrollPane(mainPanel);
+        scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPanel.getVerticalScrollBar().setUnitIncrement(50);
+        scrollPanel.getHorizontalScrollBar().setUnitIncrement(50);
+        setContentPane(scrollPanel);
+    }
+
     protected void addSpacer(JPanel panel) {
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
     }
 
-    public void showErrorMessage(String message) {
+    protected void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }

@@ -29,29 +29,23 @@ public class ClubPage extends InterfaceApp implements ActionListener {
         this.club = club;
         this.clubManager = clubManager;
 
-        JPanel panel = new MainPanel();
-
         // Back button
         backButtonPanel.getBackButton().addActionListener(this);
-        panel.add(backButtonPanel);
+        mainPanel.add(backButtonPanel);
 
         // Top panel (Name of the club and "Concerts" title)
-        panel.add(new TitleLabel("Club " + club.getName()));
-        panel.add(new TitleLabel("Concerts"));
+        mainPanel.add(new TitleLabel("Club " + club.getName()));
+        mainPanel.add(new TitleLabel("Concerts"));
 
         // Concerts list and concert creation form
         concertsPanel.setBackground(new Color(46,46,46));
         updateConcerts();
 
-        panel.add(concertsPanel);
-        panel.add(createConcertForm());
+        mainPanel.add(concertsPanel);
+        mainPanel.add(createConcertForm());
 
         // Making the window scrollable
-        JScrollPane scrollPane = new JScrollPane(panel);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(50);
-        setContentPane(scrollPane);
+        endFrameCreation();
     }
 
     private JPanel createConcertForm() {

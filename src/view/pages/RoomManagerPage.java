@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class RoomManagerPage extends InterfaceApp implements ActionListener {
-    private JPanel panel;
     private BackButtonPanel backButtonPanel = new BackButtonPanel("< Retour à l'accueil");
     private JPanel roomsPanel = new JPanel();
     private JPanel clubsPanel = new JPanel();
@@ -20,28 +19,23 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         super("Gestionnaire de salle(s)", clubManager);
         clubManager.getRoomManager().setWindow(this);
 
-        panel = new MainPanel();
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         backButtonPanel.getBackButton().addActionListener(this);
-        panel.add(backButtonPanel);
+        mainPanel.add(backButtonPanel);
 
         // Club managing panel
-        panel.add(new TitleLabel("Gestionnaire de club"));
+        mainPanel.add(new TitleLabel("Gestionnaire de club"));
         addClubsPanel();
 
         // Club creation panel
         addClubCreationPanel();
 
         // Room managing panel
-        addRoomSection(panel);
+        addRoomSection();
 
-        // Make window scrollable
-        JScrollPane scrollPane = new JScrollPane(panel);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        setContentPane(scrollPane);
-
+        // Making the window scrollable
+        endFrameCreation();
     }
 
     public void addClubsPanel() {
@@ -52,7 +46,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         updateClubsPanel();
         section.add(clubsPanel);
         updateClubsPanel();
-        panel.add(section);
+        mainPanel.add(section);
     }
 
     public void updateClubsPanel() {
@@ -66,7 +60,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
     }
 
     public void addClubCreationPanel() {
-        panel.add(new TitleLabel("Ajouter un Club"));
+        mainPanel.add(new TitleLabel("Ajouter un Club"));
         JPanel clubAddLine = new JPanel();
         clubAddLine.setOpaque(false);
         clubAddLine.setLayout(new BoxLayout(clubAddLine, BoxLayout.X_AXIS));
@@ -83,7 +77,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
             updateClubsPanel();
         });
         clubAddLine.add(addButton);
-        panel.add(clubAddLine);
+        mainPanel.add(clubAddLine);
     }
 
     private JPanel createMemberContainer(Club club) {
@@ -145,7 +139,6 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
     private JPanel createRoomLine(Room room, Club club) {
         JPanel memberLine = new JPanel();
         memberLine.setLayout(new BoxLayout(memberLine, BoxLayout.X_AXIS));
-//        memberLine.setAlignmentX(LEFT_ALIGNMENT);
         memberLine.setOpaque(false);
 
         memberLine.add(new DefaultLabel(room.getName()));
@@ -161,9 +154,9 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         return memberLine;
     }
 
-    private void addRoomSection(JPanel panel) {
-        panel.add(new TitleLabel("Salles"));
-        this.addSpacer(panel);
+    private void addRoomSection() {
+        mainPanel.add(new TitleLabel("Salles"));
+        this.addSpacer(mainPanel);
         BoxRadius section = new BoxRadius(new Color(229, 229, 229));
 
         roomsPanel.setOpaque(false);
@@ -171,7 +164,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         roomsPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
         updateRooms();
         section.add(roomsPanel);
-        panel.add(section);
+        mainPanel.add(section);
     }
 
     public void updateRooms() {
