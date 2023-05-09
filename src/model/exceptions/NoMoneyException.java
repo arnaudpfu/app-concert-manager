@@ -2,7 +2,6 @@ package model.exceptions;
 
 import model.Concert;
 import model.Member;
-import model.Ticket;
 
 public class NoMoneyException extends Exception {
     public NoMoneyException(Member member, Concert concert) {
