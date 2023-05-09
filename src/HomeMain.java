@@ -7,14 +7,14 @@ import java.util.Arrays;
 
 class HomeMain {
     public static void main(String[] args) {
-        Room c201 = new Room("c201", 200);
-        Room c205 = new Room("c205", 180);
-        Room c212 = new Room("c212", 130);
+        Room c201 = new Room("c201", 2);
+        Room c205 = new Room("c205", 2);
+        Room c212 = new Room("c212", 2);
 
         ClubManager clubManager = new ClubManager(new ArrayList<>(Arrays.asList(c201, c205, c212)));
 
         Member m1 = new Member("Jean", 10);
-        Member m2 = new Member("Paul", 100);
+        Member m2 = new Member("Paul", 90);
         Member m3 = new Member("Jacques", 30);
 
 

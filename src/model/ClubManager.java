@@ -42,11 +42,14 @@ public class ClubManager {
     }
 
     public void addClubByName(String clubName) {
-        Club club = new Club(clubName, this);
+        Club club = new Club(clubName);
         this.clubs.add(club);
     }
 
-    public void attemptReservation(Member member, Concert concert) throws FullConcertException, AlreadyBookedException {
+    public void attemptReservation(Member member, Concert concert) throws FullConcertException, AlreadyBookedException, NoMoneyException {
+        // Test if member can pay
+        if(!member.canReserve(concert)) throw new NoMoneyException(member, concert);
+
         // Test if member already booked
         for (Ticket ticket : member.getTickets()) {
             if(ticket.getConcert() == concert) throw new AlreadyBookedException(ticket, member);

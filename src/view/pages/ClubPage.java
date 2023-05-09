@@ -25,7 +25,7 @@ public class ClubPage extends InterfaceApp implements ActionListener {
 
     private BackButtonPanel backButtonPanel = new BackButtonPanel("< Retour à l'accueil");
     public ClubPage(ClubManager clubManager, Club club) {
-        super("Club Page", clubManager);
+        super("Mon club - " + club.getName(), clubManager);
         this.club = club;
         this.clubManager = clubManager;
 

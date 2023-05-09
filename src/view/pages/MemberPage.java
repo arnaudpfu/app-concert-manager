@@ -6,6 +6,7 @@ import javax.swing.border.EmptyBorder;
 import model.*;
 import model.exceptions.AlreadyBookedException;
 import model.exceptions.FullConcertException;
+import model.exceptions.NoMoneyException;
 import view.components.*;
 
 import java.awt.*;
@@ -38,7 +39,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
     private ArrayList<String> notifications = new ArrayList<>();
 
     public MemberPage(ClubManager clubManager, Member member) {
-        super("Concert - Mon compte", clubManager);
+        super("Mon compte - " + member.getName(), clubManager);
         member.setWindow(this);
         this.currentMember = member;
         setSize(new Dimension(1000, 800));
@@ -171,6 +172,8 @@ public class MemberPage extends InterfaceApp implements ActionListener {
                     showErrorMessage(ex.getMessage());
                 } catch (AlreadyBookedException ex) {
                     showErrorMessage("Vous avez déjà un ticket pour ce concert !");
+                } catch (NoMoneyException ex) {
+                    showErrorMessage("Vous n'avez pas un seuil suffisant pour réserver ce concert");
                 }
             });
             concertPanel.add(reserveButton);

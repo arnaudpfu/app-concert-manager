@@ -17,7 +17,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
     private JPanel roomsPanel = new JPanel();
     private JPanel clubsPanel = new JPanel();
     public RoomManagerPage(ClubManager clubManager) {
-        super("Room Manager Page", clubManager);
+        super("Gestionnaire de salle(s)", clubManager);
         clubManager.getRoomManager().setWindow(this);
 
         panel = new MainPanel();
