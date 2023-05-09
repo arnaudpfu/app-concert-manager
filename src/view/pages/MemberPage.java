@@ -111,7 +111,13 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         for (Ticket ticket : currentMember.getTickets()) {
             JPanel ticketPanel = new JPanel();
             ticketPanel.add(new JLabel(ticket.getConcert().getName()));
-            ticketPanel.add(new JButton("Annuler"));
+            JButton cancelButton = new SecondaryButton("Annuler");
+            cancelButton.addActionListener(e -> {
+                clubManager.attempRemoveReservation(currentMember, ticket);
+                updateTickets();
+                updateConcerts();
+            });
+            ticketPanel.add(cancelButton);
             ticketPanel.add(new JLabel("En cours"));
             ticketsPanel.add(ticketPanel);
             ticketsPanel.revalidate();

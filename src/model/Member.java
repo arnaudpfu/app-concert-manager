@@ -27,6 +27,7 @@ public class Member {
     }
 
     public void onNotifyConcertAnnulation(Concert concert) {
+        System.out.println(getName() + " apprends que  " + concert.getName() + " est annulé (il a " + getTickets().size() + " tickets)");
         // Getting all tickets to delete
         ArrayList<Ticket> ticketsToDelete = tickets.stream()
                 .filter(ticket -> ticket.getConcert() == concert)
@@ -46,7 +47,7 @@ public class Member {
             window.addNotification("Le concert " + concert.getName() + " a été annulé, vous avez perdu " + ticketsToDelete.size() + " tickets :(");
             window.updateTickets();
         }
-
+        System.out.println("Il a " + getTickets().size() + " tickets");
     }
     public boolean canReserve(Concert concert) {
         return this.getPriceThreshold() >= concert.getTicketPrice();

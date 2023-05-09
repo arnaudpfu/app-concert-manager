@@ -91,9 +91,13 @@ public class ClubPage extends InterfaceApp implements ActionListener {
 
         // Populating the concerts panel
         for (Concert concert : club.getConcerts()) {
-            ConcertLine concertLine = new ConcertLine(concert, club);
+            ConcertLine concertLine = new ConcertLine(concert);
+
             concertsPanel.add(concertLine);
-            concertLine.getCancelButton().addActionListener(e -> updateConcerts());
+            concertLine.getCancelButton().addActionListener(e -> {
+                clubManager.attemptRemoveConcert(club, concert);
+                updateConcerts();
+            });
         }
 
         // Applying changes to the window
@@ -109,6 +113,7 @@ public class ClubPage extends InterfaceApp implements ActionListener {
             new HomePage(clubManager);
             dispose();
         }
+
         // Concert creation
         if(src == validationButton) {
             String concertName = nameField.getText();
@@ -133,16 +138,13 @@ public class ClubPage extends InterfaceApp implements ActionListener {
                 return;
             }
 
-            //
+            // Attempt to create concert
             try {
-              clubManager.getRoomManager().attemptRoomReservation(room, club);
+                clubManager.attemptNewConcert(club, room, concertName, concertPrice);
             } catch (FullRoomException ex) {
                 showErrorMessage("La salle " + room.getName() + " est déjà réservé par un club");
                 return;
             }
-
-            Concert concert = new Concert(concertName, room, concertPrice);
-            club.addConcert(concert);
             updateConcerts();
         }
     }

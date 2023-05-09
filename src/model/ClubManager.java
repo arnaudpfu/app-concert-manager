@@ -55,12 +55,29 @@ public class ClubManager {
         for (Ticket ticket : member.getTickets()) {
             if(ticket.getConcert() == concert) throw new AlreadyBookedException(ticket, member);
         }
+
         // Test if concert is full
         if(concert.getRoom().isFull()) throw new FullConcertException(concert);
 
         // Add new ticket
         member.addTicket(new Ticket(concert));
         concert.getRoom().decrementFreePlaces();
+    }
+
+    public void attemptNewConcert(Club club, Room room, String concertName, double concertPrice) throws FullRoomException {
+        getRoomManager().attemptRoomReservation(room, club);
+        Concert concert = new Concert(concertName, room, concertPrice);
+        club.addConcert(concert);
+    }
+
+    public void attemptRemoveConcert(Club club, Concert concert) {
+        getRoomManager().freeRoom(concert.getRoom());
+        club.removeConcert(concert);
+    }
+
+    public void attempRemoveReservation(Member currentMember, Ticket ticket) {
+        ticket.getConcert().getRoom().incrementFreePlaces();
+        currentMember.removeTicket(ticket);
     }
     public ArrayList<Concert> getConcerts() {
         ArrayList<Concert> concerts = new ArrayList<>();
