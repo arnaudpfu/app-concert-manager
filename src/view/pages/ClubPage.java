@@ -1,8 +1,5 @@
 package view.pages;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
 import model.Club;
 import model.ClubManager;
 import model.Concert;
@@ -10,7 +7,7 @@ import model.Room;
 import model.exceptions.FullRoomException;
 import view.components.*;
 
-import java.awt.*;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
@@ -21,16 +18,16 @@ public class ClubPage extends InterfaceApp implements ActionListener {
     private JTextField nameInput = new DefaultTextField();
     private JComboBox<Room> roomComboBox;
     private JTextField priceInput = new DefaultTextField();
-    private JPanel concertsPanel = new JPanel();
+    private JPanel concertsPanel = new DefaultPanel();
 
-    private BackButtonPanel backButtonPanel = new BackButtonPanel("< Retour à l'accueil");
+    private BackButtonPanel backButtonPanel;
     public ClubPage(ClubManager clubManager, Club club) {
         super("Mon club - " + club.getName(), clubManager);
         this.club = club;
         this.clubManager = clubManager;
 
         // Back button
-        backButtonPanel.getBackButton().addActionListener(this);
+        backButtonPanel = new BackButtonPanel("< Retour à l'accueil", this);
         mainPanel.add(backButtonPanel);
 
         // Top panel (Name of the club and "Concerts" title)
@@ -38,7 +35,6 @@ public class ClubPage extends InterfaceApp implements ActionListener {
         mainPanel.add(new TitleLabel("Concerts"));
 
         // Concerts list and concert creation form
-        concertsPanel.setBackground(new Color(46,46,46));
         updateConcerts();
 
         mainPanel.add(concertsPanel);
@@ -49,15 +45,15 @@ public class ClubPage extends InterfaceApp implements ActionListener {
     }
 
     private JPanel createConcertForm() {
-        JPanel concertForm = new JPanel();
-        concertForm.setLayout(new BoxLayout(concertForm, BoxLayout.Y_AXIS));
-        concertForm.setBackground(new Color(46,46,46));
-        concertForm.setBorder(new EmptyBorder(30,30,30,30));
+        // Form container
+        JPanel concertForm = new DefaultPanel(30);
 
+        // Name field
         JPanel nameField = new DefaultInputField(new DefaultLabel("Nom"), nameInput);
         concertForm.add(nameField);
         concertForm.add(Box.createVerticalStrut(10));
 
+        // Room field (ComboBox)
         Set<Room> keySet = this.clubManager.getRoomManager().getRooms().keySet();
         Room[] rooms = keySet.toArray(new Room[keySet.size()]);
         roomComboBox = new JComboBox<>(rooms);
@@ -65,21 +61,23 @@ public class ClubPage extends InterfaceApp implements ActionListener {
         concertForm.add(roomField);
         concertForm.add(Box.createVerticalStrut(10));
 
+        // Price field
         JPanel priceField = new DefaultInputField(new DefaultLabel("Prix"), priceInput);
         concertForm.add(priceField);
         concertForm.add(Box.createVerticalStrut(10));
 
+        // Submit button
         validationButton.addActionListener(this);
         concertForm.add(validationButton);
 
         return concertForm;
     }
 
+    /**
+     * Updates the concerts shown in the concerts panel
+     */
     private void updateConcerts() {
         concertsPanel.removeAll();
-
-        // Creating concerts panel
-        concertsPanel.setLayout(new BoxLayout(concertsPanel, BoxLayout.Y_AXIS));
 
         // Populating the concerts panel
         for (Concert concert : club.getConcerts()) {

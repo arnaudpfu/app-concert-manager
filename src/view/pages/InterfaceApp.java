@@ -1,6 +1,5 @@
 package view.pages;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.Serial;
 
 import javax.swing.*;
@@ -33,7 +32,7 @@ abstract public class InterfaceApp extends JFrame {
     }
 
     /**
-     * Method that MUST be called by child classes when they finish adding component to the window
+     * Method that can be called by child classes when they finish adding component to the window
      * For now, it only makes the window scrollable.
      * (To make the window not scrollable, use setContentPane(mainPanel) instead).
      */

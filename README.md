@@ -5,6 +5,7 @@ Java application to handle concerts
 - Ajouter les dates !
 - Supprimer les modales (ça me stresse)
 - Club : Afficher le nombre de membres inscrits à un concert
+- Club : Afficher seulement les salles disponibles
 - Gestionnaire : Ajouter une salle / Supprimer une salle
 - Membre : Afficher message de confirmation quand prix concert > prix seuil
 

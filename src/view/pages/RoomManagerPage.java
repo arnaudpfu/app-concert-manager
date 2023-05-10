@@ -12,16 +12,14 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class RoomManagerPage extends InterfaceApp implements ActionListener {
-    private BackButtonPanel backButtonPanel = new BackButtonPanel("< Retour à l'accueil");
+    private BackButtonPanel backButtonPanel;
     private JPanel roomsPanel = new JPanel();
     private JPanel clubsPanel = new JPanel();
     public RoomManagerPage(ClubManager clubManager) {
         super("Gestionnaire de salle(s)", clubManager);
         clubManager.getRoomManager().setWindow(this);
 
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        backButtonPanel.getBackButton().addActionListener(this);
+        backButtonPanel = new BackButtonPanel("< Retour à l'accueil", this);
         mainPanel.add(backButtonPanel);
 
         // Club managing panel

@@ -1,7 +1,6 @@
 package view.pages;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 import model.*;
 import model.exceptions.AlreadyBookedException;
@@ -16,12 +15,7 @@ import java.util.ArrayList;
 public class MemberPage extends InterfaceApp implements ActionListener {
 
     // --------- PANELS --------- //
-    private JPanel topPanel = new JPanel(new GridLayout(1, 0));
-    private JPanel contentPanelContainer = new JPanel(new GridLayout());
-    private JPanel contentPanel = new JPanel(new GridLayout(0, 1));
-    private JPanel ticketsPanel = new JPanel();
-    private JPanel notificationsPanel = new JPanel();
-    private JPanel newConcertsPanel = new JPanel();
+    private JPanel topPanel, contentPanelContainer, contentPanel, ticketsPanel, notificationsPanel, newConcertsPanel;
 
     // --------- LABELS --------- //
 
@@ -42,32 +36,23 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         this.currentMember = member;
 
         // Back button
-        backButtonPanel = new BackButtonPanel("< Déconnexion");
-        backButtonPanel.getBackButton().addActionListener(this);
+        backButtonPanel = new BackButtonPanel("< Déconnexion", this);
         mainPanel.add(backButtonPanel);
 
-        // Top panel (title and price threshold)
-        topPanel.setForeground(new Color(187, 187, 187));
-        topPanel.setOpaque(false);
+        // Top panel
+        topPanel = new DefaultPanel(false);
         title.setText("Bienvenue, " + currentMember.getName() + " !");
         thresholdPriceLabel.setText("Prix seuil: " + currentMember.getPriceThreshold() + "€");
         topPanel.add(title);
-        topPanel.add(Box.createHorizontalStrut(0));
         topPanel.add(thresholdPriceLabel);
         mainPanel.add(topPanel);
 
         // Content panel (notifications, tickets and new concerts)
-        contentPanel.setBorder(new EmptyBorder(50, 50, 50, 50));
-        contentPanel.setBackground(new Color(46,46,46));
-        contentPanelContainer.setOpaque(false);
-        contentPanelContainer.setBackground(new Color(46,46,46));
-
-        ticketsPanel.setLayout(new BoxLayout(ticketsPanel, BoxLayout.Y_AXIS));
-        ticketsPanel.setBackground(new Color(41,41,41));
-        newConcertsPanel.setLayout(new BoxLayout(newConcertsPanel, BoxLayout.Y_AXIS));
-        newConcertsPanel.setBackground(new Color(41,41,41));
-        notificationsPanel.setLayout(new BoxLayout(notificationsPanel, BoxLayout.Y_AXIS));
-        notificationsPanel.setBackground(new Color(41,41,41));
+        contentPanel = new DefaultPanel(50);
+        contentPanelContainer = new DefaultPanel(false);
+        ticketsPanel = new DefaultPanel(41,41,41,10);
+        newConcertsPanel = new DefaultPanel(41,41,41,10);
+        notificationsPanel = new DefaultPanel(41,41,41,10);
 
         updateNotifications();
         updateTickets();
