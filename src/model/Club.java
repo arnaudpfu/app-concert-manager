@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 
 import model.exceptions.UnknownMemberException;
+import view.pages.ClubPage;
 
 /**
  * A club enables to manage members and concerts.
@@ -14,6 +15,7 @@ public class Club {
     private ArrayList<Member> members;
     private AssistantClub manager;
     private ArrayList<Concert> concerts;
+    private ClubPage window = null;
 
     public Club(String name) {
         this.name = name;
@@ -85,5 +87,14 @@ public class Club {
                 return member;
         }
         throw new UnknownMemberException(memberName);
+    }
+
+
+    public void setWindow(ClubPage _window) { window = _window;}
+
+    public void notifyReservationChange() {
+        if(window != null) {
+            window.updateConcerts();
+        }
     }
 }

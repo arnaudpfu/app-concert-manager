@@ -23,6 +23,7 @@ public class ClubPage extends InterfaceApp implements ActionListener {
     private BackButtonPanel backButtonPanel;
     public ClubPage(ClubManager clubManager, Club club) {
         super("Mon club - " + club.getName(), clubManager);
+        club.setWindow(this);
         this.club = club;
         this.clubManager = clubManager;
 
@@ -76,11 +77,12 @@ public class ClubPage extends InterfaceApp implements ActionListener {
     /**
      * Updates the concerts shown in the concerts panel
      */
-    private void updateConcerts() {
+    public void updateConcerts() {
         concertsPanel.removeAll();
 
         // Populating the concerts panel
         for (Concert concert : club.getConcerts()) {
+            System.out.println(concert);
             ConcertLine concertLine = new ConcertLine(concert);
 
             concertsPanel.add(concertLine);

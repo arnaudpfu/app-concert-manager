@@ -33,6 +33,13 @@ public class ClubManager {
         throw new UnknownMemberException(memberName);
     }
 
+    public Club getClubOf(Member member) {
+        for (Club club : getClubs()) {
+            if (club.getMembers().contains(member))
+                return club;
+        }
+        throw new UnknownMemberException(member.getName());
+    }
     public RoomManager getRoomManager() {
         return this.roomManager;
     }
@@ -61,27 +68,35 @@ public class ClubManager {
         // Add new ticket
         member.addTicket(new Ticket(concert));
         concert.getRoom().decrementFreePlaces();
+
+        // Notifying windows
+        getClubOf(member).notifyReservationChange();
         roomManager.notifyReservationChange();
+    }
+    public void attemptRemoveReservation(Member member, Ticket ticket) {
+        // Incrementing available places
+        ticket.getConcert().getRoom().incrementFreePlaces();
+
+        // Removing ticket
+        member.removeTicket(ticket);
+
+        // Notifying windows
+        roomManager.notifyReservationChange();
+        getClubOf(member).notifyReservationChange();
     }
 
     public void attemptNewConcert(Club club, Room room, String concertName, double concertPrice) throws FullRoomException {
-        getRoomManager().attemptRoomReservation(room, club);
-        Concert concert = new Concert(concertName, room, concertPrice);
-        club.addConcert(concert);
+        roomManager.attemptRoomReservation(room, club);
+        club.addConcert(new Concert(concertName, room, concertPrice));
         roomManager.notifyReservationChange();
     }
 
     public void attemptRemoveConcert(Club club, Concert concert) {
-        getRoomManager().freeRoom(concert.getRoom());
+        roomManager.freeRoom(concert.getRoom());
         club.removeConcert(concert);
         roomManager.notifyReservationChange();
     }
 
-    public void attemptRemoveReservation(Member member, Ticket ticket) {
-        ticket.getConcert().getRoom().incrementFreePlaces();
-        member.removeTicket(ticket);
-        roomManager.notifyReservationChange();
-    }
     public ArrayList<Concert> getConcerts() {
         ArrayList<Concert> concerts = new ArrayList<>();
         for (Club club: getClubs()) {

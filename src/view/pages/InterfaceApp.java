@@ -1,5 +1,4 @@
 package view.pages;
-import java.awt.*;
 import java.io.Serial;
 
 import javax.swing.*;
@@ -26,7 +25,6 @@ abstract public class InterfaceApp extends JFrame {
         setSize(WIDTH, HEIGHT);
         setIconImage(logo.getImage());
         setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
     }
@@ -44,10 +42,6 @@ abstract public class InterfaceApp extends JFrame {
         scrollPanel.getVerticalScrollBar().setUnitIncrement(50);
         scrollPanel.getHorizontalScrollBar().setUnitIncrement(50);
         setContentPane(scrollPanel);
-    }
-
-    protected void addSpacer(JPanel panel) {
-        panel.add(Box.createRigidArea(new Dimension(0, 20)));
     }
 
     protected void showErrorMessage(String message) {

@@ -154,7 +154,6 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
 
     private void addRoomSection() {
         mainPanel.add(new TitleLabel("Salles"));
-        this.addSpacer(mainPanel);
         BoxRadius section = new BoxRadius(new Color(229, 229, 229));
 
         roomsPanel.setOpaque(false);
