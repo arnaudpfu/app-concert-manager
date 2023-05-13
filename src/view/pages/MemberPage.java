@@ -41,7 +41,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
 
         // Top panel
         topPanel = new DefaultPanel(false);
-        title.setText("Bienvenue, " + currentMember.getName() + " !");
+        title.setText("Bienvenue, " + currentMember.getNameFormat() + " !");
         thresholdPriceLabel.setText("Prix seuil: " + currentMember.getPriceThreshold() + "€");
         topPanel.add(title);
         topPanel.add(thresholdPriceLabel);
@@ -138,6 +138,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
             JPanel concertPanel = new JPanel();
             concertPanel.setOpaque(false);
             concertPanel.add(new DefaultLabel(concert.getName()));
+            concertPanel.add(new DefaultLabel(concert.getDateFormat()));
             concertPanel.add(new DefaultLabel(concert.getTicketPrice() + "€"));
             JButton reserveButton = new PrimaryButton("Réserver");
             reserveButton.addActionListener(e -> {

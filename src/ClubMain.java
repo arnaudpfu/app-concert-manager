@@ -4,17 +4,19 @@ import view.pages.InterfaceApp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 class ClubMain {
     public static void main(String[] args) {
-        Room c201 = new Room("c201", 200);
-        Room c205 = new Room("c205", 180);
-        Room c212 = new Room("c212", 130);
+        Room c201 = new Room("c201", 2);
+        Room c205 = new Room("c205", 2);
+        Room c212 = new Room("c212", 2);
 
         ClubManager clubManager = new ClubManager(new ArrayList<>(Arrays.asList(c201, c205, c212)));
 
         Member m1 = new Member("Jean", 10);
-        Member m2 = new Member("Paul", 100);
+        Member m2 = new Member("Paul", 90);
         Member m3 = new Member("Jacques", 30);
 
 
@@ -22,11 +24,14 @@ class ClubMain {
 
         Concert c1, c2;
         try {
-            clubManager.getRoomManager().attemptRoomReservation(c201, clubMusic);
-            c1 = new Concert("Metallica", c201, 100);
+            Date c1_date = new Date(23, Calendar.FEBRUARY,1);
+            clubManager.getRoomManager().attemptRoomReservation(c201, c1_date);
+            c1 = new Concert("Metallica", c201, 100, c1_date);
             clubMusic.addConcert(c1);
-            clubManager.getRoomManager().attemptRoomReservation(c205, clubMusic);
-            c2 = new Concert("AC/DC", c205, 1);
+
+            Date c2_date = new Date(23, Calendar.FEBRUARY,2);
+            clubManager.getRoomManager().attemptRoomReservation(c205, c2_date);
+            c2 = new Concert("AC/DC", c205, 1, c2_date);
             clubMusic.addConcert(c2);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());

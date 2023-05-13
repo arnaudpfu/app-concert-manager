@@ -16,6 +16,7 @@ public class ConcertLine extends JPanel {
         add(new DefaultLabel(concert.getName()));
         add(new DefaultLabel(concert.getTicketPrice() + "€"));
         add(new DefaultLabel(concert.getRoom().getPlacesRatio()));
+        add(new DefaultLabel(concert.getDateFormat()));
         setOpaque(false);
         add(cancelButton);
     }

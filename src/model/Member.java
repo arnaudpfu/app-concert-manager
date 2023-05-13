@@ -47,7 +47,6 @@ public class Member {
             window.addNotification("Le concert " + concert.getName() + " a été annulé, vous avez perdu " + ticketsToDelete.size() + " tickets :(");
             window.updateTickets();
         }
-        System.out.println("Il a " + getTickets().size() + " tickets");
     }
     public boolean canReserve(Concert concert) {
         return this.getPriceThreshold() >= concert.getTicketPrice();
@@ -57,6 +56,11 @@ public class Member {
 
     public String getName() {
         return name;
+    }
+
+    public String getNameFormat() {
+        if (name == null || name.isEmpty()) return name;
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
     public double getPriceThreshold() {

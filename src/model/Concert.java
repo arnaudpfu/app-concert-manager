@@ -4,17 +4,20 @@ package model;
 
 import model.exceptions.FullRoomException;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Concert {
     public String nom;
     private Room room;
     private double ticketPrice;
-    // private LocalDate date;
+    private Date date;
 
-    public Concert(String nom, Room room, double ticketPrice) {
+    public Concert(String nom, Room room, double ticketPrice, Date date) {
         this.nom = nom;
         this.room = room;
         this.ticketPrice = ticketPrice;
-        // this.date = date;
+        this.date = date;
     }
 
     public void addReservation(Member m) throws FullRoomException {
@@ -31,20 +34,15 @@ public class Concert {
     public String getName() {
         return nom;
     }
-
     public Room getRoom() { return this.room; }
-    public String getRoomName() {
-        return this.room.getName();
-    }
-
+    public Date getDate() { return this.date; }
+    public String getDateFormat() { return new SimpleDateFormat("dd/MM/yyyy").format(date); }
     public int getNbMaxPlaces() {
         return this.room.getNbMaxPlaces();
     }
-
     public double getTicketPrice() {
         return ticketPrice;
     }
-
     public int getNbFreePlaces() {
         return this.room.getNbFreePlaces();
     }

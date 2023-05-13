@@ -10,12 +10,16 @@ import view.components.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 public class ClubPage extends InterfaceApp implements ActionListener {
     private Club club;
     private JButton validationButton = new PrimaryButton("Ajouter");
     private JTextField nameInput = new DefaultTextField();
+    private JTextField dateInput = new DefaultTextField();
     private JComboBox<Room> roomComboBox;
     private JTextField priceInput = new DefaultTextField();
     private JPanel concertsPanel = new DefaultPanel();
@@ -62,6 +66,11 @@ public class ClubPage extends InterfaceApp implements ActionListener {
         concertForm.add(roomField);
         concertForm.add(Box.createVerticalStrut(10));
 
+        // Date field
+        JPanel dateField = new DefaultInputField(new DefaultLabel("Date"), dateInput);
+        concertForm.add(dateField);
+        concertForm.add(Box.createVerticalStrut(10));
+
         // Price field
         JPanel priceField = new DefaultInputField(new DefaultLabel("Prix"), priceInput);
         concertForm.add(priceField);
@@ -74,9 +83,6 @@ public class ClubPage extends InterfaceApp implements ActionListener {
         return concertForm;
     }
 
-    /**
-     * Updates the concerts shown in the concerts panel
-     */
     public void updateConcerts() {
         concertsPanel.removeAll();
 
@@ -113,6 +119,8 @@ public class ClubPage extends InterfaceApp implements ActionListener {
 
             // Validate inputs
             String error_message = "";
+
+            // Validate concert price
             double concertPrice = 0;
             if(priceInput.getText().isEmpty())  error_message += "Veuillez préciser un prix de concert\n";
             else {
@@ -122,7 +130,19 @@ public class ClubPage extends InterfaceApp implements ActionListener {
                     error_message += "Le prix doit être un nombre\n";
                 }
             }
-            if(concertName.isEmpty()) error_message += "Veuillez préciser un nom de concert";
+
+            // Validate concert name
+            if(concertName.isEmpty()) error_message += "Veuillez préciser un nom de concert\n";
+
+            // Validate concert date
+            Date concertDate = null;
+            try {
+                // Parse dateInput string into Date
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                concertDate = formatter.parse(dateInput.getText());
+            } catch (ParseException e) {
+                error_message += "La date doit être valide, en format jj/mm/yyyy";
+            }
 
             // Display errors
             if(!error_message.isEmpty()) {
@@ -132,9 +152,9 @@ public class ClubPage extends InterfaceApp implements ActionListener {
 
             // Attempt to create concert
             try {
-                clubManager.attemptNewConcert(club, room, concertName, concertPrice);
+                clubManager.attemptNewConcert(club, room, concertName, concertPrice, concertDate);
             } catch (FullRoomException ex) {
-                showErrorMessage("La salle " + room.getName() + " est déjà réservé par un club");
+                showErrorMessage("La salle " + room.getName() + " est déjà réservé par un club ce jour là");
                 return;
             }
             updateConcerts();

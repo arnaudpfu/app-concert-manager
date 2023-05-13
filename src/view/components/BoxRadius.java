@@ -7,10 +7,6 @@ import java.awt.geom.RoundRectangle2D;
 public class BoxRadius extends JPanel {
     public Color color;
 
-    public BoxRadius() {
-        this(Color.BLACK);
-    }
-
     public BoxRadius(Color color) {
         this.color = color;
         this.setOpaque(false);
@@ -38,7 +34,5 @@ public class BoxRadius extends JPanel {
 
         // Draw the box with border
         g2.draw(border);
-        // g2.setColor(Color.WHITE);
-        // g2.fill(border);
     }
 }

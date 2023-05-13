@@ -4,6 +4,7 @@ import model.exceptions.FullRoomException;
 import view.pages.RoomManagerPage;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -11,40 +12,29 @@ import java.util.HashMap;
  */
 public class RoomManager {
     private RoomManagerPage window = null;
-    private HashMap<Room, Club> rooms;
+    private HashMap<Room, ArrayList<Date>> rooms;
     public RoomManager(ArrayList<Room> rooms) {
         this.rooms = new HashMap<>();
         for (Room room : rooms) {
-            this.rooms.put(room, null);
+            this.rooms.put(room, new ArrayList<>());
         }
     }
 
-    public HashMap<Room, Club> getRooms() {
+    public HashMap<Room, ArrayList<Date>> getRooms() {
         return this.rooms;
     }
 
     /**
-     * Check if a club can reserve a room.
-     *
-     * @param room Room of the room.
-     *
-     * @return True if the room is reservable, false otherwise.
-     */
-    private boolean roomIsFree(Room room) {
-        return this.rooms.get(room) == null;
-    }
-
-    /**
      * Reserve a room for a club.
-     * 
-     * @param room Room to reserve.
-     * @param club Club that wants to reserve the room.
-     * 
-     * @throws FullRoomException if the room is already reserved.
+     *
+     * @param room                Room to reserve.
+     * @param date                Date the concert takes place.
+     * @throws FullRoomException  If the room is already reserved.
      */
-    public void attemptRoomReservation(Room room, Club club) throws FullRoomException {
-        if (!this.roomIsFree(room)) throw new FullRoomException(room);
-        this.rooms.put(room, club);
+    public void attemptRoomReservation(Room room, Date date) throws FullRoomException {
+        // Check if room is already booked on the date
+        if (this.rooms.get(room).contains(date)) throw new FullRoomException(room, date);
+        this.rooms.get(room).add(date);
     }
 
     /**
@@ -52,12 +42,10 @@ public class RoomManager {
      * 
      * @param room Room to free.
      */
-    public void freeRoom(Room room) {
-        this.rooms.put(room, null);
-    }
+    public void freeRoom(Room room, Date date) { this.rooms.get(room).remove(date); }
 
     public void notifyReservationChange() {
-        if(window != null) {window.updateRooms(); }
+        if(window != null) { window.updateRooms(); }
     }
     public void setWindow(RoomManagerPage _window) { window = _window;}
 }

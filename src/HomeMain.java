@@ -4,6 +4,8 @@ import view.pages.InterfaceApp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 class HomeMain {
     public static void main(String[] args) {
@@ -22,11 +24,14 @@ class HomeMain {
 
         Concert c1, c2;
         try {
-            clubManager.getRoomManager().attemptRoomReservation(c201, clubMusic);
-            c1 = new Concert("Metallica", c201, 100);
+            Date c1_date = new Date(2023, Calendar.FEBRUARY,1);
+            clubManager.getRoomManager().attemptRoomReservation(c201, c1_date);
+            c1 = new Concert("Metallica", c201, 100, c1_date);
             clubMusic.addConcert(c1);
-            clubManager.getRoomManager().attemptRoomReservation(c205, clubMusic);
-            c2 = new Concert("AC/DC", c205, 1);
+
+            Date c2_date = new Date(2023, Calendar.FEBRUARY,2);
+            clubManager.getRoomManager().attemptRoomReservation(c205, c2_date);
+            c2 = new Concert("AC/DC", c205, 1, c2_date);
             clubMusic.addConcert(c2);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());

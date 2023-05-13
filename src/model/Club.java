@@ -93,8 +93,6 @@ public class Club {
     public void setWindow(ClubPage _window) { window = _window;}
 
     public void notifyReservationChange() {
-        if(window != null) {
-            window.updateConcerts();
-        }
+        if(window != null) { window.updateConcerts(); }
     }
 }

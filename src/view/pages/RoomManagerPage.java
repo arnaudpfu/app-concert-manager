@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 public class RoomManagerPage extends InterfaceApp implements ActionListener {
@@ -30,12 +31,36 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         addClubCreationPanel();
 
         // Room managing panel
-        addRoomSection();
+        addRoomsPanel();
 
         // Making the window scrollable
         endFrameCreation();
     }
 
+    /** Redraws the clubs panel with the new clubs data **/
+    public void updateClubsPanel() {
+        clubsPanel.removeAll();
+        for (Club club : clubManager.getClubs()) {
+            clubsPanel.add(new TitleLabel(club.getName()));
+            clubsPanel.add(this.createClubPanel(club));
+        }
+        clubsPanel.repaint();
+        clubsPanel.revalidate();
+    }
+
+    /** Redraws the rooms panel with the new rooms data **/
+    public void updateRooms() {
+        roomsPanel.removeAll();
+        for (Map.Entry<Room, ArrayList<Date>> set : clubManager.getRoomManager().getRooms().entrySet()) {
+            Room room = set.getKey();
+            ArrayList<Date> dates = set.getValue();
+            roomsPanel.add(new RoomLine(room, dates));
+        }
+        roomsPanel.repaint();
+        roomsPanel.revalidate();
+    }
+
+    /** Adds the clubs panel (list of clubs and it's members) on the page **/
     public void addClubsPanel() {
         BoxRadius section = new BoxRadius(new Color(229, 229, 229));
         clubsPanel.setOpaque(false);
@@ -47,16 +72,20 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         mainPanel.add(section);
     }
 
-    public void updateClubsPanel() {
-        clubsPanel.removeAll();
-        for (Club club : clubManager.getClubs()) {
-            clubsPanel.add(new TitleLabel(club.getName()));
-            clubsPanel.add(this.createMemberContainer(club));
-        }
-        clubsPanel.repaint();
-        clubsPanel.revalidate();
+    /** Adds the rooms panel (list of clubs and it's members) on the page **/
+    private void addRoomsPanel() {
+        mainPanel.add(new TitleLabel("Salles"));
+        BoxRadius section = new BoxRadius(new Color(229, 229, 229));
+
+        roomsPanel.setOpaque(false);
+        roomsPanel.setLayout(new BoxLayout(roomsPanel, BoxLayout.Y_AXIS));
+        roomsPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
+        updateRooms();
+        section.add(roomsPanel);
+        mainPanel.add(section);
     }
 
+    /** Adds the club creation form (club name + submit button)  on the page **/
     public void addClubCreationPanel() {
         mainPanel.add(new TitleLabel("Ajouter un Club"));
         JPanel clubAddLine = new JPanel();
@@ -78,7 +107,8 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         mainPanel.add(clubAddLine);
     }
 
-    private JPanel createMemberContainer(Club club) {
+    /** Returns a club panel (list of all members (name + threshold + remove button)) **/
+    private JPanel createClubPanel(Club club) {
         JPanel membersContainer = new JPanel();
         membersContainer.setOpaque(false);
         membersContainer.setLayout(new BoxLayout(membersContainer, BoxLayout.Y_AXIS));
@@ -134,46 +164,6 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         return membersContainer;
     }
 
-    private JPanel createRoomLine(Room room, Club club) {
-        JPanel memberLine = new JPanel();
-        memberLine.setLayout(new BoxLayout(memberLine, BoxLayout.X_AXIS));
-        memberLine.setOpaque(false);
-
-        memberLine.add(new DefaultLabel(room.getName()));
-        memberLine.add(Box.createRigidArea(new Dimension(100, 20)));
-
-        memberLine.add(new DefaultLabel(club == null ? "Innocupé" : "Salle occupé par le club " + club.getName()));
-
-        if(club != null){
-            memberLine.add(Box.createRigidArea(new Dimension(100, 20)));
-            memberLine.add(new DefaultLabel(room.getPlacesRatio()));
-        }
-
-        return memberLine;
-    }
-
-    private void addRoomSection() {
-        mainPanel.add(new TitleLabel("Salles"));
-        BoxRadius section = new BoxRadius(new Color(229, 229, 229));
-
-        roomsPanel.setOpaque(false);
-        roomsPanel.setLayout(new BoxLayout(roomsPanel, BoxLayout.Y_AXIS));
-        roomsPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
-        updateRooms();
-        section.add(roomsPanel);
-        mainPanel.add(section);
-    }
-
-    public void updateRooms() {
-        roomsPanel.removeAll();
-        for (Map.Entry<Room, Club> set : clubManager.getRoomManager().getRooms().entrySet()) {
-            Room room = set.getKey();
-            Club club = set.getValue();
-            roomsPanel.add(this.createRoomLine(room, club));
-        }
-        roomsPanel.repaint();
-        roomsPanel.revalidate();
-    }
     @Override
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == backButtonPanel.getBackButton()) {

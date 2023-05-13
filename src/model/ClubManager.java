@@ -3,6 +3,7 @@ package model;
 import model.exceptions.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ClubManager {
     private RoomManager roomManager;
@@ -85,14 +86,14 @@ public class ClubManager {
         getClubOf(member).notifyReservationChange();
     }
 
-    public void attemptNewConcert(Club club, Room room, String concertName, double concertPrice) throws FullRoomException {
-        roomManager.attemptRoomReservation(room, club);
-        club.addConcert(new Concert(concertName, room, concertPrice));
+    public void attemptNewConcert(Club club, Room room, String name, double price, Date date) throws FullRoomException {
+        roomManager.attemptRoomReservation(room, date);
+        club.addConcert(new Concert(name, room, price, date));
         roomManager.notifyReservationChange();
     }
 
     public void attemptRemoveConcert(Club club, Concert concert) {
-        roomManager.freeRoom(concert.getRoom());
+        roomManager.freeRoom(concert.getRoom(), concert.getDate());
         club.removeConcert(concert);
         roomManager.notifyReservationChange();
     }

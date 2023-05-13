@@ -12,7 +12,7 @@ public class MemberLine extends JPanel {
         this.member = _member;
         setOpaque(false);
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-        JLabel nameLabel = new DefaultLabel(member.getName());
+        JLabel nameLabel = new DefaultLabel(member.getNameFormat());
         nameLabel.setPreferredSize(new Dimension(100, -1));
         add(nameLabel);
         add(new DefaultLabel(member.getPriceThreshold() + " €"));

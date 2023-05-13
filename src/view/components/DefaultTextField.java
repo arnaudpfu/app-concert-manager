@@ -10,7 +10,6 @@ public class DefaultTextField extends JTextField {
         setBackground(new Color(46,46,46));
         setForeground(new Color(229,229,229));
         setCaretColor(new Color(229,229,229));
-        setHorizontalAlignment(LEFT);
         setMaximumSize(new Dimension(500, 100));
         setSelectionColor(new Color(187,134,252));
         setOpaque(false);
