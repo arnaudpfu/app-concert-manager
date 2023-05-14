@@ -1,6 +1,7 @@
 package model;
 
 import model.exceptions.FullRoomException;
+import model.exceptions.RoomAlreadyBookedException;
 import view.pages.RoomManagerPage;
 
 import java.util.ArrayList;
@@ -10,17 +11,14 @@ import java.util.HashMap;
 /**
  * Knows which room is reserved by which club.
  */
-public class RoomManager {
+public class RoomManager implements IConcertListener {
     private RoomManagerPage window = null;
-    private HashMap<Room, ArrayList<Date>> rooms;
+    private ArrayList<Room> rooms;
     public RoomManager(ArrayList<Room> rooms) {
-        this.rooms = new HashMap<>();
-        for (Room room : rooms) {
-            this.rooms.put(room, new ArrayList<>());
-        }
+        this.rooms = rooms;
     }
 
-    public HashMap<Room, ArrayList<Date>> getRooms() {
+    public ArrayList<Room> getRooms() {
         return this.rooms;
     }
 
@@ -31,10 +29,8 @@ public class RoomManager {
      * @param date                Date the concert takes place.
      * @throws FullRoomException  If the room is already reserved.
      */
-    public void attemptRoomReservation(Room room, Date date) throws FullRoomException {
-        // Check if room is already booked on the date
-        if (this.rooms.get(room).contains(date)) throw new FullRoomException(room, date);
-        this.rooms.get(room).add(date);
+    public void attemptRoomReservation(Room room, Date date) throws RoomAlreadyBookedException {
+        room.book(date);
     }
 
     /**
@@ -42,10 +38,17 @@ public class RoomManager {
      * 
      * @param room Room to free.
      */
-    public void freeRoom(Room room, Date date) { this.rooms.get(room).remove(date); }
+    public void freeRoom(Room room, Date date) { room.bookedDates.remove(date); }
 
-    public void notifyReservationChange() {
+    public void setWindow(RoomManagerPage _window) { window = _window; }
+
+    @Override
+    public void onNewConcert(ConcertEvent event) {
         if(window != null) { window.updateRooms(); }
     }
-    public void setWindow(RoomManagerPage _window) { window = _window;}
+
+    @Override
+    public void onConcertAnnulation(ConcertEvent event) {
+        if(window != null) { window.updateRooms(); }
+    }
 }

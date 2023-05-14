@@ -138,8 +138,13 @@ public class MemberPage extends InterfaceApp implements ActionListener {
             JPanel concertPanel = new JPanel();
             concertPanel.setOpaque(false);
             concertPanel.add(new DefaultLabel(concert.getName()));
+            concertPanel.add(Box.createRigidArea(new Dimension(50, 20)));
             concertPanel.add(new DefaultLabel(concert.getDateFormat()));
+            concertPanel.add(Box.createRigidArea(new Dimension(50, 20)));
+            concertPanel.add(new DefaultLabel("Salle " + concert.getRoom().getName()));
+            concertPanel.add(Box.createRigidArea(new Dimension(50, 20)));
             concertPanel.add(new DefaultLabel(concert.getTicketPrice() + "€"));
+            concertPanel.add(Box.createRigidArea(new Dimension(50, 20)));
             JButton reserveButton = new PrimaryButton("Réserver");
             reserveButton.addActionListener(e -> {
                 try {

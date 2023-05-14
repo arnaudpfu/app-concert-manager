@@ -5,6 +5,7 @@ import model.ClubManager;
 import model.Concert;
 import model.Room;
 import model.exceptions.FullRoomException;
+import model.exceptions.RoomAlreadyBookedException;
 import view.components.*;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
@@ -23,8 +25,8 @@ public class ClubPage extends InterfaceApp implements ActionListener {
     private JComboBox<Room> roomComboBox;
     private JTextField priceInput = new DefaultTextField();
     private JPanel concertsPanel = new DefaultPanel();
-
     private BackButtonPanel backButtonPanel;
+
     public ClubPage(ClubManager clubManager, Club club) {
         super("Mon club - " + club.getName(), clubManager);
         club.setWindow(this);
@@ -59,14 +61,14 @@ public class ClubPage extends InterfaceApp implements ActionListener {
         concertForm.add(Box.createVerticalStrut(10));
 
         // Room field (ComboBox)
-        Set<Room> keySet = this.clubManager.getRoomManager().getRooms().keySet();
-        Room[] rooms = keySet.toArray(new Room[keySet.size()]);
-        roomComboBox = new JComboBox<>(rooms);
+        ArrayList<Room> rooms = this.clubManager.getRoomManager().getRooms();
+        roomComboBox = new JComboBox<>(rooms.toArray(new Room[rooms.size()]));
         JPanel roomField = new DefaultInputField(new DefaultLabel("Salle"), roomComboBox);
         concertForm.add(roomField);
         concertForm.add(Box.createVerticalStrut(10));
 
         // Date field
+        dateInput.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
         JPanel dateField = new DefaultInputField(new DefaultLabel("Date"), dateInput);
         concertForm.add(dateField);
         concertForm.add(Box.createVerticalStrut(10));
@@ -134,6 +136,9 @@ public class ClubPage extends InterfaceApp implements ActionListener {
             // Validate concert name
             if(concertName.isEmpty()) error_message += "Veuillez préciser un nom de concert\n";
 
+            // Validate room choice
+            if(room == null) error_message += "Veuillez sélectionner une salle";
+
             // Validate concert date
             Date concertDate = null;
             try {
@@ -144,19 +149,24 @@ public class ClubPage extends InterfaceApp implements ActionListener {
                 error_message += "La date doit être valide, en format jj/mm/yyyy";
             }
 
-            // Display errors
+            // Displays errors and ends the method if there's any
             if(!error_message.isEmpty()) {
                 showErrorMessage(error_message);
                 return;
             }
 
-            // Attempt to create concert
+            // Attempts to create the concert (indirectly books the room on the given date)
+            Concert newConcert;
             try {
-                clubManager.attemptNewConcert(club, room, concertName, concertPrice, concertDate);
-            } catch (FullRoomException ex) {
-                showErrorMessage("La salle " + room.getName() + " est déjà réservé par un club ce jour là");
+                newConcert = new Concert(concertName, room, concertPrice, concertDate);
+            } catch (RoomAlreadyBookedException ex) {
+                showErrorMessage(ex.getMessage());
                 return;
             }
+
+            // Adds the new concert in the club concert's list
+            club.addConcert(newConcert);
+
             updateConcerts();
         }
     }

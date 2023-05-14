@@ -14,8 +14,9 @@ import java.util.Map;
 
 public class RoomManagerPage extends InterfaceApp implements ActionListener {
     private BackButtonPanel backButtonPanel;
-    private JPanel roomsPanel = new JPanel();
-    private JPanel clubsPanel = new JPanel();
+    private JPanel roomsPanel = new DefaultPanel();
+    private JPanel clubsPanel = new DefaultPanel();
+    private JLabel clubErrorsLabel = new DefaultErrorLabel();
     public RoomManagerPage(ClubManager clubManager) {
         super("Gestionnaire de salle(s)", clubManager);
         clubManager.getRoomManager().setWindow(this);
@@ -29,6 +30,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
 
         // Club creation panel
         addClubCreationPanel();
+        mainPanel.add(clubErrorsLabel);
 
         // Room managing panel
         addRoomsPanel();
@@ -51,10 +53,8 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
     /** Redraws the rooms panel with the new rooms data **/
     public void updateRooms() {
         roomsPanel.removeAll();
-        for (Map.Entry<Room, ArrayList<Date>> set : clubManager.getRoomManager().getRooms().entrySet()) {
-            Room room = set.getKey();
-            ArrayList<Date> dates = set.getValue();
-            roomsPanel.add(new RoomLine(room, dates));
+        for (Room room : clubManager.getRoomManager().getRooms()) {
+            roomsPanel.add(new RoomLine(room));
         }
         roomsPanel.repaint();
         roomsPanel.revalidate();
@@ -97,7 +97,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         addButton.addActionListener(e -> {
             String newClubName = clubField.getText().toLowerCase();
             if (newClubName.isEmpty()) {
-                showErrorMessage("Veuillez renseigner le nom du club.");
+                clubErrorsLabel.setText("Veuillez renseigner le nom du club");
                 return;
             }
             clubManager.addClubByName(newClubName);
@@ -136,6 +136,9 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         memberAddLine.add(priceField);
 
         JButton addMemberButton = new PrimaryButton("Ajouter");
+
+        JLabel errorMemberLabel = new DefaultErrorLabel();
+
         addMemberButton.addActionListener(e -> {
             String newMemberName = memberField.getText().toLowerCase();
             String newMemberPrice = priceField.getText().toLowerCase();
@@ -160,6 +163,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         memberAddLine.add(addMemberButton);
 
         membersContainer.add(memberAddLine);
+        membersContainer.add(errorMemberLabel);
 
         return membersContainer;
     }

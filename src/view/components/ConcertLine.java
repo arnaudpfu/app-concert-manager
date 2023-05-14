@@ -1,6 +1,7 @@
 package view.components;
 import model.Concert;
 import javax.swing.*;
+import java.awt.*;
 
 public class ConcertLine extends JPanel {
     private JButton cancelButton = new SecondaryButton("Annuler");
@@ -14,9 +15,15 @@ public class ConcertLine extends JPanel {
         this.concert = _concert;
 
         add(new DefaultLabel(concert.getName()));
+        add(Box.createRigidArea(new Dimension(50, 20)));
+        add(new DefaultLabel("Salle \"" + concert.getRoom().getName() + "\""));
+        add(Box.createRigidArea(new Dimension(50, 20)));
         add(new DefaultLabel(concert.getTicketPrice() + "€"));
-        add(new DefaultLabel(concert.getRoom().getPlacesRatio()));
+        add(Box.createRigidArea(new Dimension(50, 20)));
+        add(new DefaultLabel(concert.getPlacesRatio()));
+        add(Box.createRigidArea(new Dimension(50, 20)));
         add(new DefaultLabel(concert.getDateFormat()));
+        add(Box.createRigidArea(new Dimension(50, 20)));
         setOpaque(false);
         add(cancelButton);
     }

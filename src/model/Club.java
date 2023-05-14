@@ -10,27 +10,21 @@ import view.pages.ClubPage;
  * A club knows its manager, its members and its concerts.
  * It can also organize concerts.
  */
-public class Club {
+public class Club  {
     private String name;
     private ArrayList<Member> members;
-    private AssistantClub manager;
+    private ArrayList<IConcertListener> otherListeners;
     private ArrayList<Concert> concerts;
     private ClubPage window = null;
 
-    public Club(String name) {
-        this.name = name;
-        this.members = new ArrayList<>();
-        this.manager = new AssistantClub();
-        this.concerts = new ArrayList<>();
-    }
-
-    public Club(String name, ClubManager clubManager, ArrayList<Member> members) {
+    public Club(String name, ArrayList<Member> members) {
         this.name = name;
         this.members = members;
-        this.manager = new AssistantClub();
         this.concerts = new ArrayList<>();
-        clubManager.addClub(this);
+        this.otherListeners = new ArrayList<>();
     }
+
+    public Club(String name) { this(name, new ArrayList<>()); }
 
     public String getName() {
         return name;
@@ -44,40 +38,32 @@ public class Club {
         this.members.remove(member);
     }
 
+    public void addConcertListener(IConcertListener listener) { otherListeners.add(listener); }
+
+    /**
+     * Adds a concert to the club and dispatches it as a ConcertEvent.
+     *
+     * @param concert The new concert to dispatch.
+     */
     public void addConcert(Concert concert) {
         concerts.add(concert);
-        if (concerts.contains(concert)) {
-            dispatchInformation(concert);
-        }
-    }
-
-    public void removeConcert(Concert concert) {
-        this.concerts.remove(concert);
-        dispatchConcertAnnulation(concert);
-    }
-
-    /**
-     * Dispatches an event to warn members of a concert.
-     * 
-     * @param concert Concert to dispatch.
-     */
-    private void dispatchInformation(Concert concert) {
         ConcertEvent event = new ConcertEvent(this, concert);
-        this.manager.onMembersInformed(event, members);
+        for (IConcertListener listener : members ) { listener.onNewConcert(event); }
+        for (IConcertListener listener : otherListeners) { listener.onNewConcert(event); }
     }
 
     /**
-     * Dispatches a concert annulation.
+     * Removes a concert from the club and dispatches it as a ConcertEvent.
      * @param concert The concert that got cancelled
      */
-    private void dispatchConcertAnnulation(Concert concert) {
+    public void removeConcert(Concert concert) {
+        this.concerts.remove(concert);
         ConcertEvent event = new ConcertEvent(this, concert);
-        this.manager.onConcertAnnulation(event, members);
+        for (IConcertListener listener : members) { listener.onConcertAnnulation(event); }
+        for (IConcertListener listener : otherListeners) { listener.onConcertAnnulation(event); }
     }
 
-    public ArrayList<Member> getMembers() {
-        return this.members;
-    }
+    public ArrayList<Member> getMembers() { return this.members; }
 
     public ArrayList<Concert> getConcerts() { return this.concerts; }
 
@@ -88,7 +74,6 @@ public class Club {
         }
         throw new UnknownMemberException(memberName);
     }
-
 
     public void setWindow(ClubPage _window) { window = _window;}
 

@@ -5,7 +5,7 @@ import view.pages.MemberPage;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class Member {
+public class Member implements IConcertListener {
     private String name;
     private double priceThreshold;
     private ArrayList<Ticket> tickets;
@@ -18,36 +18,6 @@ public class Member {
         this.tickets = new ArrayList<>();
     }
 
-    public void onNotifyNewConcert(Concert concert) {
-        if(canReserve(concert)) System.out.println(getName() + " est intéressé par " + concert.getName());
-        if(window != null) {
-            window.addNotification("Le concert " + concert.getName() + " peut vous intéresser");
-            window.updateConcerts();
-        }
-    }
-
-    public void onNotifyConcertAnnulation(Concert concert) {
-        System.out.println(getName() + " apprends que  " + concert.getName() + " est annulé (il a " + getTickets().size() + " tickets)");
-        // Getting all tickets to delete
-        ArrayList<Ticket> ticketsToDelete = tickets.stream()
-                .filter(ticket -> ticket.getConcert() == concert)
-                .collect(Collectors.toCollection(ArrayList::new));
-
-        // Deleting tickets
-        for (Ticket ticket : ticketsToDelete) {
-            tickets.remove(ticket);
-        }
-
-        // Notifying the MemberPage window
-        if(window != null) {
-            window.removeNotification("Le concert " + concert.getName() + " peut vous intéresser");
-            window.updateConcerts();
-        }
-        if(window != null && !ticketsToDelete.isEmpty()) {
-            window.addNotification("Le concert " + concert.getName() + " a été annulé, vous avez perdu " + ticketsToDelete.size() + " tickets :(");
-            window.updateTickets();
-        }
-    }
     public boolean canReserve(Concert concert) {
         return this.getPriceThreshold() >= concert.getTicketPrice();
     }
@@ -104,4 +74,39 @@ public class Member {
     }
 
     public void setWindow(MemberPage _window) { window = _window;}
+
+    @Override
+    public void onNewConcert(ConcertEvent event) {
+        Concert concert = event.getConcert();
+        if(canReserve(concert)) System.out.println(getName() + " est intéressé par " + concert.getName());
+        if(window != null) {
+            window.addNotification("Le concert " + concert.getName() + " peut vous intéresser");
+            window.updateConcerts();
+        }
+    }
+
+    @Override
+    public void onConcertAnnulation(ConcertEvent event) {
+        Concert concert = event.getConcert();
+        System.out.println(getName() + " apprends que  " + concert.getName() + " est annulé (il a " + getTickets().size() + " tickets)");
+        // Getting all tickets to delete
+        ArrayList<Ticket> ticketsToDelete = tickets.stream()
+                .filter(ticket -> ticket.getConcert() == concert)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        // Deleting tickets
+        for (Ticket ticket : ticketsToDelete) {
+            tickets.remove(ticket);
+        }
+
+        // Notifying the MemberPage window
+        if(window != null) {
+            window.removeNotification("Le concert " + concert.getName() + " peut vous intéresser");
+            window.updateConcerts();
+        }
+        if(window != null && !ticketsToDelete.isEmpty()) {
+            window.addNotification("Le concert " + concert.getName() + " a été annulé, vous avez perdu " + ticketsToDelete.size() + " tickets :(");
+            window.updateTickets();
+        }
+    }
 }
