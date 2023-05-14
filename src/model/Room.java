@@ -1,10 +1,12 @@
 package model;
 
 import model.exceptions.RoomAlreadyBookedException;
+import model.exceptions.RoomNotBookedException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * A Room has a name and a capacity.
@@ -21,33 +23,49 @@ public class Room {
     }
 
     public void book(Date date) throws RoomAlreadyBookedException {
-        if(bookedDates.get(date) != null) throw new RoomAlreadyBookedException(this);
+        if(isBookedOn(date)) throw new RoomAlreadyBookedException(this);
         bookedDates.put(date,0);
     }
+
+    public void unbook(Date date) throws RoomNotBookedException {
+        if(!isBookedOn(date)) throw new RoomNotBookedException(this);
+        bookedDates.remove(date);
+    }
+
+    private boolean isBookedOn(Date date) { return bookedDates.get(date) != null; }
+
     public void decrementFreePlaces(Date date) {
-        Integer nbFreePlaces = bookedDates.get(date);
-        if(nbFreePlaces == null) {
+        if(!isBookedOn(date)) {
             throw new IllegalArgumentException("Il n'a pas de réservation pour la salle " + getName() + " le " + new SimpleDateFormat("dd/MM/yyyy").format(date));
         }
-        bookedDates.put(date, nbFreePlaces + 1);
+        bookedDates.put(date, bookedDates.get(date) + 1);
     }
 
     public void incrementFreePlaces(Date date) {
-        Integer nbFreePlaces = bookedDates.get(date);
-        if(nbFreePlaces == null) {
+        if(!isBookedOn(date)) {
             throw new IllegalArgumentException("Il n'a pas de réservation pour la salle " + getName() + " le " + new SimpleDateFormat("dd/MM/yyyy").format(date));
         }
-        bookedDates.put(date, nbFreePlaces - 1);
+        bookedDates.put(date, bookedDates.get(date) - 1);
     }
 
     public boolean isFull(Date date) {
-        Integer nbFreePlaces = bookedDates.get(date);
-        return nbFreePlaces != null && nbFreePlaces >= nbMaxPlaces;
+        if(!isBookedOn(date)) {
+            throw new IllegalArgumentException("Il n'a pas de réservation pour la salle " + getName() + " le " + new SimpleDateFormat("dd/MM/yyyy").format(date));
+        }
+        return bookedDates.get(date) >= nbMaxPlaces;
     }
     public String getName() { return name; }
-    public HashMap<Date, Integer> getBookedDates() { return bookedDates; }
     public int getNbMaxPlaces() { return nbMaxPlaces; }
-    public int getNbUnavailablePlaces(Date date) { return bookedDates.get(date); }
+    public int getNbUnavailablePlaces(Date date) {
+        if(!isBookedOn(date)) {
+            throw new IllegalArgumentException("Il n'a pas de réservation pour la salle " + getName() + " le " + new SimpleDateFormat("dd/MM/yyyy").format(date));
+        }
+        return bookedDates.get(date);
+    }
     public String getPlacesRatio(Date date) { return getNbUnavailablePlaces(date) + " / " + nbMaxPlaces; }
     public String toString() { return this.getName(); }
+
+    public boolean hasNoReservation() { return bookedDates.isEmpty(); }
+
+    public Set<Date> getDates() { return bookedDates.keySet(); }
 }

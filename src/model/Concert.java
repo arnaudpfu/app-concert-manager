@@ -1,7 +1,5 @@
 package model;
 
-import model.exceptions.RoomAlreadyBookedException;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -11,8 +9,7 @@ public class Concert {
     private double ticketPrice;
     private Date date;
 
-    public Concert(String nom, Room room, double ticketPrice, Date date) throws RoomAlreadyBookedException {
-        room.book(date);
+    public Concert(String nom, Room room, double ticketPrice, Date date) {
         this.nom = nom;
         this.room = room;
         this.ticketPrice = ticketPrice;

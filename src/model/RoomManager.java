@@ -3,7 +3,6 @@ package model;
 import view.pages.RoomManagerPage;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Knows which room is reserved by which club.
@@ -19,12 +18,7 @@ public class RoomManager implements IConcertListener, ITicketListener {
         return this.rooms;
     }
 
-    /**
-     * Frees a room.
-     * 
-     * @param room Room to free.
-     */
-    public void freeRoom(Room room, Date date) { room.bookedDates.remove(date); }
+    public void freeRoom(Concert concert) { concert.getRoom().bookedDates.remove(concert.getDate()); }
 
     public void setWindow(RoomManagerPage _window) { window = _window; }
 

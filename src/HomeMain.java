@@ -29,10 +29,12 @@ class HomeMain {
         Concert c1, c2;
         try {
             Date c1_date = new Date(123, Calendar.FEBRUARY,1);
+            c201.book(c1_date);
             c1 = new Concert("Metallica", c201, 50, c1_date);
             club.addConcert(c1);
 
             Date c2_date = new Date(123, Calendar.FEBRUARY,2);
+            c205.book(c2_date);
             c2 = new Concert("AC/DC", c205, 1, c2_date);
             club.addConcert(c2);
         } catch (Exception ex) {

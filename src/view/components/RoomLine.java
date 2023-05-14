@@ -13,11 +13,14 @@ public class RoomLine extends JPanel {
         setOpaque(false);
 
         add(new DefaultLabel(room.getName()));
-        add(Box.createRigidArea(new Dimension(100, 20)));
 
-        if(room.getBookedDates().isEmpty()){ add(new DefaultLabel("Pas de concert prévu")); }
+        if(room.hasNoReservation()){
+            add(Box.createRigidArea(new Dimension(100, 20)));
+            add(new DefaultLabel("Pas de concert prévu"));
+        }
 
-        for (Date date : room.getBookedDates().keySet()) {
+        for (Date date : room.getDates()) {
+            add(Box.createRigidArea(new Dimension(100, 20)));
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             String dateString = dateFormat.format(date);
             add(new DefaultLabel(dateString));

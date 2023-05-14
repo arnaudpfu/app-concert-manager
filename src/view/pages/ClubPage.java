@@ -2,6 +2,7 @@ package view.pages;
 
 import model.*;
 import model.exceptions.RoomAlreadyBookedException;
+import model.exceptions.RoomNotBookedException;
 import view.components.*;
 
 import javax.swing.*;
@@ -56,7 +57,7 @@ public class ClubPage extends InterfaceApp implements ActionListener {
 
         // Room field (ComboBox)
         ArrayList<Room> rooms = roomManager.getRooms();
-        roomComboBox = new JComboBox<>(rooms.toArray(new Room[rooms.size()]));
+        roomComboBox = new JComboBox<>(rooms.toArray(new Room[0]));
         JPanel roomField = new DefaultInputField(new DefaultLabel("Salle"), roomComboBox);
         concertForm.add(roomField);
         concertForm.add(Box.createVerticalStrut(10));
@@ -89,6 +90,12 @@ public class ClubPage extends InterfaceApp implements ActionListener {
 
             concertsPanel.add(concertLine);
             concertLine.getCancelButton().addActionListener(e -> {
+                try {
+                    concert.getRoom().unbook(concert.getDate());
+                } catch (RoomNotBookedException ex) {
+                    showErrorMessage(ex.getMessage());
+                    return;
+                }
                 currentClub.removeConcert(concert);
                 updateConcerts();
             });
@@ -149,16 +156,16 @@ public class ClubPage extends InterfaceApp implements ActionListener {
                 return;
             }
 
-            // Attempts to create the concert (indirectly books the room on the given date)
-            Concert newConcert;
+            // Attempts book the room on the given date
             try {
-                newConcert = new Concert(concertName, room, concertPrice, concertDate);
+                room.book(concertDate);
             } catch (RoomAlreadyBookedException ex) {
                 showErrorMessage(ex.getMessage());
                 return;
             }
 
             // Adds the new concert in the club concert's list
+            Concert newConcert = new Concert(concertName, room, concertPrice, concertDate);
             currentClub.addConcert(newConcert);
 
             updateConcerts();

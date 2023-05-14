@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 
-import model.exceptions.UnknownMemberException;
 import view.pages.ClubPage;
 
 /**
