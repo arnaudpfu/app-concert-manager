@@ -15,9 +15,16 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
     private JPanel roomsPanel = new DefaultPanel();
     private JPanel clubsPanel = new DefaultPanel();
     private JLabel clubErrorsLabel = new DefaultErrorLabel();
-    public RoomManagerPage(ClubManager clubManager) {
-        super("Gestionnaire de salle(s)", clubManager);
-        clubManager.getRoomManager().setWindow(this);
+    private RoomManager roomManager;
+    private ArrayList<Club> clubs;
+    private ArrayList<Member> members;
+
+    public RoomManagerPage(ArrayList<Club> clubs, ArrayList<Member> members, RoomManager roomManager) {
+        super("Gestionnaire de salle(s)", clubs, members, roomManager);
+        this.roomManager = roomManager;
+        this.clubs = clubs;
+        this.members = members;
+        roomManager.setWindow(this);
 
         backButtonPanel = new BackButtonPanel("< Retour à l'accueil", this);
         mainPanel.add(backButtonPanel);
@@ -40,7 +47,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
     /** Redraws the clubs panel with the new clubs data **/
     public void updateClubsPanel() {
         clubsPanel.removeAll();
-        for (Club club : clubManager.getClubs()) {
+        for (Club club : clubs) {
             clubsPanel.add(new TitleLabel(club.getName()));
             clubsPanel.add(this.createClubPanel(club));
         }
@@ -51,7 +58,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
     /** Redraws the rooms panel with the new rooms data **/
     public void updateRooms() {
         roomsPanel.removeAll();
-        for (Room room : clubManager.getRoomManager().getRooms()) {
+        for (Room room : roomManager.getRooms()) {
             roomsPanel.add(new RoomLine(room));
         }
         roomsPanel.repaint();
@@ -93,13 +100,15 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         clubAddLine.add(clubField);
         JButton addButton = new PrimaryButton("Ajouter");
         addButton.addActionListener(e -> {
-            String newClubName = clubField.getText().toLowerCase();
-            if (newClubName.isEmpty()) {
+            String clubName = clubField.getText().toLowerCase();
+            if (clubName.isEmpty()) {
                 clubErrorsLabel.setText("Veuillez renseigner le nom du club");
                 return;
             }
-            clubManager.addClubByName(newClubName);
-            updateClubsPanel();
+
+            Club club = new Club(clubName);
+            clubs.add(club);
+            club.addConcertListener(roomManager);
         });
         clubAddLine.add(addButton);
         mainPanel.add(clubAddLine);
@@ -115,6 +124,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         for (Member member : members) {
             MemberLine memberLine = new MemberLine(member);
             memberLine.getRemoveButton().addActionListener(e -> {
+                // TODO : Add IMemberListener
                 club.removeMember(member);
                 updateClubsPanel();
             });
@@ -169,7 +179,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == backButtonPanel.getBackButton()) {
-            new HomePage(clubManager);
+            new HomePage(clubs, members, roomManager);
             dispose();
         }
     }

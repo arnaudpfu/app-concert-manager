@@ -1,73 +1,32 @@
 package view.pages;
 
-import model.Club;
-import model.ClubManager;
-import model.Member;
-import model.exceptions.UnknownClubException;
-import model.exceptions.UnknownMemberException;
+import model.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-public class ConnexionPage extends InterfaceApp implements ActionListener {
+public abstract class ConnexionPage extends InterfaceApp implements ActionListener {
     private JPanel mainPanel;
     private JPanel connexionPanel;
-    private JLabel title;
+    protected JLabel title;
     private JLabel nameLabel;
-    private JTextField nameInput;
-    private JButton connectButton;
-    private JLabel errorLabel;
-    private JButton backButton;
+    protected JTextField nameInput;
+    protected JButton connectButton;
+    protected JLabel errorLabel;
+    protected JButton backButton;
 
-    private String userType;
-
-    public ConnexionPage(ClubManager clubManager, String userType) {
-        super("Concert Manager - Connexion", clubManager);
+    public ConnexionPage(ArrayList<Club> clubs, ArrayList<Member> members, RoomManager roomManager) {
+        super("Concert Manager - Connexion", clubs, members, roomManager);
         setContentPane(mainPanel);
-        this.userType = userType;
-
-        title.setText("Connexion - " + (userType.equals("member") ? "Membre" : "Club"));
-        connectButton.addActionListener(this);
         backButton.addActionListener(this);
     }
 
-    @Override
     public void actionPerformed(ActionEvent event) {
         Object src = event.getSource();
-        if(src == connectButton) {
-            String textInput = nameInput.getText().toLowerCase();
-
-            // Validates input
-            if (textInput.isEmpty()) {
-                errorLabel.setText("Veuillez insérer un nom de " + (userType.equals("member") ? "membre" : "club"));
-                return;
-            }
-
-            // Check if user exists
-            if (userType.equals("member")) {
-                try {
-                    Member member = clubManager.getMember(textInput);
-                    new MemberPage(clubManager, member);
-                    dispose();
-                } catch (UnknownMemberException ex) {
-                    errorLabel.setText("Ce membre n'existe pas");
-                }
-
-            // Check if club exists
-            } else if (userType.equals("club")) {
-                try {
-                    Club club = clubManager.getClub(textInput);
-                    ClubPage page = new ClubPage(clubManager, club);
-                    page.setVisible(true);
-                    dispose();
-                } catch (UnknownClubException ex) {
-                    errorLabel.setText("Ce club n'existe pas");
-                }
-            }
-        }
         if(src == backButton) {
-            new HomePage(clubManager);
+            new HomePage(clubs, members, roomManager);
             dispose();
         }
     }

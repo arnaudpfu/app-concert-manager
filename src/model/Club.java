@@ -10,18 +10,19 @@ import view.pages.ClubPage;
  * A club knows its manager, its members and its concerts.
  * It can also organize concerts.
  */
-public class Club  {
+public class Club implements ITicketListener {
     private String name;
     private ArrayList<Member> members;
     private ArrayList<IConcertListener> otherListeners;
     private ArrayList<Concert> concerts;
-    private ClubPage window = null;
+    private ClubPage window;
 
     public Club(String name, ArrayList<Member> members) {
         this.name = name;
         this.members = members;
         this.concerts = new ArrayList<>();
         this.otherListeners = new ArrayList<>();
+        this.window = null;
     }
 
     public Club(String name) { this(name, new ArrayList<>()); }
@@ -67,17 +68,17 @@ public class Club  {
 
     public ArrayList<Concert> getConcerts() { return this.concerts; }
 
-    public Member getMember(String memberName) throws UnknownMemberException {
-        for (Member member : members) {
-            if (member.getName().equals(memberName))
-                return member;
-        }
-        throw new UnknownMemberException(memberName);
-    }
-
     public void setWindow(ClubPage _window) { window = _window;}
 
-    public void notifyReservationChange() {
-        if(window != null) { window.updateConcerts(); }
+    @Override
+    public void onReservation(TicketEvent event) {
+        if(window == null) return;
+        window.updateConcerts();
+    }
+
+    @Override
+    public void onAnnulation(TicketEvent event) {
+        if(window == null) return;
+        window.updateConcerts();
     }
 }

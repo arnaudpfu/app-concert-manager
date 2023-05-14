@@ -30,8 +30,8 @@ public class MemberPage extends InterfaceApp implements ActionListener {
     private Member currentMember;
     private ArrayList<String> notifications = new ArrayList<>();
 
-    public MemberPage(ClubManager clubManager, Member member) {
-        super("Mon compte - " + member.getName(), clubManager);
+    public MemberPage(ArrayList<Club> clubs, ArrayList<Member> members, RoomManager roomManager, Member member) {
+        super("Mon compte - " + member.getName(), clubs, members, roomManager);
         member.setWindow(this);
         this.currentMember = member;
 
@@ -90,7 +90,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
             ticketPanel.add(new DefaultLabel("En cours"));
             JButton cancelButton = new SecondaryButton("Annuler");
             cancelButton.addActionListener(e -> {
-                clubManager.attemptRemoveReservation(currentMember, ticket);
+                currentMember.unbook(ticket);
                 updateTickets();
                 updateConcerts();
             });
@@ -125,48 +125,52 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         notifications.add(notification);
         updateNotifications();
     }
+
     /** Updates the concerts panel **/
     public void updateConcerts() {
         // Remove all concerts lines
         newConcertsPanel.removeAll();
 
-        for (Concert concert: clubManager.getConcerts()) {
-            // If member hasn't booked yet
-            if(currentMember.hasBooked(concert)) continue;
+        for(Club club : clubs) {
+            for (Concert concert: club.getConcerts()) {
+                // If member hasn't booked yet
+                if(currentMember.hasBooked(concert)) continue;
 
-            // Add a concert line
-            JPanel concertPanel = new JPanel();
-            concertPanel.setOpaque(false);
-            concertPanel.add(new DefaultLabel(concert.getName()));
-            concertPanel.add(Box.createRigidArea(new Dimension(50, 20)));
-            concertPanel.add(new DefaultLabel(concert.getDateFormat()));
-            concertPanel.add(Box.createRigidArea(new Dimension(50, 20)));
-            concertPanel.add(new DefaultLabel("Salle " + concert.getRoom().getName()));
-            concertPanel.add(Box.createRigidArea(new Dimension(50, 20)));
-            concertPanel.add(new DefaultLabel(concert.getTicketPrice() + "€"));
-            concertPanel.add(Box.createRigidArea(new Dimension(50, 20)));
-            JButton reserveButton = new PrimaryButton("Réserver");
-            reserveButton.addActionListener(e -> {
-                try {
-                    clubManager.attemptReservation(currentMember, concert);
-                } catch (FullConcertException ex) {
-                    showErrorMessage(ex.getMessage());
-                } catch (MemberAlreadyBookedException ex) {
-                    showErrorMessage("Vous avez déjà un ticket pour ce concert !");
-                } catch (NoMoneyException ex) {
-                    showErrorMessage("Vous n'avez pas un seuil suffisant pour réserver ce concert");
-                }
-            });
-            concertPanel.add(reserveButton);
-            newConcertsPanel.add(concertPanel);
+                // Add a concert line
+                JPanel concertPanel = new JPanel();
+                concertPanel.setOpaque(false);
+                concertPanel.add(new DefaultLabel(concert.getName()));
+                concertPanel.add(Box.createRigidArea(new Dimension(50, 20)));
+                concertPanel.add(new DefaultLabel(concert.getDateFormat()));
+                concertPanel.add(Box.createRigidArea(new Dimension(50, 20)));
+                concertPanel.add(new DefaultLabel("Salle " + concert.getRoom().getName()));
+                concertPanel.add(Box.createRigidArea(new Dimension(50, 20)));
+                concertPanel.add(new DefaultLabel(concert.getTicketPrice() + "€"));
+                concertPanel.add(Box.createRigidArea(new Dimension(50, 20)));
+                JButton reserveButton = new PrimaryButton("Réserver");
+                reserveButton.addActionListener(e -> {
+                    try {
+                        currentMember.book(concert);
+                    } catch (FullConcertException ex) {
+                        showErrorMessage(ex.getMessage());
+                    } catch (MemberAlreadyBookedException ex) {
+                        showErrorMessage("Vous avez déjà un ticket pour ce concert !");
+                    } catch (NoMoneyException ex) {
+                        showErrorMessage("Vous n'avez pas un seuil suffisant pour réserver ce concert");
+                    }
+                });
+                concertPanel.add(reserveButton);
+                newConcertsPanel.add(concertPanel);
+            }
         }
         newConcertsPanel.repaint();
         newConcertsPanel.revalidate();
     }
+
     @Override
     public void actionPerformed(ActionEvent event) {
         if(event.getSource() == backButtonPanel.getBackButton()) {
-            new HomePage(clubManager);
+            new HomePage(clubs, members, roomManager);
             dispose();
         }
     }

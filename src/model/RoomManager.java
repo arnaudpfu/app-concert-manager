@@ -1,7 +1,5 @@
 package model;
 
-import model.exceptions.FullRoomException;
-import model.exceptions.RoomAlreadyBookedException;
 import view.pages.RoomManagerPage;
 
 import java.util.ArrayList;
@@ -10,7 +8,7 @@ import java.util.Date;
 /**
  * Knows which room is reserved by which club.
  */
-public class RoomManager implements IConcertListener {
+public class RoomManager implements IConcertListener, ITicketListener {
     private RoomManagerPage window = null;
     private ArrayList<Room> rooms;
     public RoomManager(ArrayList<Room> rooms) {
@@ -19,17 +17,6 @@ public class RoomManager implements IConcertListener {
 
     public ArrayList<Room> getRooms() {
         return this.rooms;
-    }
-
-    /**
-     * Reserve a room for a club.
-     *
-     * @param room                Room to reserve.
-     * @param date                Date the concert takes place.
-     * @throws FullRoomException  If the room is already reserved.
-     */
-    public void attemptRoomReservation(Room room, Date date) throws RoomAlreadyBookedException {
-        room.book(date);
     }
 
     /**
@@ -48,6 +35,16 @@ public class RoomManager implements IConcertListener {
 
     @Override
     public void onConcertAnnulation(ConcertEvent event) {
+        if(window != null) { window.updateRooms(); }
+    }
+
+    @Override
+    public void onReservation(TicketEvent event) {
+        if(window != null) { window.updateRooms(); }
+    }
+
+    @Override
+    public void onAnnulation(TicketEvent event) {
         if(window != null) { window.updateRooms(); }
     }
 }

@@ -1,9 +1,12 @@
 package view.pages;
 import java.io.Serial;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
-import model.ClubManager;
+import model.Club;
+import model.Member;
+import model.RoomManager;
 import view.components.MainPanel;
 
 abstract public class InterfaceApp extends JFrame {
@@ -13,13 +16,17 @@ abstract public class InterfaceApp extends JFrame {
     protected static final int HEIGHT = 600;
     protected static final int INNER_WIDTH = 700;
     protected static final int INNER_HEIGHT = 700;
-    protected ClubManager clubManager;
     ImageIcon logo = new ImageIcon(".//src//images//logo.png");
     protected JPanel mainPanel;
+    protected ArrayList<Club> clubs;
+    protected ArrayList<Member> members;
+    protected RoomManager roomManager;
 
-    public InterfaceApp(String title, ClubManager clubManager) {
-        this.clubManager = clubManager;
+    public InterfaceApp(String title, ArrayList<Club> clubs, ArrayList<Member> members, RoomManager roomManager) {
         this.mainPanel = new MainPanel();
+        this.clubs = clubs;
+        this.members = members;
+        this.roomManager = roomManager;
 
         setTitle(title);
         setSize(WIDTH, HEIGHT);

@@ -1,9 +1,6 @@
 package view.pages;
 
-import model.Club;
-import model.ClubManager;
-import model.Concert;
-import model.Room;
+import model.*;
 import model.exceptions.RoomAlreadyBookedException;
 import view.components.*;
 
@@ -16,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ClubPage extends InterfaceApp implements ActionListener {
-    private Club club;
+    private Club currentClub;
     private JButton validationButton = new PrimaryButton("Ajouter");
     private JTextField nameInput = new DefaultTextField();
     private JTextField dateInput = new DefaultTextField();
@@ -25,11 +22,10 @@ public class ClubPage extends InterfaceApp implements ActionListener {
     private JPanel concertsPanel = new DefaultPanel();
     private BackButtonPanel backButtonPanel;
 
-    public ClubPage(ClubManager clubManager, Club club) {
-        super("Mon club - " + club.getName(), clubManager);
+    public ClubPage(ArrayList<Club> clubs, ArrayList<Member> members, RoomManager roomManager, Club club) {
+        super("Mon club - " + club.getName(), clubs, members, roomManager);
         club.setWindow(this);
-        this.club = club;
-        this.clubManager = clubManager;
+        this.currentClub = club;
 
         // Back button
         backButtonPanel = new BackButtonPanel("< Retour à l'accueil", this);
@@ -59,7 +55,7 @@ public class ClubPage extends InterfaceApp implements ActionListener {
         concertForm.add(Box.createVerticalStrut(10));
 
         // Room field (ComboBox)
-        ArrayList<Room> rooms = this.clubManager.getRoomManager().getRooms();
+        ArrayList<Room> rooms = roomManager.getRooms();
         roomComboBox = new JComboBox<>(rooms.toArray(new Room[rooms.size()]));
         JPanel roomField = new DefaultInputField(new DefaultLabel("Salle"), roomComboBox);
         concertForm.add(roomField);
@@ -87,13 +83,13 @@ public class ClubPage extends InterfaceApp implements ActionListener {
         concertsPanel.removeAll();
 
         // Populating the concerts panel
-        for (Concert concert : club.getConcerts()) {
+        for (Concert concert : currentClub.getConcerts()) {
             System.out.println(concert);
             ConcertLine concertLine = new ConcertLine(concert);
 
             concertsPanel.add(concertLine);
             concertLine.getCancelButton().addActionListener(e -> {
-                clubManager.attemptRemoveConcert(club, concert);
+                currentClub.removeConcert(concert);
                 updateConcerts();
             });
         }
@@ -108,7 +104,7 @@ public class ClubPage extends InterfaceApp implements ActionListener {
         Object src = event.getSource();
         // Back button (goes back to HomePage)
         if(src == backButtonPanel.getBackButton()) {
-            new HomePage(clubManager);
+            new HomePage(clubs, members, roomManager);
             dispose();
         }
 
@@ -163,7 +159,7 @@ public class ClubPage extends InterfaceApp implements ActionListener {
             }
 
             // Adds the new concert in the club concert's list
-            club.addConcert(newConcert);
+            currentClub.addConcert(newConcert);
 
             updateConcerts();
         }
