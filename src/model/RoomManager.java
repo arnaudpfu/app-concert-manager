@@ -6,7 +6,6 @@ import view.pages.RoomManagerPage;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 /**
  * Knows which room is reserved by which club.

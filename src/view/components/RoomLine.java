@@ -5,9 +5,7 @@ import model.Room;
 import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
 
 public class RoomLine extends JPanel {
     public RoomLine(Room room) {

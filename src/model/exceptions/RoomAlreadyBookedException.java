@@ -1,8 +1,6 @@
 package model.exceptions;
 
-import model.Member;
 import model.Room;
-import model.Ticket;
 
 public class RoomAlreadyBookedException extends Exception {
     public RoomAlreadyBookedException(Room room) {

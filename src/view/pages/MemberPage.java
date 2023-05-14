@@ -3,7 +3,7 @@ package view.pages;
 import javax.swing.*;
 
 import model.*;
-import model.exceptions.AlreadyBookedException;
+import model.exceptions.MemberAlreadyBookedException;
 import model.exceptions.FullConcertException;
 import model.exceptions.NoMoneyException;
 import view.components.*;
@@ -151,7 +151,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
                     clubManager.attemptReservation(currentMember, concert);
                 } catch (FullConcertException ex) {
                     showErrorMessage(ex.getMessage());
-                } catch (AlreadyBookedException ex) {
+                } catch (MemberAlreadyBookedException ex) {
                     showErrorMessage("Vous avez déjà un ticket pour ce concert !");
                 } catch (NoMoneyException ex) {
                     showErrorMessage("Vous n'avez pas un seuil suffisant pour réserver ce concert");

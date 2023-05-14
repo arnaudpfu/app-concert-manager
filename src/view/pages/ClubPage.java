@@ -4,7 +4,6 @@ import model.Club;
 import model.ClubManager;
 import model.Concert;
 import model.Room;
-import model.exceptions.FullRoomException;
 import model.exceptions.RoomAlreadyBookedException;
 import view.components.*;
 
@@ -15,7 +14,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
 
 public class ClubPage extends InterfaceApp implements ActionListener {
     private Club club;

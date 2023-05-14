@@ -12,8 +12,4 @@ public class DefaultLabel extends JLabel {
     }
 
     public DefaultLabel(String text) { this(text, false); }
-
-    public DefaultLabel() {
-        this("");
-    }
 }
