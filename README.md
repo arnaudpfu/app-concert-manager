@@ -2,13 +2,17 @@
 Java application to handle concerts
 
 # TODO
-- Supprimer les modales (ça me stresse)
+- Régler le problème de comparaison de date afin de régler :
+    - L'état du ticket ne s'affiche pas correctement
+    - Le test pour voir si une salle est déjà réservé ne fonctionne plus
 - Club : Afficher les membres
 - Club : Afficher seulement les salles disponibles
+
+# Perspectives
+- Supprimer les modales (ça me stresse)
 - Gestionnaire : Ajouter une salle / Supprimer une salle
 - Conserver la position lors des changements de page
 - Confirmation quand on annule un concert / ticket
-- L'état du ticket ne s'affiche pas correctement
 - Ajouter les IMemberListener et IClubListener
 
 # Compte rendu
