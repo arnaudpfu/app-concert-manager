@@ -1,6 +1,7 @@
 package view.pages;
 
 import model.*;
+import model.exceptions.NegativePriceException;
 import model.exceptions.PassedDateException;
 import model.exceptions.RoomAlreadyBookedException;
 import model.exceptions.RoomNotBookedException;
@@ -129,8 +130,12 @@ public class ClubPage extends InterfaceApp implements ActionListener {
             else {
                 try {
                     concertPrice = Double.parseDouble(priceInput.getText());
-                } catch (Exception e) {
+                    // Check if price is negative
+                    if(concertPrice < 0) throw new NegativePriceException();
+                } catch (NumberFormatException e) {
                     error_message += "Le prix doit être un nombre\n";
+                } catch (NegativePriceException e) {
+                    error_message += e.getMessage() + "\n";
                 }
             }
 
