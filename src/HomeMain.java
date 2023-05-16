@@ -1,5 +1,5 @@
 import model.*;
-import view.pages.ClubPage;
+import view.pages.HomePage;
 import view.pages.InterfaceApp;
 
 import java.util.*;
@@ -48,13 +48,13 @@ class HomeMain {
             m2.book(c1);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
+            return;
         }
 
-        InterfaceApp window = new ClubPage(
+        InterfaceApp window = new HomePage(
             new ArrayList<>(List.of(club)),
             new ArrayList<>(Arrays.asList(m1,m2,m3)),
-            roomManager,
-            club
+            roomManager
         );
         window.setVisible(true);
     }

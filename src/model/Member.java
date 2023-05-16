@@ -30,7 +30,6 @@ public class Member implements IConcertListener, ITicketListener {
     @Override
     public void onNewConcert(ConcertEvent event) {
         Concert concert = event.getConcert();
-        if(hasThresholdFor(concert)) System.out.println(getName() + " est intéressé par " + concert.getName());
         if(window != null) {
             window.addNotification("Le concert " + concert.getName() + " peut vous intéresser");
             window.updateConcerts();
@@ -41,6 +40,7 @@ public class Member implements IConcertListener, ITicketListener {
     public void onConcertAnnulation(ConcertEvent event) {
         Concert concert = event.getConcert();
         System.out.println(getName() + " apprends que  " + concert.getName() + " est annulé (il a " + getTickets().size() + " tickets)");
+
         // Getting all tickets to delete
         ArrayList<Ticket> ticketsToDelete = tickets.stream()
                 .filter(ticket -> ticket.getConcert() == concert)
@@ -104,8 +104,10 @@ public class Member implements IConcertListener, ITicketListener {
         // Test if concert is full
         if(concert.isFull()) throw new FullConcertException(concert);
 
-        // Add new ticket
+        // Books a place from the room
         concert.decrementFreePlaces();
+
+        System.out.println(getNameFormat() + " booked for " + concert.getName());
 
         Ticket ticket = new Ticket(concert, this);
         TicketEvent event = new TicketEvent(this, ticket);
@@ -117,8 +119,10 @@ public class Member implements IConcertListener, ITicketListener {
     public void unbook(Ticket ticket) {
         if(!tickets.contains(ticket)) throw new UnknownTicketException(ticket.getConcert(), this);
 
-        // Add new ticket
+        // Frees a place from the room
         ticket.getConcert().incrementFreePlaces();
+
+        System.out.println(getNameFormat() + " unbooked for " + ticket.getConcert().getName());
 
         this.tickets.remove(ticket);
         TicketEvent event = new TicketEvent(this, ticket);

@@ -27,7 +27,7 @@ public class Concert {
     public double getTicketPrice() { return ticketPrice; }
     public int getNbFreePlaces() { return this.room.getNbUnavailablePlaces(date); }
     public String toString() {
-        return "Concert " + this.nom + " : " + this.getNbFreePlaces() + " / " + getNbMaxPlaces()  + " places disponibles.";
+        return "Concert " + this.nom + " : " + this.getNbFreePlaces() + " / " + getNbMaxPlaces()  + " places";
     }
     public String getPlacesRatio() { return room.getPlacesRatio(date); }
 }

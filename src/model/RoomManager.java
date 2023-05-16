@@ -14,21 +14,21 @@ public class RoomManager implements IConcertListener, ITicketListener {
         this.rooms = rooms;
     }
 
-    public ArrayList<Room> getRooms() {
-        return this.rooms;
-    }
-
     public void freeRoom(Concert concert) { concert.getRoom().bookedDates.remove(concert.getDate()); }
-
-    public void setWindow(RoomManagerPage _window) { window = _window; }
+    public void bookRoom(Concert concert) { concert.getRoom().bookedDates.put(concert.getDate(), 0); }
 
     @Override
     public void onNewConcert(ConcertEvent event) {
+        bookRoom(event.getConcert());
+        Concert concert = event.getConcert();
+        System.out.println("Booked room " + concert.getRoom().getName() + " (" + concert + ")");
         if(window != null) { window.updateRooms(); }
     }
 
     @Override
     public void onConcertAnnulation(ConcertEvent event) {
+        freeRoom(event.getConcert());
+        System.out.println("Freed room " + event.getConcert().getRoom().getName() + " on the " + event.getConcert().getDateFormat());
         if(window != null) { window.updateRooms(); }
     }
 
@@ -41,4 +41,9 @@ public class RoomManager implements IConcertListener, ITicketListener {
     public void onAnnulation(TicketEvent event) {
         if(window != null) { window.updateRooms(); }
     }
+
+    public ArrayList<Room> getRooms() {
+        return this.rooms;
+    }
+    public void setWindow(RoomManagerPage _window) { window = _window; }
 }

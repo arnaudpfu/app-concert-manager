@@ -85,7 +85,6 @@ public class ClubPage extends InterfaceApp implements ActionListener {
 
         // Populating the concerts panel
         for (Concert concert : currentClub.getConcerts()) {
-            System.out.println(concert);
             ConcertLine concertLine = new ConcertLine(concert);
 
             concertsPanel.add(concertLine);
