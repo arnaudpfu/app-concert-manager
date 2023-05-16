@@ -69,6 +69,7 @@ public class Member implements IConcertListener, ITicketListener {
         tickets.add(ticket);
 
         if (window == null) return;
+        // Updates the member's window
         window.addNotification("Votre ticket pour " + ticket.getConcert().getName() + " à bien été ajouté");
         window.removeNotification("Votre ticket pour " + ticket.getConcert().getName() + " à bien été supprimé");
         window.updateConcerts();
@@ -83,8 +84,11 @@ public class Member implements IConcertListener, ITicketListener {
         tickets.remove(ticket);
 
         if (window == null) return;
+        // Updates the member's window
         window.removeNotification("Votre ticket pour " + ticket.getConcert().getName() + " à bien été ajouté");
         window.addNotification("Votre ticket pour " + ticket.getConcert().getName() + " à bien été supprimé");
+        window.updateTickets();
+        window.updateConcerts();
     }
 
     public boolean hasThresholdFor(Concert concert) {

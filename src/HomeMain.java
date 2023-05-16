@@ -26,15 +26,23 @@ class HomeMain {
         m3.addTicketsListener(new ArrayList<>(Arrays.asList(m1, m2, club, roomManager)));
         club.addConcertListener(roomManager);
 
-        Concert c1, c2;
+        Concert c1, c2, c3;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
         try {
-            Date c1_date = new Date(123, Calendar.FEBRUARY,1);
-            c1 = new Concert("Metallica", c201, 50, c1_date);
+            // First concert, today
+            c1 = new Concert("Metallica", c201, 100, calendar.getTime());
             club.addConcert(c1);
 
-            Date c2_date = new Date(123, Calendar.FEBRUARY,2);
-            c2 = new Concert("AC/DC", c205, 1, c2_date);
+            // Second concert, one month ago
+            calendar.add(Calendar.MONTH, -1);
+            c2 = new Concert("AC/DC", c205, 20, calendar.getTime());
             club.addConcert(c2);
+
+            // Third concert, two month later
+            calendar.add(Calendar.MONTH, 3);
+            c3 = new Concert("Psychotrope", c205, 55, calendar.getTime());
+            club.addConcert(c3);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return;

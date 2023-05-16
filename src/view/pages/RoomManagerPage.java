@@ -151,6 +151,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         memberAddLine.add(new DefaultLabel("Nom : "));
         JTextField memberField = new DefaultTextField();
         memberAddLine.add(memberField);
+        memberAddLine.add(Box.createRigidArea(new Dimension(50, 20)));
 
         memberAddLine.add(new DefaultLabel("Prix seuil : "));
         JTextField priceField = new DefaultTextField();

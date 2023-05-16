@@ -8,7 +8,8 @@ Java application to handle concerts
 - Gestionnaire : Ajouter une salle / Supprimer une salle
 - Conserver la position lors des changements de page
 - Confirmation quand on annule un concert / ticket
-- 
+- L'état du ticket ne s'affiche pas correctement
+- Ajouter les IMemberListener et IClubListener
 
 # Compte rendu
 Pour le compte-rendu, faire deux parties : fonctionnelles et conceptuelles.  

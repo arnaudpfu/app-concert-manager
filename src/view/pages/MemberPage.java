@@ -10,6 +10,7 @@ import view.components.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MemberPage extends InterfaceApp implements ActionListener {
 
@@ -83,20 +84,30 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         }
 
         for (Ticket ticket : currentMember.getTickets()) {
+            Concert concert = ticket.getConcert();
             JPanel ticketPanel = new JPanel();
             ticketPanel.setOpaque(false);
-            ticketPanel.add(new DefaultLabel(ticket.getConcert().getName()));
-            ticketPanel.add(new DefaultLabel("En cours"));
+            ticketPanel.add(new DefaultLabel(concert.getName()));
+            ticketPanel.add(Box.createRigidArea(new Dimension(20, 10)));
+
+            // Displays the concert's date
+            ticketPanel.add(new DefaultLabel(concert.getDateFormat()));
+            ticketPanel.add(Box.createRigidArea(new Dimension(20, 10)));
+
+            // TODO : Fix "En cours" not showing
+            // Displays the concert's state (à venir, en cours, passé)
+            Date today = new Date();
+            DefaultLabel state = new DefaultLabel("En cours", new Color(216, 149, 20));
+            if(concert.getDate().after(today)) state = new DefaultLabel("A venir", new Color(48, 193, 80));
+            if(concert.getDate().before(today)) state = new DefaultLabel("Passé", new Color(180, 16, 16));
+            ticketPanel.add(state);
+
             JButton cancelButton = new SecondaryButton("Annuler");
-            cancelButton.addActionListener(e -> {
-                currentMember.unbook(ticket);
-                updateTickets();
-                updateConcerts();
-            });
+            cancelButton.addActionListener(e -> currentMember.unbook(ticket));
             ticketPanel.add(cancelButton);
             ticketsPanel.add(ticketPanel);
-            ticketsPanel.revalidate();
         }
+        ticketsPanel.revalidate();
         ticketsPanel.repaint();
     }
 

@@ -12,8 +12,8 @@ import view.components.MainPanel;
 abstract public class InterfaceApp extends JFrame {
     @Serial
     private static final long serialVersionUID = 1L;
-    protected static final int WIDTH = 800;
-    protected static final int HEIGHT = 600;
+    protected static final int WIDTH = 1000;
+    protected static final int HEIGHT = 700;
     protected static final int INNER_WIDTH = 700;
     protected static final int INNER_HEIGHT = 700;
     ImageIcon logo = new ImageIcon(".//src//images//logo.png");

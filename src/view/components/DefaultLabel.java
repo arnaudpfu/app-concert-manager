@@ -11,5 +11,10 @@ public class DefaultLabel extends JLabel {
         setOpaque(false);
     }
 
+    public DefaultLabel(String text, Color color) {
+        this(text);
+        setForeground(color);
+    }
+
     public DefaultLabel(String text) { this(text, false); }
 }
