@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class RoomManagerPage extends InterfaceApp implements ActionListener {
     private BackButtonPanel backButtonPanel;
@@ -45,7 +46,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
     }
 
     /** Redraws the clubs panel with the new clubs data **/
-    public void updateClubsPanel() {
+    public void updateClubs() {
         clubsPanel.removeAll();
         for (Club club : clubs) {
             clubsPanel.add(new TitleLabel(club.getName()));
@@ -71,9 +72,8 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         clubsPanel.setOpaque(false);
         clubsPanel.setLayout(new BoxLayout(clubsPanel, BoxLayout.Y_AXIS));
         clubsPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
-        updateClubsPanel();
         section.add(clubsPanel);
-        updateClubsPanel();
+        updateClubs();
         mainPanel.add(section);
     }
 
@@ -100,15 +100,28 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         clubAddLine.add(clubField);
         JButton addButton = new PrimaryButton("Ajouter");
         addButton.addActionListener(e -> {
+            clubErrorsLabel.setText("");
             String clubName = clubField.getText().toLowerCase();
+
+            // Validates inputs
             if (clubName.isEmpty()) {
                 clubErrorsLabel.setText("Veuillez renseigner le nom du club");
+                return;
+            }
+
+            // Check if club already exists
+            boolean club_exists = clubs.stream().map(Club::getName).anyMatch(name -> Objects.equals(name, clubName));
+            if(club_exists) {
+                clubErrorsLabel.setText("Ce club existe déjà");
                 return;
             }
 
             Club club = new Club(clubName);
             clubs.add(club);
             club.addConcertListener(roomManager);
+
+            // Update the clubs panel
+            updateClubs();
         });
         clubAddLine.add(addButton);
         mainPanel.add(clubAddLine);
@@ -126,7 +139,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
             memberLine.getRemoveButton().addActionListener(e -> {
                 // TODO : Add IMemberListener
                 club.removeMember(member);
-                updateClubsPanel();
+                updateClubs();
             });
             membersContainer.add(memberLine);
         }
@@ -166,7 +179,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
 
             club.addMember(new Member(newMemberName, Double.parseDouble(newMemberPrice)));
 
-            updateClubsPanel();
+            updateClubs();
         });
         memberAddLine.add(addMemberButton);
 

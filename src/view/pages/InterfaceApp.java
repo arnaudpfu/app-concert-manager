@@ -52,6 +52,6 @@ abstract public class InterfaceApp extends JFrame {
     }
 
     protected void showErrorMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, message, "Erreur de saisie", JOptionPane.INFORMATION_MESSAGE);
     }
 }

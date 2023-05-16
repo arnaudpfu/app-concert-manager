@@ -6,6 +6,9 @@ Java application to handle concerts
 - Club : Afficher les membres
 - Club : Afficher seulement les salles disponibles
 - Gestionnaire : Ajouter une salle / Supprimer une salle
+- Conserver la position lors des changements de page
+- Confirmation quand on annule un concert / ticket
+- 
 
 # Compte rendu
 Pour le compte-rendu, faire deux parties : fonctionnelles et conceptuelles.  
