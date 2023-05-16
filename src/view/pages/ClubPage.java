@@ -1,6 +1,7 @@
 package view.pages;
 
 import model.*;
+import model.exceptions.PassedDateException;
 import model.exceptions.RoomAlreadyBookedException;
 import model.exceptions.RoomNotBookedException;
 import view.components.*;
@@ -145,8 +146,12 @@ public class ClubPage extends InterfaceApp implements ActionListener {
                 // Parse dateInput string into Date
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 concertDate = formatter.parse(dateInput.getText());
+                // Check if date is passed
+                if(concertDate.before(new Date())) throw new PassedDateException();
             } catch (ParseException e) {
                 error_message += "La date doit être valide, en format jj/mm/yyyy";
+            } catch (PassedDateException e) {
+                error_message += e.getMessage();
             }
 
             // Displays errors and ends the method if there's any
