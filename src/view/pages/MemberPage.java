@@ -5,7 +5,6 @@ import javax.swing.*;
 import model.*;
 import model.exceptions.MemberAlreadyBookedException;
 import model.exceptions.FullConcertException;
-import model.exceptions.NoMoneyException;
 import view.components.*;
 
 import java.awt.*;
@@ -133,10 +132,10 @@ public class MemberPage extends InterfaceApp implements ActionListener {
 
         for(Club club : clubs) {
             for (Concert concert: club.getConcerts()) {
-                // If member hasn't booked yet
+                // If member has already booked the concert, skip
                 if(currentMember.hasBooked(concert)) continue;
 
-                // Add a concert line
+                // Adds the concert line
                 JPanel concertPanel = new JPanel();
                 concertPanel.setOpaque(false);
                 concertPanel.add(new DefaultLabel(concert.getName()));
@@ -148,15 +147,32 @@ public class MemberPage extends InterfaceApp implements ActionListener {
                 concertPanel.add(new DefaultLabel(concert.getTicketPrice() + "€"));
                 concertPanel.add(Box.createRigidArea(new Dimension(50, 20)));
                 JButton reserveButton = new PrimaryButton("Réserver");
+
+                // Button "Réserver" that attempts to book a concert when clicked
                 reserveButton.addActionListener(e -> {
+
+                    // Asks member if he's sure to pay when the price is greater than his threshold
+                    if(!currentMember.hasThresholdFor(concert)) {
+                        String[] options = {"Non", "Oui"};
+                        int is_sure = JOptionPane.showOptionDialog(this,
+                            "Ce concert à un prix supérieur à votre seuil, êtes vous sûr de vouloir le réserver ?",
+                            "Confirmation de réservation",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            "Oui"
+                        );
+                        // If he's not sure, don't continue
+                        if(is_sure == 0) return;
+                    }
+
                     try {
                         currentMember.book(concert);
                     } catch (FullConcertException ex) {
                         showErrorMessage(ex.getMessage());
                     } catch (MemberAlreadyBookedException ex) {
                         showErrorMessage("Vous avez déjà un ticket pour ce concert !");
-                    } catch (NoMoneyException ex) {
-                        showErrorMessage("Vous n'avez pas un seuil suffisant pour réserver ce concert");
                     }
                 });
                 concertPanel.add(reserveButton);

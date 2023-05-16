@@ -1,7 +1,6 @@
 package model.exceptions;
 
 import model.Concert;
-import model.Room;
 
 public class FullConcertException extends Exception {
     public FullConcertException(Concert concert) {

@@ -2,7 +2,6 @@ package model;
 
 import model.exceptions.FullConcertException;
 import model.exceptions.MemberAlreadyBookedException;
-import model.exceptions.NoMoneyException;
 import model.exceptions.UnknownTicketException;
 import view.pages.MemberPage;
 
@@ -98,10 +97,7 @@ public class Member implements IConcertListener, ITicketListener {
         return priceThreshold;
     }
 
-    public void book(Concert concert) throws NoMoneyException, MemberAlreadyBookedException, FullConcertException {
-        // Test if member can pay
-        if(!hasThresholdFor(concert)) throw new NoMoneyException(this, concert);
-
+    public void book(Concert concert) throws MemberAlreadyBookedException, FullConcertException {
         // Test if member already booked
         if(hasBooked(concert)) throw new MemberAlreadyBookedException(concert, this);
 
