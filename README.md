@@ -7,15 +7,14 @@ Java application to handle concerts
 - Implémenter IMemberListener :
   - Gestionnaire : FIX Supprimer le membre
   - Gestionnaire : FIX Ajouter un membre
-- Gestionnaire : Check si le membre existe déjà dans le club
-- Partout : Message de confirmation pour toute annulation
+- Gestionnaire : Empêcher d'ajouter le même membre dans un club
 
 # Perspectives
 - Supprimer les modales (ça me stresse)
-- Gestionnaire : Ajouter une salle / Supprimer une salle
+- Message de confirmation pour toute type annulation
+- Gestionnaire : Ajouter une salle / Supprimer une salle (IRoomListener)
 - Conserver la position lors des changements de page
-- Confirmation quand on annule un concert / ticket
-- Ajouter les IMemberListener et IClubListener
+- Ajouter IMemberListener
 
 # Compte rendu
 Pour le compte-rendu, faire deux parties : fonctionnelles et conceptuelles.  
