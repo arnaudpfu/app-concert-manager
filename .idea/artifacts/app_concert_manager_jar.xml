@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="app-concert-manager:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/app_concert_manager_jar</output-path>
+    <root id="archive" name="app-concert-manager.jar">
+      <element id="module-output" name="app-concert-manager" />
+    </root>
+  </artifact>
+</component>
