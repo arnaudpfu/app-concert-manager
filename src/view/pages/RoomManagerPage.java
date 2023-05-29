@@ -3,6 +3,7 @@ package view.pages;
 import javax.swing.*;
 
 import model.*;
+import model.exceptions.NegativePriceException;
 import view.components.*;
 
 import java.awt.*;
@@ -153,7 +154,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         memberAddLine.add(memberField);
         memberAddLine.add(Box.createRigidArea(new Dimension(50, 20)));
 
-        memberAddLine.add(new DefaultLabel("Soldes : "));
+        memberAddLine.add(new DefaultLabel("Solde : "));
         JTextField priceField = new DefaultTextField();
         memberAddLine.add(priceField);
 
@@ -165,19 +166,33 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
             String newMemberName = memberField.getText().toLowerCase();
             String newMemberPrice = priceField.getText().toLowerCase();
 
-            // Validate inputs
+            // Validate member name
             String errorMessage = "";
             if (newMemberName.isEmpty()) {
                 errorMessage += "Veuillez renseigner le nom du membre.\n";
             }
-            if (newMemberPrice.isEmpty()) {
-                errorMessage += "Veuillez renseigner le solde du membre.";
+
+            // TODO : Check if member already exists in club
+
+            // Validate price threshold
+            double priceThreshold;
+            if(newMemberPrice.isEmpty())  errorMessage += "Veuillez renseigner le solde du membre.\n";
+            else {
+                try {
+                    priceThreshold = Double.parseDouble(newMemberPrice);
+                    // Check if price is negative
+                    if(priceThreshold < 0) throw new NegativePriceException();
+                } catch (NumberFormatException ex) {
+                    errorMessage += "Le solde doit être un nombre\n";
+                } catch (NegativePriceException ex) {
+                    errorMessage += "Le solde doit être positif\n";
+                }
             }
+
             if (!errorMessage.isEmpty()) {
                 showErrorMessage(errorMessage);
                 return;
             }
-
             club.addMember(new Member(newMemberName, Double.parseDouble(newMemberPrice)));
 
             updateClubs();

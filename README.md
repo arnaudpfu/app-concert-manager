@@ -6,7 +6,7 @@ Java application to handle concerts
 - Club : Afficher seulement les salles disponibles
 - Gestionnaire : FIX Supprimer le membre
 - Gestionnaire : FIX Ajouter un membre
-- Gestionnaire : Empêcher un solde négatif pour un nouveau membre
+- Gestionnaire : Check si le membre existe déjà dans le club
 - Partout : Message de confirmation pour toute annulation
 
 # Perspectives
