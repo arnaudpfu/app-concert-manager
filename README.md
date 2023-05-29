@@ -2,11 +2,11 @@
 Java application to handle concerts
 
 # TODO
-- Régler le problème de comparaison de date afin de régler :
-    - L'état du ticket ne s'affiche pas correctement
-    - Le test pour voir si une salle est déjà réservé ne fonctionne plus
 - Club : Afficher les membres
 - Club : Afficher seulement les salles disponibles
+- Gestionnaire : FIX Supprimer le membre
+- Gestionnaire : FIX Ajouter un membre
+- Gestionnaire : Empêcher un solde négatif pour un nouveau membre
 
 # Perspectives
 - Supprimer les modales (ça me stresse)

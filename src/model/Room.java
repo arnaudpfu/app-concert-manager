@@ -32,7 +32,9 @@ public class Room {
         bookedDates.remove(date);
     }
 
-    private boolean isBookedOn(Date date) { return bookedDates.get(date) != null; }
+    private boolean isBookedOn(Date date) {
+        return bookedDates.get(date) != null;
+    }
 
     public void decrementFreePlaces(Date date) {
         if(!isBookedOn(date)) {

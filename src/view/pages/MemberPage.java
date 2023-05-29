@@ -10,7 +10,6 @@ import view.components.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MemberPage extends InterfaceApp implements ActionListener {
 
@@ -94,17 +93,19 @@ public class MemberPage extends InterfaceApp implements ActionListener {
             ticketPanel.add(new DefaultLabel(concert.getDateFormat()));
             ticketPanel.add(Box.createRigidArea(new Dimension(20, 10)));
 
-            // TODO : Fix "En cours" not showing
             // Displays the concert's state (à venir, en cours, passé)
-            Date today = new Date();
-            DefaultLabel state = new DefaultLabel("En cours", new Color(216, 149, 20));
-            if(concert.getDate().after(today)) state = new DefaultLabel("A venir", new Color(48, 193, 80));
-            if(concert.getDate().before(today)) state = new DefaultLabel("Passé", new Color(180, 16, 16));
+            DefaultLabel state;
+            if(concert.isToday())        state = new DefaultLabel("En cours", new Color(216, 149, 20));
+            else if(concert.hasPassed()) state = new DefaultLabel("Passé", new Color(180, 16, 16));
+            else                         state = new DefaultLabel("A venir", new Color(48, 193, 80));
             ticketPanel.add(state);
 
-            JButton cancelButton = new SecondaryButton("Annuler");
-            cancelButton.addActionListener(e -> currentMember.unbook(ticket));
-            ticketPanel.add(cancelButton);
+            // Display cancel button only if the concert hasn't passed
+            if(!concert.hasPassed() && !concert.isToday()) {
+                JButton cancelButton = new SecondaryButton("Annuler");
+                cancelButton.addActionListener(e -> currentMember.unbook(ticket));
+                ticketPanel.add(cancelButton);
+            }
             ticketsPanel.add(ticketPanel);
         }
         ticketsPanel.revalidate();
@@ -145,6 +146,8 @@ public class MemberPage extends InterfaceApp implements ActionListener {
             for (Concert concert: club.getConcerts()) {
                 // If member has already booked the concert, skip
                 if(currentMember.hasBooked(concert)) continue;
+                // If concert has passed, skip
+                if(concert.hasPassed()) continue;
 
                 // Adds the concert line
                 JPanel concertPanel = new JPanel();

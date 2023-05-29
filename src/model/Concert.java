@@ -1,6 +1,7 @@
 package model;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Concert {
@@ -15,8 +16,25 @@ public class Concert {
         this.ticketPrice = ticketPrice;
         this.date = date;
     }
-
     public boolean isFull() { return room.isFull(date); }
+
+    public Date getCurrentDate() {
+        Calendar calendar = Calendar.getInstance();
+        // Ignoring hour, minutes, seconds and milliseconds
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
+
+    public boolean hasPassed() {
+        return date.before(getCurrentDate());
+    }
+
+    public boolean isToday() {
+        return date.equals(getCurrentDate());
+    }
     public void incrementFreePlaces() { room.incrementFreePlaces(date); }
     public void decrementFreePlaces() { room.decrementFreePlaces(date); }
     public String getName() { return nom; }

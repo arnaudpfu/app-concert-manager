@@ -25,7 +25,8 @@ public class ConcertLine extends JPanel {
         add(new DefaultLabel(concert.getDateFormat()));
         add(Box.createRigidArea(new Dimension(50, 20)));
         setOpaque(false);
-        add(cancelButton);
+        // Display cancel button only if the concert hasn't passed
+        if(!concert.hasPassed() && !concert.isToday()) add(cancelButton);
     }
 
     public JButton getCancelButton() { return cancelButton; }
