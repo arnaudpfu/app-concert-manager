@@ -153,7 +153,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
         memberAddLine.add(memberField);
         memberAddLine.add(Box.createRigidArea(new Dimension(50, 20)));
 
-        memberAddLine.add(new DefaultLabel("Prix seuil : "));
+        memberAddLine.add(new DefaultLabel("Soldes : "));
         JTextField priceField = new DefaultTextField();
         memberAddLine.add(priceField);
 
@@ -171,7 +171,7 @@ public class RoomManagerPage extends InterfaceApp implements ActionListener {
                 errorMessage += "Veuillez renseigner le nom du membre.\n";
             }
             if (newMemberPrice.isEmpty()) {
-                errorMessage += "Veuillez renseigner le seuil de prix du membre.";
+                errorMessage += "Veuillez renseigner le solde du membre.";
             }
             if (!errorMessage.isEmpty()) {
                 showErrorMessage(errorMessage);

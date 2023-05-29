@@ -19,7 +19,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
     // --------- LABELS --------- //
 
     private JLabel title = new TitleLabel("Bienvenue !");
-    private JLabel thresholdPriceLabel = new DefaultLabel("Prix seuil :");
+    private JLabel thresholdPriceLabel = new DefaultLabel("Solde :");
     private JLabel notificationsTitle = new TitleLabel("Notifications");
     private JLabel ticketsTitle = new TitleLabel("Vos billets");
     private JLabel newConcertsTitle = new TitleLabel("Nouveaux concerts");
@@ -41,7 +41,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
         // Top panel
         topPanel = new DefaultPanel(false);
         title.setText("Bienvenue, " + currentMember.getNameFormat() + " !");
-        thresholdPriceLabel.setText("Prix seuil: " + currentMember.getPriceThreshold() + "€");
+        thresholdPriceLabel.setText("Solde: " + currentMember.getPriceThreshold() + "€");
         topPanel.add(title);
         topPanel.add(thresholdPriceLabel);
         mainPanel.add(topPanel);
@@ -169,7 +169,7 @@ public class MemberPage extends InterfaceApp implements ActionListener {
                     if(!currentMember.hasThresholdFor(concert)) {
                         String[] options = {"Non", "Oui"};
                         int is_sure = JOptionPane.showOptionDialog(this,
-                            "Ce concert à un prix supérieur à votre seuil, êtes vous sûr de vouloir le réserver ?",
+                            "Ce concert à un prix supérieur à votre solde, êtes vous sûr de vouloir le réserver ?",
                             "Confirmation de réservation",
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE,

@@ -7,6 +7,7 @@ Java application to handle concerts
 - Gestionnaire : FIX Supprimer le membre
 - Gestionnaire : FIX Ajouter un membre
 - Gestionnaire : Empêcher un solde négatif pour un nouveau membre
+- Partout : Message de confirmation pour toute annulation
 
 # Perspectives
 - Supprimer les modales (ça me stresse)
