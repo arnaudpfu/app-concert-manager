@@ -4,8 +4,9 @@ Java application to handle concerts
 # TODO
 - Club : Afficher les membres
 - Club : Afficher seulement les salles disponibles
-- Gestionnaire : FIX Supprimer le membre
-- Gestionnaire : FIX Ajouter un membre
+- Implémenter IMemberListener :
+  - Gestionnaire : FIX Supprimer le membre
+  - Gestionnaire : FIX Ajouter un membre
 - Gestionnaire : Check si le membre existe déjà dans le club
 - Partout : Message de confirmation pour toute annulation
 
